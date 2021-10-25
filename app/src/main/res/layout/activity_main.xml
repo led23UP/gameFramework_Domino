@@ -4,15 +4,234 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <SurfaceView
+            android:id="@+id/surfaceView"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#048181" />
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_horizontal"
+            android:layout_marginBottom="20sp">
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+
+                <ImageView
+                    android:id="@+id/imageView8"
+                    android:layout_column="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/domino_highlight"
+                    tools:ignore="ImageContrastCheck" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/highlight1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="163sp"
+                    android:rotation="90"
+                    app:srcCompat="@drawable/domino_highlight" />
+
+                <ImageView
+                    android:id="@+id/double3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:contentDescription="double3"
+                    app:srcCompat="@drawable/doubledomino_3" />
+
+                <ImageButton
+                    android:id="@+id/domino3_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#00FFFFFF"
+                    android:contentDescription="domino3_5"
+                    android:minWidth="163sp"
+                    android:rotation="-90"
+                    app:srcCompat="@drawable/domino5_3" />
+
+                <ImageButton
+                    android:id="@+id/dominodouble5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:backgroundTint="#00FFFFFF"
+                    android:contentDescription="5 Double"
+                    android:minWidth="163sp"
+                    android:rotation="90"
+                    app:srcCompat="@drawable/doubledomnio5" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <ImageView
+                    android:id="@+id/imageView9"
+                    android:layout_column="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="highlight"
+                    app:srcCompat="@drawable/domino_highlight"
+                    tools:ignore="ImageContrastCheck" />
+            </TableRow>
+
+        </TableLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:orientation="vertical"
+            android:paddingStart="5sp"
+            android:paddingEnd="5sp">
+
+            <Button
+                android:id="@+id/newGame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Game" />
+
+            <Button
+                android:id="@+id/quitGame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quit Game" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:orientation="vertical"
+            android:paddingStart="5sp"
+            android:paddingEnd="5sp">
+
+            <Button
+                android:id="@+id/rotateCW"
+                android:layout_width="match_parent"
+                android:layout_height="90sp"
+                android:text="Rotate CW" />
+
+            <Button
+                android:id="@+id/rotateCCW"
+                android:layout_width="match_parent"
+                android:layout_height="90sp"
+                android:text="Rotate CCW" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|left"
+            android:orientation="vertical"
+            android:paddingStart="10sp"
+            android:paddingBottom="10sp">
+
+            <TextView
+                android:id="@+id/Player_1_Score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Player 1 Score: 0"
+                android:textColor="#FFEB3B"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/Player_2_Score"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Player 2 Score: 0"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Your Dominoes:"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <ImageButton
+                    android:id="@+id/domino2_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#17EA20"
+                    android:contentDescription="domino2_3"
+                    app:srcCompat="@drawable/domino2_3" />
+
+                <ImageButton
+                    android:id="@+id/domino4_6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="domino4_6"
+                    app:srcCompat="@drawable/domino4_6"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+                <ImageButton
+                    android:id="@+id/double2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="double2"
+                    app:srcCompat="@drawable/doubledomino_2" />
+
+                <ImageButton
+                    android:id="@+id/domino1_6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="domino1_6"
+                    app:srcCompat="@drawable/domino1_6" />
+
+                <ImageButton
+                    android:id="@+id/domino3_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="domino3_4"
+                    app:srcCompat="@drawable/domino3_4" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

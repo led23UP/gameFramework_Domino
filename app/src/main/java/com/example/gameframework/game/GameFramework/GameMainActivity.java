@@ -34,7 +34,7 @@ import com.example.gameframework.game.GameFramework.utilities.IPCoder;
 import com.example.gameframework.game.GameFramework.utilities.Logger;
 import com.example.gameframework.game.GameFramework.utilities.MessageBox;
 import com.example.gameframework.game.GameFramework.utilities.Saving;
-import com.example.gameframework.game.R;
+import com.example.gameframework.R;
 
 /**
  * class GameMainActivity
