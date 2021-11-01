@@ -230,18 +230,19 @@ public class GameState {
             if (playedDomino.getLeftPipCount() == prevDomino.getRightPipCount()) {
                 //board[x][y] = playedDomino;
                 // If we reach the leftmost end of board, make domino's orientation vertical down.
+                playerLegalMoves.add(new MoveInfo(x,y,1));
                 if (0 == y) {
-                    playerLegalMoves.add(new MoveInfo(x,y,2));
+                    playerLegalMoves.get(playerLegalMoves.size() -1).setOrientation(2);
                    // playedDomino.setOrientation(2);
                 }
                 // If we reach the rightmost end of board, make domino's orientation vertical up.
                 else if (y == BOARDWIDTH - 1) {
-                    playerLegalMoves.add(new MoveInfo(x,y,4));
+                    playerLegalMoves.get(playerLegalMoves.size() -1).setOrientation(4);
                    // playedDomino.setOrientation(4);
                 }
                 // If we are placing to left of center of board, rotate piece 180 degrees.
                 else if (y < BOARDWIDTH/2) {
-                    playerLegalMoves.add(new MoveInfo(x,y,3));
+                    playerLegalMoves.get(playerLegalMoves.size() -1).setOrientation(3);
                     //playedDomino.setOrientation(3);
                 }
 
@@ -268,18 +269,19 @@ public class GameState {
             if (playedDomino.getRightPipCount() == prevDomino.getLeftPipCount()) {
                 //board[x][y] = playedDomino;
                 // If we reach the leftmost end of board, make domino's orientation vertical down.
+                playerLegalMoves.add(new MoveInfo(x,y,1));
                 if (y == 0) {
-                    playerLegalMoves.add(new MoveInfo(x,y,2));
+                    playerLegalMoves.get(playerLegalMoves.size() -1).setOrientation(2);
                     //playedDomino.setOrientation(2);
                 }
                 // If we reach the rightmost end of board, make domino's orientation vertical up.
                 else if (y == BOARDWIDTH - 1) {
-                    playerLegalMoves.add(new MoveInfo(x,y,4));
+                    playerLegalMoves.get(playerLegalMoves.size() -1).setOrientation(4);
                     //playedDomino.setOrientation(4);
                 }
                 // If domino is placed to right of center, rotate 180 degrees.
                 else if (y > BOARDWIDTH/2) {
-                    playerLegalMoves.add(new MoveInfo(x,y,3));
+                    playerLegalMoves.get(playerLegalMoves.size() -1).setOrientation(3);
                     //playedDomino.setOrientation(3);
                 }
 
@@ -306,18 +308,19 @@ public class GameState {
             if (playedDomino.getLeftPipCount() == prevDomino.getLeftPipCount()) {
                 //board[x][y] = playedDomino;
                 // If we reach the leftmost end of board, make domino's orientation vertical up.
+                playerLegalMoves.add(new MoveInfo(x,y,1));
                 if (y == 0) {
-                    playerLegalMoves.add(new MoveInfo(x,y,4));
+                    playerLegalMoves.get(playerLegalMoves.size() -1).setOrientation(4);
                     //playedDomino.setOrientation(4);
                 }
                 // If we reach the rightmost end of board, make domino's orientation vertical down.
                 else if (y == BOARDWIDTH - 1) {
-                    playerLegalMoves.add(new MoveInfo(x,y,2));
+                    playerLegalMoves.get(playerLegalMoves.size() -1).setOrientation(2);
                     //playedDomino.setOrientation(2);
                 }
                 // If left pips matches left pips, domino MUST be rotated 180 degrees.
                 else {
-                    playerLegalMoves.add(new MoveInfo(x,y,3));
+                    playerLegalMoves.get(playerLegalMoves.size() -1).setOrientation(3);
                     //playedDomino.setOrientation(3);
                 }
 
@@ -344,18 +347,19 @@ public class GameState {
             if (playedDomino.getRightPipCount() == prevDomino.getRightPipCount()) {
                 //board[x][y] = playedDomino;
                 // If we reach the leftmost end of board, make domino's orientation vertical up.
+                playerLegalMoves.add(new MoveInfo(x,y,1));
                 if (y == 0) {
-                    playerLegalMoves.add(new MoveInfo(x,y,4));
+                    playerLegalMoves.get(playerLegalMoves.size() -1).setOrientation(4);
                     //playedDomino.setOrientation(4);
                 }
                 // If we reach the rightmost end of board, make domino's orientation vertical down.
                 else if (y == BOARDWIDTH - 1) {
-                    playerLegalMoves.add(new MoveInfo(x,y,2));
+                    playerLegalMoves.get(playerLegalMoves.size() -1).setOrientation(2);
                     //playedDomino.setOrientation(2);
                 }
                 // If right pips matches right pips, domino MUST be rotated 180 degrees.
                 else {
-                    playerLegalMoves.add(new MoveInfo(x,y,3));
+                    playerLegalMoves.get(playerLegalMoves.size() -1).setOrientation(3);
                    // playedDomino.setOrientation(3);
                 }
 

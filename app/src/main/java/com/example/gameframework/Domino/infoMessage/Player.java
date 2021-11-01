@@ -37,9 +37,6 @@ public class Player {
         this.legalMoves = new ArrayList<>(other.legalMoves.size());
 
         this.legalMoves.addAll(other.legalMoves);
-
-
-        //this.legalMoves.addAll(other.legalMoves);
     }
 
     public void addPoints(int points){
