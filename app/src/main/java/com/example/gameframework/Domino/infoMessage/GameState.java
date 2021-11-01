@@ -382,8 +382,9 @@ public class GameState {
 
     public boolean placePiece(int x, int y, int playerID, int dominoIndex){
         int orientation = -1;
+        MoveInfo move = null;
         for (int i = 0; i < players.get(playerID).getLegalMoves().size(); i++){
-            MoveInfo move = players.get(playerID).getLegalMoves().get(i);
+            move = players.get(playerID).getLegalMoves().get(i);
             if (x == move.getRow() && y == move.getCol()) {
                 orientation = move.getOrientation();
                 break;
@@ -396,6 +397,7 @@ public class GameState {
 
         Domino playedDomino = players.get(playerID).getHand().get(dominoIndex);
         playedDomino.setOrientation(orientation);
+        playedDomino.setChain(move.getChain());
         board[x][y] = playedDomino;
 
         setInvalidSpots(x,y,playedDomino);
