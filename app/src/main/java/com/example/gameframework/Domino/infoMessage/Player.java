@@ -10,32 +10,36 @@ import java.util.ArrayList;
  * @author Paul Kenstler
  * @author Pranav Rajan
  */
-public class Players {
+public class Player {
     private final int id;
     private int score;
     private ArrayList<Domino> playerHand;
+    private ArrayList<MoveInfo> legalMoves;
 
-    public Players(int id, int score)
+    public Player(int id, int score)
     {
         this.id = id;
         playerHand = new ArrayList<>();
         this.score=score;
+        legalMoves = new ArrayList<>();
     }
-    public Players(Players other)
+    public Player(Player other)
     {
         this.id = other.id;
-        this.playerHand= new ArrayList<Domino>(other.playerHand.size());
+        this.playerHand= new ArrayList<>(other.playerHand.size());
         for(int i=0; i< other.playerHand.size();i++)
         {
             this.playerHand.add(new Domino(other.playerHand.get(i)));
         }
         this.playerHand = other.playerHand;
         this.score= other.score;
-    }
 
-    public int getId()
-    {
-        return id;
+        this.legalMoves = new ArrayList<>(other.legalMoves.size());
+
+        this.legalMoves.addAll(other.legalMoves);
+
+
+        //this.legalMoves.addAll(other.legalMoves);
     }
 
     public void addPoints(int points){
@@ -45,6 +49,10 @@ public class Players {
     public ArrayList<Domino> getHand()
     {
         return playerHand;
+    }
+
+    public ArrayList<MoveInfo> getLegalMoves(){
+        return this.legalMoves;
     }
 
     public void setScore(int score)

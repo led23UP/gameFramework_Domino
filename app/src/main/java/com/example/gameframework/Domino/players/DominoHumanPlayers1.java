@@ -1,9 +1,12 @@
 package com.example.gameframework.Domino.players;
 
-import com.example.gameframework.game.GameFramework.infoMessage.GameInfo;
-import com.example.gameframework.game.GameFramework.players.GameComputerPlayer;
+import android.view.View;
 
-public class DominoHumanPlayers1 extends GameComputerPlayer {
+import com.example.gameframework.game.GameFramework.GameMainActivity;
+import com.example.gameframework.game.GameFramework.infoMessage.GameInfo;
+import com.example.gameframework.game.GameFramework.players.GameHumanPlayer;
+
+public class DominoHumanPlayers1 extends GameHumanPlayer {
     /**
      * constructor
      *
@@ -14,7 +17,17 @@ public class DominoHumanPlayers1 extends GameComputerPlayer {
     }
 
     @Override
-    protected void receiveInfo(GameInfo info) {
+    public View getTopView() {
+        return null;
+    }
+
+    @Override
+    public void receiveInfo(GameInfo info) {
+
+    }
+
+    @Override
+    public void setAsGui(GameMainActivity activity) {
 
     }
 }
