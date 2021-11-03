@@ -24,8 +24,12 @@ public class DominoGameState extends GameState {
     private ArrayList<Domino> boneyard;
     private PlayerInfo[] players;
     private int turnID;
+    private String message;
 
     public DominoGameState() {
+
+        message = "";
+
         chainEnds = new int[8];
         Arrays.fill(chainEnds, -1);
         doesBoardHaveSpinner = false;
@@ -521,6 +525,7 @@ public class DominoGameState extends GameState {
         players[playerID].getHand().add(boneyard.get(0));
         boneyard.remove(0);
         findLegalMoves(playerID);
+
         return true;
     }
 
@@ -559,6 +564,10 @@ public class DominoGameState extends GameState {
     public ArrayList<Domino> getBoneyard(){
         return this.boneyard;
     }
+
+    public String getMessage(){return this.message;}
+
+    public void setMessage(String msg) { this.message = msg;}
 
     public boolean isGameBlocked(){
         int i = 0;
