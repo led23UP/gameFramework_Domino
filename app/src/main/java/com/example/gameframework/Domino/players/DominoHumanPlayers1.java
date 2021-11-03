@@ -98,6 +98,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         this.helpButton = (Button)activity.findViewById(R.id.helpButton);
 
         this.dominosInHand = new ImageButton[23];
+        // Don't want to write 23 lines, so the ImageButtons are being declared this way.
         int[] numbers = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22};
         for (int i = 0; i < 23; i++){
             int id = Integer.parseInt("R.id.hand" + numbers[i]);
