@@ -90,9 +90,10 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         //TODO Declare arrayList of 23 imageButton
         this.dominosInHand = new ArrayList<>(23);
         for (int i = 0; i < 23; i++){
+            //TODO Remove loop, do it long way.
             dominosInHand.add(new ImageButton(activity.getBaseContext()));
             dominosInHand.get(i).setId(i);
-            dominosInHand.get(i).setAlpha(0);
+            dominosInHand.get(i).setVisibility(View.INVISIBLE);
         }
 
         // If the domino isn't in their hand, set the remaining buttons alpha to zero.
