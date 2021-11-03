@@ -37,7 +37,7 @@ public interface Game {
     /**
      * returns the current gameState.
      *
-     * @return GameState
+     * @return DominoGameState
      */
     GameState getGameState();
 

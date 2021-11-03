@@ -122,6 +122,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/playerScores"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|left"
@@ -130,7 +131,7 @@
             android:paddingBottom="10sp">
 
             <TextView
-                android:id="@+id/Player_1_Score"
+                android:id="@+id/player0Score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Player 1 Score: 0"
@@ -138,7 +139,7 @@
                 android:textSize="30sp" />
 
             <TextView
-                android:id="@+id/Player_2_Score"
+                android:id="@+id/player1Score"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Player 2 Score: 0"
@@ -162,6 +163,7 @@
                 android:textSize="24sp" />
 
             <LinearLayout
+                android:id="@+id/yourHand"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal">

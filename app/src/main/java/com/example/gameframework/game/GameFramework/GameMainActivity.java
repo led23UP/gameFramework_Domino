@@ -433,7 +433,7 @@ public abstract class GameMainActivity extends Activity implements
                 }
             }
 
-            // set up our spinner so that when its last element ("Network Player") is selected,
+            // set up our spinner so that when its last element ("Network PlayerInfo") is selected,
             // the corresponding EditText (the player name) is disabled.
             typeSpinner.setOnItemSelectedListener(new SpinnerListListener(playerName, availTypes.length-1));
 
@@ -563,13 +563,13 @@ public abstract class GameMainActivity extends Activity implements
             return;
         }
 
-        // Add Player Button
+        // Add PlayerInfo Button
         if (button.getId() == R.id.addPlayerButton) {
             addPlayer();
             this.playerTable.invalidate(); // show the user the change
         }
 
-        // Delete Player Button
+        // Delete PlayerInfo Button
         else if (button.getId() == R.id.delPlayerButton) {
             // Search the existing players to find out which delete button got
             // clicked
@@ -859,7 +859,7 @@ public abstract class GameMainActivity extends Activity implements
         // the textView to disable
         private TextView correspondingTextField;
 
-        // the position in the spinner of the "Network Player" selection
+        // the position in the spinner of the "Network PlayerInfo" selection
         private int disableIndex;
 
         /**
@@ -868,7 +868,7 @@ public abstract class GameMainActivity extends Activity implements
          * @param txt
          * 			the TextView object
          * @param idxNum
-         * 			the index of the "Network Player" item in the spinner
+         * 			the index of the "Network PlayerInfo" item in the spinner
          */
         public SpinnerListListener(TextView txt, int idxNum) {
             correspondingTextField = txt;
@@ -957,14 +957,14 @@ public abstract class GameMainActivity extends Activity implements
 
     /**
      * Gets the current gameState to save
-     * @return the current GameState
+     * @return the current DominoGameState
      */
     protected GameState getGameState(){
         return game.getGameState();
     }
 
     /**
-     * startLoadedGame, starts the loaded GameState
+     * startLoadedGame, starts the loaded DominoGameState
      *
      * @param gameState
      */

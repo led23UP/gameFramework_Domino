@@ -10,20 +10,20 @@ import java.util.ArrayList;
  * @author Paul Kenstler
  * @author Pranav Rajan
  */
-public class Player {
+public class PlayerInfo {
     private final int id;
     private int score;
     private ArrayList<Domino> playerHand;
     private ArrayList<MoveInfo> legalMoves;
 
-    public Player(int id, int score)
+    public PlayerInfo(int id)
     {
         this.id = id;
         playerHand = new ArrayList<>();
-        this.score=score;
+        this.score= 0;
         legalMoves = new ArrayList<>();
     }
-    public Player(Player other)
+    public PlayerInfo(PlayerInfo other)
     {
         this.id = other.id;
         this.playerHand= new ArrayList<>(other.playerHand.size());
@@ -43,6 +43,10 @@ public class Player {
         this.score += points;
     }
 
+    public int getScore(){
+        return this.score;
+    }
+
     public ArrayList<Domino> getHand()
     {
         return playerHand;
@@ -60,7 +64,7 @@ public class Player {
     @NonNull
     public String toString(){
         StringBuilder s = new StringBuilder();
-        s.append("Player ").append(id + 1).append(" Score: ").append(score).append("\nHand: ");
+        s.append("PlayerInfo ").append(id + 1).append(" Score: ").append(score).append("\nHand: ");
         for (Domino d:playerHand) {
             s.append(d.toString()).append(", ");
         }
