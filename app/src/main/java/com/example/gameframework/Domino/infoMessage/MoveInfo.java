@@ -5,12 +5,14 @@ public class MoveInfo {
     private int col;
     private int orientation;
     private char chain;
+    private int dominoIndex;
 
-    public MoveInfo(int r, int c, int o){
+    public MoveInfo(int r, int c, int o, int d){
         this.row = r;
         this.col = c;
         this.orientation = o;
         this.chain = ' ';
+        this.dominoIndex = d;
     }
 
     public int getRow(){
@@ -29,6 +31,10 @@ public class MoveInfo {
         return chain;
     }
 
+    public int getDominoIndex(){
+        return this.dominoIndex;
+    }
+
     public void setRow(int row){
         this.row = row;
     }
@@ -43,5 +49,9 @@ public class MoveInfo {
 
     public void setChain(char chain) {
         this.chain = chain;
+    }
+
+    public void setDominoIndex(int d){
+        this.dominoIndex = d;
     }
 }

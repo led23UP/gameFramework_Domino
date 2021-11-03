@@ -13,7 +13,7 @@ import static com.example.gameframework.game.GameFramework.utilities.Saving.SEPA
  */
 public abstract class GameState extends GameInfo {
     //Tag for logging
-    private static final String TAG = "GameState";
+    private static final String TAG = "DominoGameState";
     // to satisfy the Serializable interface
     private static final long serialVersionUID = -5109179064333136954L;
 

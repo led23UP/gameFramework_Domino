@@ -9,7 +9,7 @@ import com.example.gameframework.game.GameFramework.utilities.NetworkObjectPasse
 import com.example.gameframework.game.GameFramework.utilities.Logger;
 
 /**
- * A Player object that is used as a proxy for the real player that is on another
+ * A PlayerInfo object that is used as a proxy for the real player that is on another
  * machine on the network. Whenever a message is sent to the ProxyPlayer object,
  * it serializes the message and sends it across the network; when
  * the ProxyPlayer object receives a message from the network, it
@@ -41,7 +41,7 @@ public class ProxyPlayer implements GamePlayer {
      */
     public ProxyPlayer(int portNum) {
 
-        Logger.debugLog(TAG, "Creating Proxy Player");
+        Logger.debugLog(TAG, "Creating Proxy PlayerInfo");
 
         // set instance variables to their initial values
         game = null; // the game

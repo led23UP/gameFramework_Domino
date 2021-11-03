@@ -14,7 +14,7 @@ import com.example.gameframework.game.GameFramework.utilities.Logger;
 /**
  * A Game object that is used as a proxy for the real game that is on another
  * machine on the network.  Each ProxyGame is associated with exactly one
- * Player object.  Whenever a message is sent to the ProxyGame object,
+ * PlayerInfo object.  Whenever a message is sent to the ProxyGame object,
  * it serializes the message and sends it across the network; when
  * the ProxyGame object receives a message from the network, it
  * unserializes the message and sends it to its player.
@@ -89,7 +89,7 @@ public class ProxyGame implements Game {
                 try {
                     boolean b = obj instanceof GameInfo;
                     if (b) {
-                        // object is a GameState object
+                        // object is a DominoGameState object
                         GameInfo gs = (GameInfo)obj;
                         gs.setGame(ProxyGame.this);
                         synchronized(this) {
@@ -144,20 +144,20 @@ public class ProxyGame implements Game {
 
         // if player has already been bound, ignore
         if (player != null){
-            Logger.debugLog(TAG, "Player "+player.getClass()+" already bound");
+            Logger.debugLog(TAG, "PlayerInfo "+player.getClass()+" already bound");
             return;
         }
 
         // if the player array somehow something other than
         // a single element, ignore
         if (players.length != 1){
-            Logger.debugLog(TAG, "The Player array is the incorrect size");
+            Logger.debugLog(TAG, "The PlayerInfo array is the incorrect size");
             return;
         }
 
         // start the player
         if (players[0] != null) {
-            Logger.debugLog(TAG, "Starting Player");
+            Logger.debugLog(TAG, "Starting PlayerInfo");
             players[0].start(); // start our player
         }
 
@@ -186,7 +186,7 @@ public class ProxyGame implements Game {
     /**
      * returns null because network saving is not implemented yet.
      *
-     * @return GameState
+     * @return DominoGameState
      */
     @Override
     public GameState getGameState(){

@@ -112,7 +112,7 @@ public class GameConfig {
      * <P>
      * This is the version of the constructor that is expected to be called
      * when the game activity starts. It therefore automatically adds a "Network
-     * Player" player-type option, which always becomes the last element in the
+     * PlayerInfo" player-type option, which always becomes the last element in the
      * available-player list.
      * <P>
      * This constructor leave the list of local players empty, and sets the
@@ -131,7 +131,7 @@ public class GameConfig {
                       int maxPlayers, String gameName, int portNum) {
 
         // create an array to hold the available player types, including
-        // the "WiFi Player" and the "Bluetooth Player" that will be added
+        // the "WiFi PlayerInfo" and the "Bluetooth PlayerInfo" that will be added
         int arrayLength = availTypes.size()+1;
         GamePlayerType[] availArray = new GamePlayerType[arrayLength];
 
@@ -139,18 +139,18 @@ public class GameConfig {
         availTypes.toArray(availArray);
 
         // Add the Internet Network player to the available players list
-        availArray[arrayLength-1] = new GamePlayerType("WiFi Player"){
+        availArray[arrayLength-1] = new GamePlayerType("WiFi PlayerInfo"){
             public GamePlayer createPlayer(String name) {
                 int portNum = getPortNum();
                 Logger.log(TAG, "Port number:" + portNum);
                 return new ProxyPlayer(portNum);
             }
         };
-        /*//Add the Bluetooth Network Player to the available players list
-        availArray[arrayLength-1] = new GamePlayerType("Bluetooth Player") {
+        /*//Add the Bluetooth Network PlayerInfo to the available players list
+        availArray[arrayLength-1] = new GamePlayerType("Bluetooth PlayerInfo") {
             @Override
             public GamePlayer createPlayer(String name) {
-                //Returns NULL for now, will return a Bluetooth Network Player in the future
+                //Returns NULL for now, will return a Bluetooth Network PlayerInfo in the future
                 return null;
             }
         };*/
@@ -750,9 +750,9 @@ public class GameConfig {
             b = false;
             ret_val += "GameConfig: maxPlayers must greater than 0\n";
         }
-        if(!availTypes[availTypes.length-1].getTypeName().equals("WiFi Player")){
+        if(!availTypes[availTypes.length-1].getTypeName().equals("WiFi PlayerInfo")){
             b = false;
-            ret_val += "GameConfig: Last Available Player is not a WiFi Player\n";
+            ret_val += "GameConfig: Last Available PlayerInfo is not a WiFi PlayerInfo\n";
         }
         if(getGameName().equals("")) {
             b = false;
