@@ -1,6 +1,9 @@
 package com.example.gameframework.Domino;
 
 import com.example.gameframework.Domino.DominoActionMessage.DominoMoveAction;
+import com.example.gameframework.Domino.DominoActionMessage.DominoNewGameAction;
+import com.example.gameframework.Domino.DominoActionMessage.DominoQuitGameAction;
+import com.example.gameframework.Domino.DominoActionMessage.DominoSkipAction;
 import com.example.gameframework.Domino.infoMessage.DominoGameState;
 import com.example.gameframework.Domino.infoMessage.MoveInfo;
 import com.example.gameframework.game.GameFramework.LocalGame;
@@ -74,6 +77,27 @@ public class DominoLocalGame extends LocalGame {
                 return true;
             }
         }
+
+        if (canMove(playerID)){
+            if( action instanceof DominoMoveAction)
+            {
+
+            }
+            if( action instanceof DominoSkipAction)
+            {
+
+            }
+            if (action instanceof DominoQuitGameAction)
+            {
+
+            }
+            if (action instanceof DominoNewGameAction)
+            {
+
+            }
+        }
+
+
         return false;
     }
 
