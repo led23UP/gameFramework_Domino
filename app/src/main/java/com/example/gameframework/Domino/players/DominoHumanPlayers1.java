@@ -66,6 +66,9 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         else{
 
             surfaceView.setState((DominoGameState)info);
+            for (int i = 0; i < dominosInHand.size(); i++){
+                dominosInHand.get(i).setAlpha(255);
+            }
             surfaceView.invalidate();
             Logger.log(TAG, "recieving");
         }
@@ -83,6 +86,16 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         this.newGameButton = (Button)activity.findViewById(R.id.newGameButton);
         this.quitGameButton = (Button)activity.findViewById(R.id.quitGameButton);
         this.helpButton = (Button)activity.findViewById(R.id.helpButton);
+
+        //TODO Declare arrayList of 23 imageButton
+        this.dominosInHand = new ArrayList<>(23);
+        for (int i = 0; i < 23; i++){
+            dominosInHand.add(new ImageButton(activity.getBaseContext()));
+            dominosInHand.get(i).setId(i);
+            dominosInHand.get(i).setAlpha(0);
+        }
+
+        // If the domino isn't in their hand, set the remaining buttons alpha to zero.
 
         this.surfaceView = (DSurfaceView) myActivity.findViewById(R.id.surfaceView);
         Logger.log("set listener", "OnTouch");
@@ -116,6 +129,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
     public void onClick(View view) {
         if (view instanceof ImageButton){
             //TODO Update selectedDomino to which button they pressed.
+            // selectedDomino = the buttons position in the imageButton array.
 
         }
         else if (view instanceof Button){
