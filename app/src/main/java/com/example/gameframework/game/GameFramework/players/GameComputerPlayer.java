@@ -148,7 +148,7 @@ public abstract class GameComputerPlayer implements GamePlayer, Tickable {
                 }
             };
             Thread thread = new Thread(runnable);
-            thread.setName("Computer Player");
+            thread.setName("Computer PlayerInfo");
             thread.start();
         }
     }

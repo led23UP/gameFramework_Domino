@@ -461,7 +461,7 @@ public abstract class LocalGame implements Game, Tickable {
     /**
      * returns the current gameState
      *
-     * @return GameState
+     * @return DominoGameState
      */
     @Override
     public GameState getGameState(){
