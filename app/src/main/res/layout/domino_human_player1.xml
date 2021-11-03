@@ -23,8 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:orientation="vertical"
-            android:paddingStart="10sp"
-            android:paddingBottom="10sp">
+            android:paddingBottom="10sp"
+            android:paddingLeft="10sp">
 
             <TextView
                 android:id="@+id/player0Score"
@@ -70,7 +70,7 @@
 
             <HorizontalScrollView
                 android:id="@+id/handScroll"
-                android:layout_width="wrap_content"
+                android:layout_width="530sp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal">
 
@@ -93,18 +93,153 @@
                         app:srcCompat="@drawable/domino1_6" />
 
                     <ImageButton
-                        android:id="@+id/imageButton3"
+                        android:id="@+id/hand2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/domino_highlight" />
+                        app:srcCompat="@drawable/domino1_6" />
 
                     <ImageButton
-                        android:id="@+id/imageButton4"
+                        android:id="@+id/hand3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/domino_highlight" />
+                        app:srcCompat="@drawable/domino1_6" />
+
+                    <ImageButton
+                        android:id="@+id/hand4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/domino1_6" />
+
+                    <ImageButton
+                        android:id="@+id/hand5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/domino1_6" />
+
+                    <ImageButton
+                        android:id="@+id/hand6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/domino1_6" />
+
+                    <ImageButton
+                        android:id="@+id/hand7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/domino1_6" />
+
+                    <ImageButton
+                        android:id="@+id/hand8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/domino1_6" />
+
+                    <ImageButton
+                        android:id="@+id/hand9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/domino1_6" />
+
+                    <ImageButton
+                        android:id="@+id/hand10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/domino1_6" />
+
+                    <ImageButton
+                        android:id="@+id/hand11"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/domino1_6" />
+
+                    <ImageButton
+                        android:id="@+id/hand12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/domino1_6" />
+
+                    <ImageButton
+                        android:id="@+id/hand13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/domino1_6" />
+
+                    <ImageButton
+                        android:id="@+id/hand14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/domino1_6" />
+
+                    <ImageButton
+                        android:id="@+id/hand15"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/domino1_6" />
+
+                    <ImageButton
+                        android:id="@+id/hand16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/domino1_6" />
+
+                    <ImageButton
+                        android:id="@+id/hand17"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/domino1_6" />
+
+                    <ImageButton
+                        android:id="@+id/hand18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/domino1_6" />
+
+                    <ImageButton
+                        android:id="@+id/hand19"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/domino1_6" />
+
+                    <ImageButton
+                        android:id="@+id/hand20"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/domino1_6" />
+
+                    <ImageButton
+                        android:id="@+id/hand21"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/domino1_6" />
+
+                    <ImageButton
+                        android:id="@+id/hand22"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/domino1_6" />
+
+
                 </LinearLayout>
             </HorizontalScrollView>
         </LinearLayout>
