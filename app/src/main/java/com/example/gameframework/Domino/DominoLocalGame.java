@@ -57,9 +57,13 @@ public class DominoLocalGame extends LocalGame {
         int row = dm.getRow();
         int col = dm.getCol();
 
-        int playerID = getPlayerIdx(dm.getPlayer());
-        ArrayList<MoveInfo> playerMoves = state.getPlayerInfo()[playerID].getLegalMoves();
 
+        int playerID = getPlayerIdx(dm.getPlayer());
+
+
+
+        //This is already done in DominoComputerPlayers1
+        /*
         while (state.getBoneyard().size() != 0 && playerMoves.size() == 0) {
             state.drawPiece(playerID);
         }
@@ -69,23 +73,26 @@ public class DominoLocalGame extends LocalGame {
             state.setTurnID();
             return true;
         }
-        int dominoIndex = dm.getDominoIndex();
-        for (MoveInfo move : playerMoves) {
-            if (move.getDominoIndex() == dominoIndex && move.getRow() == row && move.getCol() == col) {
-                state.placePiece(row, col, playerID, dominoIndex);
-                state.setTurnID();
-                return true;
-            }
-        }
+        */
 
         if (canMove(playerID)){
             if( action instanceof DominoMoveAction)
             {
-
+                ArrayList<MoveInfo> playerMoves = state.getPlayerInfo()[playerID].getLegalMoves();
+                int dominoIndex = dm.getDominoIndex();
+                for (MoveInfo move : playerMoves) {
+                    if (move.getDominoIndex() == dominoIndex && move.getRow() == row && move.getCol() == col) {
+                        state.placePiece(row, col, playerID, dominoIndex);
+                        state.setTurnID();
+                        return true;
+                    }
+                }
             }
             if( action instanceof DominoSkipAction)
             {
-
+                state.setMessage("Player x cannot make a legal move. Their turn has been skipped");
+                state.setTurnID();
+                return true;
             }
             if (action instanceof DominoQuitGameAction)
             {
