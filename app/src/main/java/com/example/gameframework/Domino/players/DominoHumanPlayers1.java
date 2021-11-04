@@ -98,11 +98,13 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         this.helpButton = (Button)activity.findViewById(R.id.helpButton);
 
         this.dominosInHand = new ImageButton[23];
-        // Don't want to write 23 lines, so the ImageButtons are being declared this way.
-        int[] numbers = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22};
-        for (int i = 0; i < 23; i++){
-            int id = Integer.parseInt("R.id.hand" + numbers[i]);
-            dominosInHand[i] = activity.findViewById(id);
+        // Don't want to write 23 lines of findViewById, so the ImageButtons are being declared this way.
+        int[] bIdArray = {R.id.hand0,R.id.hand1,R.id.hand2,R.id.hand3,R.id.hand4,R.id.hand5,R.id.hand6,
+                R.id.hand7,R.id.hand8,R.id.hand9,R.id.hand10,R.id.hand11,R.id.hand12,R.id.hand13,
+                R.id.hand14,R.id.hand15,R.id.hand16,R.id.hand17,R.id.hand18,R.id.hand19,R.id.hand20,
+                R.id.hand21,R.id.hand22};
+        for (int i = 0; i < bIdArray.length; i++){
+            dominosInHand[i] = activity.findViewById(bIdArray[i]);
         }
 
         // If the domino isn't in their hand, set the remaining buttons alpha to zero.
