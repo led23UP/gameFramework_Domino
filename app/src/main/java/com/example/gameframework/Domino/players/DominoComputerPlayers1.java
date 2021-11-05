@@ -29,22 +29,27 @@ public class DominoComputerPlayers1 extends GameComputerPlayer {
 
     @Override
     protected void receiveInfo(GameInfo info) {
+        //Creates copy of gameState
         DominoGameState gameStateObj = new DominoGameState((DominoGameState) info);
 
-
-        if(gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().size() ==0)
+        //if there are no legal moves, the game will incremnt the turn, wait, then send a skip action
+        if(gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().size() == 0)
         {
             gameStateObj.setTurnID();
             sleep(1000);
             game.sendAction(new DominoSkipAction(this));
             return;
         }
+
+        //if there's a legal move to be made
         int row = 0, col = 0, idx = 0;
+        //gets vars for first possible legal move
         row = gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().get(0).getRow();
         col = gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().get(0).getCol();
         idx = gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().get(0).getDominoIndex();
 
         sleep(1000);
+        //sends first legal move to the game
         game.sendAction(new DominoMoveAction(this, row,col,idx));
 
     }
