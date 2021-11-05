@@ -41,14 +41,14 @@ public class DominoMainActivity extends GameMainActivity {
             }
         });*/
 
-        /*// dumb computer player
+        // dumb computer player
         playerTypes.add(new GamePlayerType("Computer Player (dumb)") {
             public GamePlayer createPlayer(String name) {
                 return new DominoComputerPlayers1(name);
             }
         });
 
-        // smarter computer player
+        /*// smarter computer player
         playerTypes.add(new GamePlayerType("Computer Player (smart)") {
             public GamePlayer createPlayer(String name) {
                 return new DominoComputerPlayers2(name);
@@ -56,7 +56,7 @@ public class DominoMainActivity extends GameMainActivity {
         });*/
 
         // Create a game configuration class for Tic-tac-toe
-        GameConfig defaultConfig = new GameConfig(playerTypes, 2, 2, "Tic-Tac-Toe", PORT_NUMBER);
+        GameConfig defaultConfig = new GameConfig(playerTypes, 1, 4, "Dominos", PORT_NUMBER);
 
         // Add the default players
         defaultConfig.addPlayer("Human", 0); // yellow-on-blue GUI

@@ -36,7 +36,7 @@ public class DominoLocalGame extends LocalGame {
         if (dState.getPlayerInfo()[0].getScore() >=150){
             return "Player 0 wins with " + dState.getPlayerInfo()[0].getScore() + " points!";
         }
-        else if (dState.getPlayerInfo()[1].getScore() >=150){
+        /*else if (dState.getPlayerInfo()[1].getScore() >=150){
             return "Player 1 wins with " + dState.getPlayerInfo()[1].getScore() + " points!";
         }
         else if (dState.getPlayerInfo()[2].getScore() >=150){
@@ -44,7 +44,7 @@ public class DominoLocalGame extends LocalGame {
         }
         else if (dState.getPlayerInfo()[3].getScore() >=150){
             return "Player 3 wins with " + dState.getPlayerInfo()[3].getScore() + " points!";
-        }
+        }*/
         else{
             return null;
         }
@@ -54,6 +54,7 @@ public class DominoLocalGame extends LocalGame {
     protected boolean makeMove(GameAction action) {
         DominoMoveAction dm = (DominoMoveAction) action;
         DominoGameState state = (DominoGameState) super.state;
+
         int row = dm.getRow();
         int col = dm.getCol();
 
@@ -81,11 +82,11 @@ public class DominoLocalGame extends LocalGame {
                 ArrayList<MoveInfo> playerMoves = state.getPlayerInfo()[playerID].getLegalMoves();
                 int dominoIndex = dm.getDominoIndex();
                 for (MoveInfo move : playerMoves) {
-                    if (move.getDominoIndex() == dominoIndex && move.getRow() == row && move.getCol() == col) {
+                    //if (move.getDominoIndex() == dominoIndex && move.getRow() == row && move.getCol() == col) {
                         state.placePiece(row, col, playerID, dominoIndex);
                         state.setTurnID();
                         return true;
-                    }
+                   // }
                 }
             }
             if( action instanceof DominoSkipAction)

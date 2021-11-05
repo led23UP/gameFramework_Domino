@@ -13,16 +13,18 @@ import android.util.AttributeSet;
 
 import com.example.gameframework.Domino.infoMessage.Domino;
 import com.example.gameframework.Domino.infoMessage.DominoGameState;
+import com.example.gameframework.Domino.infoMessage.MoveInfo;
 import com.example.gameframework.R;
 import com.example.gameframework.game.GameFramework.utilities.FlashSurfaceView;
+import com.example.gameframework.game.GameFramework.utilities.Logger;
 
 public class DSurfaceView extends FlashSurfaceView {
     private static final String TAG = "DSurfaceView";
 
-    private final static float BORDER_PERCENT = 2;
-    private final static float SQUARE_SIZE_PERCENT = 9;
-    //private final static float LINE_WIDTH_PERCENT = 3;
-    private final static float SQUARE_DELTA_PERCENT = SQUARE_SIZE_PERCENT; //+ LINE_WIDTH_PERCENT;
+    private final static float BORDER_PERCENT = 5;
+    private final static float SQUARE_SIZE_PERCENT = 8;
+    private final static float LINE_WIDTH_PERCENT = 3;
+    private final static float SQUARE_DELTA_PERCENT = SQUARE_SIZE_PERCENT + LINE_WIDTH_PERCENT;
 
     protected DominoGameState dState;
     protected float hBase;
@@ -74,16 +76,22 @@ public class DSurfaceView extends FlashSurfaceView {
         Paint p = new Paint();
         p.setColor(dominoColor());
 
-
         for (int i = 0; i < dState.getBOARDHEIGHT(); i++){
             for (int j = 0; j < dState.getBOARDWIDTH(); j++){
+                if (dState.getDomino(i,j) == null){
+                    continue;
+                }
                 Domino d = dState.getDomino(i,j);
                 drawDomino(g,d,i,j);
             }
         }
 
-Domino d= new Domino(3,4,1,2);
-        drawDomino(g,d,0,0);
+        for (MoveInfo m : dState.getPlayerInfo()[0].getLegalMoves()){
+            drawHighlights(g,m.getRow(), m.getCol(),0);
+        }
+
+//Domino d= new Domino(3,4,1,2);
+       // drawDomino(g,d,0,0);
     }
 
     /**
@@ -107,92 +115,95 @@ Domino d= new Domino(3,4,1,2);
         if (width > height) {
             fullSquare = height;
             vBase = 0;
-            hBase = (width - height) / (float) 2.0;
+            hBase = (width - height) / (float) 11.0;
         } else {
             fullSquare = width;
             hBase = 0;
-            vBase = (height - width) / (float) 2.0;
+            vBase = (height - width) / (float) 5.0;
         }
 
-        Domino d= new Domino(3,5,1,3);
-        drawDomino(g,d,0,0);
+        //Domino d= new Domino(3,5,1,3);
+        //drawDomino(g,d,0,0);
+    }
+
+    public void drawDomino(Canvas g, Domino d, int row, int col){
+        float xLoc = BORDER_PERCENT + row *SQUARE_DELTA_PERCENT;
+        float yLoc = BORDER_PERCENT + col*SQUARE_DELTA_PERCENT;
+        // If domino is invalid, DO NOT DRAW.
+        if (d.getLeftPipCount() == -1 ||d.getRightPipCount() == -1 ){
+            return;
+        }
+
+
+        int leftPipCount=d.getLeftPipCount();
+        int rightPipCount=d.getRightPipCount();
+        int dominoOrientation=d.getOrientation();
+        //matricies rotate domino into the different orientations
+        //for example matrix one rotates domino bitmap into orientation number 1
+        Matrix one= new Matrix();
+        Matrix two= new Matrix();
+        Matrix three= new Matrix();
+        Matrix four= new Matrix();
+        String dominoClipartId=null;
+
+        if(leftPipCount<=rightPipCount) {
+            //the reason for +270 degrees is because domino png is vertical and we want to get it back
+            //orientation 1 initially
+            one.postRotate(0+270);
+            two.postRotate(90+270);
+            three.postRotate(180+270);
+            four.postRotate(270+270);
+            //string Id of domino based on left and right pip count
+            dominoClipartId="domino"+leftPipCount+"_"+rightPipCount;
+
+        }
+
+        else{
+            one.postRotate(0+270+180);
+            two.postRotate(90+270+180);
+            three.postRotate(180+270+180);
+            four.postRotate(270+270+180);
+            dominoClipartId="domino"+rightPipCount+"_"+leftPipCount;
+        }
+
+        //converts string id into an int id to link domino btmap image to corresponding resource file
+        int integerDominoID = DSurfaceView.this.getResources().getIdentifier(dominoClipartId , "drawable", getContext().getPackageName());
+        Bitmap dominoImage= BitmapFactory.decodeResource(getResources(),integerDominoID );
+        Bitmap rotatedDominoImage=null;
+        if(dominoOrientation==1) {
+            rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), one, true);
+        }
+        else if(dominoOrientation==2){
+            rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), two, true);
+
+
+        }
+        else if(dominoOrientation==3){
+            rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), three, true);
+
+
+        }
+
+        else if(dominoOrientation==4){
+            rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), four, true);
+
+
+        }
+        g.drawBitmap(rotatedDominoImage,xLoc, yLoc,null);
+
 
     }
 
-        public void drawDomino(Canvas g, Domino d, int row, int col){
-            float xLoc = BORDER_PERCENT + row *SQUARE_DELTA_PERCENT;
-            float yLoc = BORDER_PERCENT + col*SQUARE_DELTA_PERCENT;
-            // If domino is invalid, DO NOT DRAW.
-            if (d.getLeftPipCount() == -1 ||d.getRightPipCount() == -1 ){
-                return;
-            }
+    public void drawHighlights(Canvas g, int row, int col, int playerID){
+        float xLoc = (float) getWidth()*col/11;
+        float yLoc = (float) getHeight()*row/5;
 
+        Paint p = new Paint();
+        p.setColor(dominoColor());
 
-            int leftPipCount=d.getLeftPipCount();
-            int rightPipCount=d.getRightPipCount();
-            int dominoOrientation=d.getOrientation();
-//matricies rotate domino into the different orientations
-            //for example matrix one rotates domino bitmap into orientation number 1
-            Matrix one= new Matrix();
-            Matrix two= new Matrix();
-            Matrix three= new Matrix();
-            Matrix four= new Matrix();
-            String dominoClipartId=null;
+        Bitmap highlight = BitmapFactory.decodeResource(getResources(),R.drawable.domino_highlight);
 
-            if(leftPipCount<=rightPipCount) {
-                //the reason for +270 degrees is because domino png is vertical and we want to get it back
-                //orientation 1 initially
-                one.postRotate(0+270);
-                two.postRotate(90+270);
-                three.postRotate(180+270);
-                four.postRotate(270+270);
-                //string Id of domino based on left and right pip count
-                dominoClipartId="domino"+leftPipCount+"_"+rightPipCount;
-
-            }
-
-            else{
-                one.postRotate(0+270+180);
-                two.postRotate(90+270+180);
-                three.postRotate(180+270+180);
-                four.postRotate(270+270+180);
-                dominoClipartId="domino"+rightPipCount+"_"+leftPipCount;
-
-
-            }
-
-
-//converts string id into an int id to link domino btmap image to corresponding resource file
-            int integerDominoID = DSurfaceView.this.getResources().getIdentifier(dominoClipartId , "drawable", "com.example.gameframework.Domino.views");
-            Bitmap dominoImage= BitmapFactory.decodeResource(getResources(),integerDominoID );
-            Bitmap rotatedDominoImage=null;
-            if(dominoOrientation==1) {
-                rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), one, true);
-            }
-            else if(dominoOrientation==2){
-                rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), two, true);
-
-
-            }
-            else if(dominoOrientation==3){
-                rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), three, true);
-
-
-            }
-
-            else if(dominoOrientation==4){
-                rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), four, true);
-
-
-            }
-            g.drawBitmap(rotatedDominoImage,xLoc, yLoc,null);
-
-
-
-
-
-
-
+        g.drawBitmap(highlight,xLoc, yLoc, p);
     }
 
     /**
@@ -209,9 +220,15 @@ Domino d= new Domino(3,4,1,2);
      */
     public Point mapPixelToSquare(int x, int y) {
 
+        int c =  getWidth()/x;
+        int r =  getHeight()/y;
+        Logger.log("info","Row: " + r + " Col: " + c);
+        return new Point(r,c);
+
+
         // loop through each square and see if we get a "hit"; if so, return
         // the corresponding Point in "square" coordinates
-        for (int i = 0; i < dState.getBOARDHEIGHT(); i++) {
+        /*for (int i = 0; i < dState.getBOARDHEIGHT(); i++) {
             for (int j = 0; j < dState.getBOARDWIDTH() ; j++) {
                 float left = h(BORDER_PERCENT + (i * SQUARE_DELTA_PERCENT));
                 float right = h(BORDER_PERCENT + SQUARE_SIZE_PERCENT
@@ -224,10 +241,10 @@ Domino d= new Domino(3,4,1,2);
                     return new Point(i, j);
                 }
             }
-        }
+        }*/
 
         // no match: return null
-        return null;
+        //return null;
     }
     /**
      * helper-method to convert from a percentage to a horizontal pixel location

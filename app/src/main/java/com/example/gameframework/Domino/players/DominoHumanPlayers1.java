@@ -1,5 +1,7 @@
 package com.example.gameframework.Domino.players;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.view.MotionEvent;
@@ -69,19 +71,82 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         DominoGameState gameInfo = (DominoGameState) info;
         // Update player score TextViews.
         player0ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[0].getScore()));
-        player1ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[1].getScore()));
+        /*player1ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[1].getScore()));
         player2ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[2].getScore()));
-        player3ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[3].getScore()));
+        player3ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[3].getScore()));*/
 
 
         surfaceView.setState((DominoGameState)info);
         // Only show them imageButtons for dominoes that are in their hand.
         for (int i = 0; i < gameInfo.getPlayerInfo()[playerNum].getHand().size(); i++){
             dominosInHand[i].setVisibility(View.VISIBLE);
+            dominosInHand[i].setImageResource(determineDominoPic(gameInfo.getPlayerInfo()[playerNum].getHand().get(i)));
+            dominosInHand[i].setClickable(true);
         }
-        surfaceView.invalidate();
-        Logger.log(TAG, "recieving");
 
+    }
+
+    private int determineDominoPic(Domino d){
+        switch (d.getWeight()){
+            case 0:
+                return R.drawable.domino0_1;
+            case 1:
+                return R.drawable.domino0_2;
+            case 2:
+                return R.drawable.domino0_3;
+            case 3:
+                return R.drawable.domino0_4;
+            case 4:
+                return R.drawable.domino0_5;
+            case 5:
+                return R.drawable.domino0_6;
+            case 6:
+                return R.drawable.domino1_2;
+            case 7:
+                return R.drawable.domino1_3;
+            case 8:
+                return R.drawable.domino1_4;
+            case 9:
+                return R.drawable.domino1_5;
+            case 10:
+                return R.drawable.domino1_6;
+            case 11:
+                return R.drawable.domino2_3;
+            case 12:
+                return R.drawable.domino2_4;
+            case 13:
+                return R.drawable.domino2_5;
+            case 14:
+                return R.drawable.domino2_6;
+            case 15:
+                return R.drawable.domino3_4;
+            case 16:
+                return R.drawable.domino3_5;
+            case 17:
+                return R.drawable.domino3_6;
+            case 18:
+                return R.drawable.domino4_5;
+            case 19:
+                return R.drawable.domino4_6;
+            case 20:
+                return R.drawable.domino5_6;
+            case 21:
+                return R.drawable.domino0_0;
+            case 22:
+                return R.drawable.domino1_1;
+            case 23:
+                return R.drawable.domino2_2;
+            case 24:
+                return R.drawable.domino3_3;
+            case 25:
+                return R.drawable.domino4_4;
+            case 26:
+                return R.drawable.domino5_5;
+            case 27:
+                return R.drawable.domino6_6;
+            default:
+                return R.drawable.domino_highlight;
+        }
     }
 
     @Override
@@ -103,10 +168,13 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
                 R.id.hand7,R.id.hand8,R.id.hand9,R.id.hand10,R.id.hand11,R.id.hand12,R.id.hand13,
                 R.id.hand14,R.id.hand15,R.id.hand16,R.id.hand17,R.id.hand18,R.id.hand19,R.id.hand20,
                 R.id.hand21,R.id.hand22};
+
         for (int i = 0; i < bIdArray.length; i++){
             dominosInHand[i] = activity.findViewById(bIdArray[i]);
+            dominosInHand[i].setOnClickListener(this);
+            dominosInHand[i].setClickable(false);
+            dominosInHand[i].setVisibility(View.INVISIBLE);
         }
-
         // If the domino isn't in their hand, set the remaining buttons alpha to zero.
 
         this.surfaceView = (DSurfaceView) myActivity.findViewById(R.id.surfaceView);
@@ -139,28 +207,26 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
 
     @Override
     public void onClick(View view) {
-        if (view instanceof ImageButton){
+        if (view instanceof ImageButton) {
             //TODO Update selectedDomino to which button they pressed.
             // selectedDomino = the buttons position in the imageButton array.
-            int clickedId= view.getId();
-            int i=0;
-            for(ImageButton imageBT : dominosInHand){
-                if(imageBT.getId()==clickedId){
+            int clickedId = view.getId();
+            int i = 0;
+            for (ImageButton imageBT : dominosInHand) {
+                if (imageBT.getId() == clickedId) {
 
-                    selectedDomino=i;
+                    selectedDomino = i;
                 }
 
                 i++;
-
             }
-
-
+            Logger.log("onClick",String.valueOf(selectedDomino));
         }
         else if (view instanceof Button){
-            if (view.getId() == R.id.newGame){
+            if (view.getId() == R.id.newGameButton){
                 //TODO Perform newGame action.
             }
-            else if (view.getId() == R.id.quitGame){
+            else if (view.getId() == R.id.quitGameButton){
                 //TODO Perform quitGame action.
             }
             else if (view.getId() == R.id.helpButton){
@@ -181,7 +247,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         Point p = surfaceView.mapPixelToSquare(x,y);
 
         if (p == null){
-            surfaceView.flash(Color.RED, 50);
+            surfaceView.flash(Color.GREEN, 50);
         }
         else{
             DominoMoveAction action = new DominoMoveAction(this,p.x,p.y,selectedDomino);

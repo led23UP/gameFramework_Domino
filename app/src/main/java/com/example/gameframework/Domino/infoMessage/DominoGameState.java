@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public class DominoGameState extends GameState {
 
-    private int playerCount = 3;
+    private int playerCount = 1;
     private int BOARDHEIGHT = 5;
     private int BOARDWIDTH = 11;
     private DominoSet dominoSet;
@@ -25,6 +25,7 @@ public class DominoGameState extends GameState {
     private PlayerInfo[] players;
     private int turnID;
     private String message;
+    public boolean boardEmpty;
 
     public DominoGameState() {
 
@@ -37,7 +38,7 @@ public class DominoGameState extends GameState {
         //create player objects equal to the amount of players playing.
         players = new PlayerInfo[playerCount];
         for(int i=0; i <playerCount;i++) {
-            players[0] = new PlayerInfo(i);
+            players[i] = new PlayerInfo(i);
         }
 
         // First domino will be placed at [2][5]!!
@@ -50,7 +51,7 @@ public class DominoGameState extends GameState {
 
         // THIS IS NOT HOW DOMINOES WILL BE DEALT NORMALLY!!!!!
         // ASSIGNING THEM MANUALLY FOR TESTING!!!
-        dealDominoesTest();
+        startRound();
         int size = dominoSet.dominos.size();
         // Fill the boneyard with the leftover dominoes in set. Empty dominoSet after.
         for (int i = 0; i < size; i++){
@@ -88,9 +89,12 @@ public class DominoGameState extends GameState {
             this.boneyard.add(new Domino(other.boneyard.get(i)));
         }
         this.turnID = other.turnID;
+
+        this.message = other.message;
+        this.boardEmpty = other.boardEmpty;
     }
     // This function deals a pre-determined hand to each player for testing purposes.
-    public void dealDominoesTest(){
+    /*public void dealDominoesTest(){
         players[0].getHand().add(dominoSet.dominos.get(6));
         dominoSet.dominos.remove(6);
         players[0].getHand().add(dominoSet.dominos.get(7-1));
@@ -102,7 +106,7 @@ public class DominoGameState extends GameState {
         players[0].getHand().add(dominoSet.dominos.get(11-4));
         dominoSet.dominos.remove(11-4);
 
-        players[1].getHand().add(dominoSet.dominos.get(0));
+        /*players[1].getHand().add(dominoSet.dominos.get(0));
         dominoSet.dominos.remove(0);
         players[1].getHand().add(dominoSet.dominos.get(0));
         dominoSet.dominos.remove(0);
@@ -123,7 +127,7 @@ public class DominoGameState extends GameState {
         dominoSet.dominos.remove(26-13);
         players[2].getHand().add(dominoSet.dominos.get(27-14));
         dominoSet.dominos.remove(27-14);
-    }
+    }*/
 
     /**
      *
@@ -499,6 +503,8 @@ public class DominoGameState extends GameState {
 
         int leftPips = board[chainEnds[0]][chainEnds[1]].getLeftPipCount();
         int rightPips = board[chainEnds[2]][chainEnds[3]].getRightPipCount();
+        int topPips = 0;
+        int bottomPips = 0;
         // If left or right end are center of board, they are not counted.
         if (chainEnds[0] == BOARDHEIGHT/2 && chainEnds[1] == BOARDWIDTH/2){
             leftPips = 0;
@@ -506,9 +512,13 @@ public class DominoGameState extends GameState {
         if (chainEnds[2] == BOARDHEIGHT/2 && chainEnds[3] == BOARDWIDTH/2){
             rightPips = 0;
         }
+        if (chainEnds[6] != -1) {
+             bottomPips = board[chainEnds[6]][chainEnds[7]].getRightPipCount();
+        }
+        if (chainEnds[4] != -1) {
+              topPips = board[chainEnds[4]][chainEnds[5]].getLeftPipCount();
+        }
 
-        int bottomPips = board[chainEnds[6]][chainEnds[7]].getRightPipCount();
-        int topPips = board[chainEnds[4]][chainEnds[5]].getLeftPipCount();
 
         // If the the sum of pips is a multiple of 3, award user that amount of points.
         if ((leftPips + rightPips + bottomPips + topPips) % 3 == 0){
@@ -580,7 +590,7 @@ public class DominoGameState extends GameState {
     }
 
     public void setTurnID(){
-        if (turnID < 3){
+        if (turnID < playerCount){
             turnID++;
         }
         else{
@@ -599,15 +609,17 @@ public class DominoGameState extends GameState {
         dominoSet = new DominoSet();
         dominoSet.shuffleSet();
 
-        for (int i = 0; i < 5; i++){
-            for (int j = 0; i < playerCount; j++){
-                players[j].getHand().add(dominoSet.dominos.get(0));
+        for (int i = 0; i < playerCount; i++){
+            for (int j = 0; j < 5; j++) {
+                players[i].getHand().add(dominoSet.dominos.get(0));
                 dominoSet.dominos.remove(0);
             }
         }
         int[] firstMoveInfo = firstMove();
-        placeFirstPiece(firstMoveInfo[0], firstMoveInfo[1]);
-        setTurnID();
+        //placeFirstPiece(firstMoveInfo[0], firstMoveInfo[1]);
+        players[firstMoveInfo[0]].getLegalMoves().clear();
+        players[firstMoveInfo[0]].getLegalMoves().add(new MoveInfo(2,5,1,firstMoveInfo[1]));
+        turnID = firstMoveInfo[0];
 
     }
 
