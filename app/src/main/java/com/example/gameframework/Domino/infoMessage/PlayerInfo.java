@@ -13,19 +13,23 @@ import java.util.ArrayList;
 public class PlayerInfo {
     private final int id;
     private int score;
-    private boolean playerOn;
+    private boolean playerActive;
     private ArrayList<Domino> playerHand;
     private ArrayList<MoveInfo> legalMoves;
 
-    public PlayerInfo(int id)
+    public PlayerInfo(int id, boolean active)
     {
         this.id = id;
+        this.playerActive = active;
         playerHand = new ArrayList<>();
         this.score= 0;
         legalMoves = new ArrayList<>();
     }
     public PlayerInfo(PlayerInfo other)
     {
+
+        this.playerActive = other.playerActive;
+
         this.id = other.id;
         this.playerHand= new ArrayList<>(other.playerHand.size());
         for(int i=0; i< other.playerHand.size();i++)
@@ -39,6 +43,10 @@ public class PlayerInfo {
 
         this.legalMoves.addAll(other.legalMoves);
     }
+
+    public boolean getPlayerActive() {return this.playerActive; }
+
+    public void setPlayerActive(boolean value){ this.playerActive = value;}
 
     public void addPoints(int points){
         this.score += points;

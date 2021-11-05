@@ -39,7 +39,7 @@ public class DominoGameState extends GameState {
         //create player objects equal to the amount of players playing.
         players = new PlayerInfo[playerCount];
         for(int i=0; i <playerCount;i++) {
-            players[i] = new PlayerInfo(i);
+            players[i] = new PlayerInfo(i,true);
         }
 
         // First domino will be placed at [2][5]!!

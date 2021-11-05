@@ -27,7 +27,12 @@ public class DominoLocalGame extends LocalGame {
     }
     @Override
     protected boolean canMove(int playerIdx) {
-        return playerIdx == ((DominoGameState)state).getTurnID();
+        if (((DominoGameState)state).getPlayerInfo()[playerIdx].getPlayerActive() ==true
+                && playerIdx == ((DominoGameState)state).getTurnID()) {
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -62,11 +67,7 @@ public class DominoLocalGame extends LocalGame {
         int playerID = getPlayerIdx(dm.getPlayer());
         if (canMove(playerID)){
             //skips the forfeited player's turn
-            if(playerID == -1)
-            {
-                state.setTurnID();
-                return false;
-            }
+
             if( action instanceof DominoMoveAction)
             {
                 row = dm.getRow();

@@ -44,14 +44,13 @@ public class DominoComputerPlayers1 extends GameComputerPlayer {
             }
             gameStateObj.drawPiece(playerNum);
         }
-
+        //grabs the first legal move available and store it for use later
         int row = 0, col = 0, idx = 0;
         row = gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().get(0).getRow();
         col = gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().get(0).getCol();
         idx = gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().get(0).getDominoIndex();
 
         //removes the legalMove from array since we will play that move.
-        //Not sure if this should be here or in local game
         gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().remove(0);
 
         sleep(1);
