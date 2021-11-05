@@ -23,6 +23,7 @@ public class DominoLocalGame extends LocalGame {
 
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {
+
         p.sendInfo(new DominoGameState(((DominoGameState)state)));
     }
     @Override
@@ -39,20 +40,19 @@ public class DominoLocalGame extends LocalGame {
     protected String checkIfGameOver() {
         DominoGameState dState = (DominoGameState) super.state;
         if (dState.getPlayerInfo()[0].getScore() >=150){
-            return "Player 0 wins with " + dState.getPlayerInfo()[0].getScore() + " points!";
+
+            return playerNames[0]+ " wins with " + dState.getPlayerInfo()[0].getScore() + " points!";
         }
-        /*else if (dState.getPlayerInfo()[1].getScore() >=150){
-            return "Player 1 wins with " + dState.getPlayerInfo()[1].getScore() + " points!";
+        else if (dState.getPlayerInfo()[1].getScore() >=150){
+            return playerNames[1]+" wins with " + dState.getPlayerInfo()[1].getScore() + " points!";
         }
         else if (dState.getPlayerInfo()[2].getScore() >=150){
-            return "Player 2 wins with " + dState.getPlayerInfo()[2].getScore() + " points!";
+            return playerNames[2]+" wins with " + dState.getPlayerInfo()[2].getScore() + " points!";
         }
         else if (dState.getPlayerInfo()[3].getScore() >=150){
-            return "Player 3 wins with " + dState.getPlayerInfo()[3].getScore() + " points!";
-        }*/
-        else{
-            return null;
+            return playerNames[3]+" wins with " + dState.getPlayerInfo()[3].getScore() + " points!";
         }
+        return null;
     }
     //TODO Finish this method and fix it.
     @Override
@@ -75,6 +75,8 @@ public class DominoLocalGame extends LocalGame {
                 idx = dm.getDominoIndex();
                 state.placePiece(row,col,playerID,idx);
                 //state.getPlayerInfo()[playerID].getHand().remove(idx); // remove that domino from hand
+                state.setMessage(playerNames[playerID]+" scored "+
+                        Integer.toString(state.getPlayerInfo()[playerID].getScore()));
                 state.setTurnID();
                 return true;
             }
