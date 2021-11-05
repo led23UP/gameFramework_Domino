@@ -184,7 +184,7 @@ public class DSurfaceView extends FlashSurfaceView {
                 break;
             default:
         }
-
+        //TODO Finish this.
         switch (d.getRightPipCount()){
             case 1:
                 g.drawCircle(3*dominoRect.centerX()/4, dominoRect.centerY(), 10,p);
