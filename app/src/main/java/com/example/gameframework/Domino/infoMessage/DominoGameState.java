@@ -27,6 +27,7 @@ public class DominoGameState extends GameState {
     private String message;
     public boolean boardEmpty;
 
+
     public DominoGameState() {
 
         message = "";
@@ -63,6 +64,8 @@ public class DominoGameState extends GameState {
     }
 
     public DominoGameState(DominoGameState other) {
+
+        message = other.message;
         this.playerCount = other.playerCount;
 
         this.BOARDWIDTH = other.BOARDWIDTH;

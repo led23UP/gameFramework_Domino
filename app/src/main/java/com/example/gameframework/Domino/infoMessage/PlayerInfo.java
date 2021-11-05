@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class PlayerInfo {
     private final int id;
     private int score;
+    private boolean playerOn;
     private ArrayList<Domino> playerHand;
     private ArrayList<MoveInfo> legalMoves;
 

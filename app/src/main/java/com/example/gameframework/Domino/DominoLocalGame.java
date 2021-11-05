@@ -57,37 +57,25 @@ public class DominoLocalGame extends LocalGame {
 
         int row = dm.getRow();
         int col = dm.getCol();
-
+        int idx = dm.getDominoIndex();
 
         int playerID = getPlayerIdx(dm.getPlayer());
-
-
-
-        //This is already done in DominoComputerPlayers1
-        /*
-        while (state.getBoneyard().size() != 0 && playerMoves.size() == 0) {
-            state.drawPiece(playerID);
-        }
-        // If player has zero moves AND boneyard is empty, skip their turn.
-        if (playerMoves.size() == 0) {
-            //TODO Indicate that their turn was skipped.
-            state.setTurnID();
-            return true;
-        }
-        */
-
         if (canMove(playerID)){
+            //skips the forfeited player's turn
+            if(playerID == -1)
+            {
+                state.setTurnID();
+                return false;
+            }
             if( action instanceof DominoMoveAction)
             {
-                ArrayList<MoveInfo> playerMoves = state.getPlayerInfo()[playerID].getLegalMoves();
-                int dominoIndex = dm.getDominoIndex();
-                for (MoveInfo move : playerMoves) {
-                    //if (move.getDominoIndex() == dominoIndex && move.getRow() == row && move.getCol() == col) {
-                        state.placePiece(row, col, playerID, dominoIndex);
-                        state.setTurnID();
-                        return true;
-                   // }
-                }
+                row = dm.getRow();
+                col = dm.getCol();
+                idx = dm.getDominoIndex();
+                state.placePiece(row,col,playerID,idx);
+                state.getPlayerInfo()[playerID].getHand().remove(idx); // remove that domino from hand
+                state.setTurnID();
+                return true;
             }
             if( action instanceof DominoSkipAction)
             {
@@ -97,7 +85,8 @@ public class DominoLocalGame extends LocalGame {
             }
             if (action instanceof DominoQuitGameAction)
             {
-
+                state.setMessage("Player x has forfeited their turn");
+                return true;
             }
             if (action instanceof DominoNewGameAction)
             {

@@ -70,7 +70,17 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         // Cast info as a DominoGameState to get information from it.
         DominoGameState gameInfo = (DominoGameState) info;
         // Update player score TextViews.
-        player0ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[0].getScore()));
+        switch(playerNum){
+            case 0:
+                player0ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[0].getScore()));
+            case 1:
+                player1ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[1].getScore()));
+            case 2:
+                player2ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[2].getScore()));
+            case 3:
+                player3ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[3].getScore()));
+        }
+
         /*player1ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[1].getScore()));
         player2ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[2].getScore()));
         player3ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[3].getScore()));*/
