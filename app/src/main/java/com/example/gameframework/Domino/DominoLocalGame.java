@@ -74,7 +74,7 @@ public class DominoLocalGame extends LocalGame {
                 col = dm.getCol();
                 idx = dm.getDominoIndex();
                 state.placePiece(row,col,playerID,idx);
-                state.getPlayerInfo()[playerID].getHand().remove(idx); // remove that domino from hand
+                //state.getPlayerInfo()[playerID].getHand().remove(idx); // remove that domino from hand
                 state.setTurnID();
                 return true;
             }
@@ -95,7 +95,7 @@ public class DominoLocalGame extends LocalGame {
             }
         }
 
-
+        //ss
         return false;
     }
 
