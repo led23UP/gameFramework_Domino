@@ -142,6 +142,19 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         if (view instanceof ImageButton){
             //TODO Update selectedDomino to which button they pressed.
             // selectedDomino = the buttons position in the imageButton array.
+            int clickedId= view.getId();
+            int i=0;
+            for(ImageButton imageBT : dominosInHand){
+                if(imageBT.getId()==clickedId){
+
+                    selectedDomino=i;
+                }
+
+                i++;
+
+            }
+
+
         }
         else if (view instanceof Button){
             if (view.getId() == R.id.newGame){

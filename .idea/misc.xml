@@ -6,6 +6,7 @@
         <entry key="..\:/Users/David/AndroidStudioProjects/gameFramework_Domino/app/src/main/res/layout/activity_main.xml" value="0.15653495440729484" />
         <entry key="..\:/Users/paulk/AndroidStudioProjects/gameFramework_Domino/app/src/main/res/layout/activity_main.xml" value="0.18985976267529667" />
         <entry key="..\:/Users/paulk/AndroidStudioProjects/gameFramework_Domino/app/src/main/res/layout/domino_human_player1.xml" value="0.21436403508771928" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.11195542046605876" />
         <entry key="app/src/main/res/layout/domino_human_player1.xml" value="0.335" />
         <entry key="app/src/main/res/layout/game_config_main.xml" value="0.11195542046605876" />
@@ -13,6 +14,9 @@
         <entry key="app/src/main/res/layout/game_local_tab.xml" value="0.11195542046605876" />
         <entry key="app/src/main/res/layout/game_no_gui.xml" value="0.11195542046605876" />
         <entry key="app/src/main/res/layout/game_player_list_row.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/game_remote_tab.xml" value="0.11195542046605876" />
+        <entry key="app/src/main/res/layout/game_settings_tab.xml" value="0.11195542046605876" />
+        <entry key="app/src/main/res/menu/game_main.xml" value="0.1712962962962963" />
       </map>
     </option>
   </component>

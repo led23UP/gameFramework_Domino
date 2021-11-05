@@ -1,8 +1,11 @@
 package com.example.gameframework.Domino.views;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
@@ -31,11 +34,14 @@ public class DSurfaceView extends FlashSurfaceView {
     public DSurfaceView(Context context) {
         super(context);
         init();
+        setWillNotDraw(false);
     }
 
     public DSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
         init();
+        setWillNotDraw(false);
     }
 
     private void init(){
@@ -59,6 +65,7 @@ public class DSurfaceView extends FlashSurfaceView {
     }
 
     public void onDraw(Canvas g){
+
         if (dState == null) {
             return;
         }
@@ -75,7 +82,8 @@ public class DSurfaceView extends FlashSurfaceView {
             }
         }
 
-
+Domino d= new Domino(3,4,1,2);
+        drawDomino(g,d,0,0);
     }
 
     /**
@@ -106,92 +114,84 @@ public class DSurfaceView extends FlashSurfaceView {
             vBase = (height - width) / (float) 2.0;
         }
 
+        Domino d= new Domino(3,5,1,3);
+        drawDomino(g,d,0,0);
+
     }
 
-    public void drawDomino(Canvas g, Domino d, int row, int col){
-        float xLoc = BORDER_PERCENT + row *SQUARE_DELTA_PERCENT;
-        float yLoc = BORDER_PERCENT + col*SQUARE_DELTA_PERCENT;
-        // If domino is invalid, DO NOT DRAW.
-        if (d.getLeftPipCount() == -1){
-            return;
-        }
-        Paint p = new Paint();
-        p.setColor(dominoColor());
-        RectF dominoRect = new RectF(xLoc, yLoc, xLoc + 50, yLoc +50);
-        p.setColor(pipColor());
-        g.drawRect(dominoRect,p);
-        switch (d.getLeftPipCount()){
-            case 1:
-                g.drawCircle(dominoRect.centerX()/4, dominoRect.centerY(), 10,p);
-                break;
-            case 2:
-                // Top left pip.
-                g.drawCircle(dominoRect.centerX()/12, dominoRect.centerY()/2, 10,p);
-                // Bottom right pip.
-                g.drawCircle(dominoRect.centerX() - dominoRect.centerX()/4,
-                        dominoRect.centerY() + 1*dominoRect.centerY()/3, 10,p);
-                break;
-            case 3:
-                // Top left pip.
-                g.drawCircle(dominoRect.centerX()/12, dominoRect.centerY()/2, 10,p);
-                // Center pip.
-                g.drawCircle(dominoRect.centerX()/4, dominoRect.centerY(), 10,p);
-                // Bottom right pip.
-                g.drawCircle(dominoRect.centerX() - dominoRect.centerX()/12,
-                        dominoRect.centerY() + 1*dominoRect.centerY()/3, 10,p);
-                break;
-            case 4:
-                // Top left.
-                g.drawCircle(dominoRect.centerX()/12, dominoRect.centerY()/2, 10,p);
-                // Bottom right.
-                g.drawCircle(dominoRect.centerX() - dominoRect.centerX()/12,
-                        dominoRect.centerY() + 1*dominoRect.centerY()/3, 10,p);
-                // Top right.
-                g.drawCircle(dominoRect.centerX() - dominoRect.centerX()/12,
-                        dominoRect.centerY()/2, 10,p);
-                // Bottom left.
-                g.drawCircle(dominoRect.centerX()/12,dominoRect.centerY() + 1*dominoRect.centerY()/3, 10,p);
-                break;
-            case 5:
-                // Center pip.
-                g.drawCircle(dominoRect.centerX()/4, dominoRect.centerY(), 10,p);
-                // Top left.
-                g.drawCircle(dominoRect.centerX()/12, dominoRect.centerY()/2, 10,p);
-                // Bottom right.
-                g.drawCircle(dominoRect.centerX() - dominoRect.centerX()/12,
-                        dominoRect.centerY() + 1*dominoRect.centerY()/3, 10,p);
-                // Top right.
-                g.drawCircle(dominoRect.centerX() - dominoRect.centerX()/12,
-                        dominoRect.centerY()/2, 10,p);
-                // Bottom left.
-                g.drawCircle(dominoRect.centerX()/12,dominoRect.centerY() + 1*dominoRect.centerY()/3, 10,p);
-                break;
-            case 6:
-                // Top left.
-                g.drawCircle(dominoRect.centerX()/12, dominoRect.centerY()/2, 10,p);
-                // Bottom right.
-                g.drawCircle(dominoRect.centerX() - dominoRect.centerX()/12,
-                        dominoRect.centerY() + 1*dominoRect.centerY()/3, 10,p);
-                // Top right.
-                g.drawCircle(dominoRect.centerX() - dominoRect.centerX()/12,
-                        dominoRect.centerY()/2, 10,p);
-                // Bottom left.
-                g.drawCircle(dominoRect.centerX()/12,dominoRect.centerY() + 1*dominoRect.centerY()/3, 10,p);
-                // Middle left
-                g.drawCircle(dominoRect.centerX()/12, dominoRect.centerY(), 10,p);
-                // Middle right
-                g.drawCircle(dominoRect.centerX() - dominoRect.centerX()/12, dominoRect.centerY(), 10,p);
-                break;
-            default:
-        }
-        //TODO Finish this.
-        switch (d.getRightPipCount()){
-            case 1:
-                g.drawCircle(3*dominoRect.centerX()/4, dominoRect.centerY(), 10,p);
-                break;
-            case 2:
-                break;
-        }
+        public void drawDomino(Canvas g, Domino d, int row, int col){
+            float xLoc = BORDER_PERCENT + row *SQUARE_DELTA_PERCENT;
+            float yLoc = BORDER_PERCENT + col*SQUARE_DELTA_PERCENT;
+            // If domino is invalid, DO NOT DRAW.
+            if (d.getLeftPipCount() == -1 ||d.getRightPipCount() == -1 ){
+                return;
+            }
+
+
+            int leftPipCount=d.getLeftPipCount();
+            int rightPipCount=d.getRightPipCount();
+            int dominoOrientation=d.getOrientation();
+//matricies rotate domino into the different orientations
+            //for example matrix one rotates domino bitmap into orientation number 1
+            Matrix one= new Matrix();
+            Matrix two= new Matrix();
+            Matrix three= new Matrix();
+            Matrix four= new Matrix();
+            String dominoClipartId=null;
+
+            if(leftPipCount<=rightPipCount) {
+                //the reason for +270 degrees is because domino png is vertical and we want to get it back
+                //orientation 1 initially
+                one.postRotate(0+270);
+                two.postRotate(90+270);
+                three.postRotate(180+270);
+                four.postRotate(270+270);
+                //string Id of domino based on left and right pip count
+                dominoClipartId="domino"+leftPipCount+"_"+rightPipCount;
+
+            }
+
+            else{
+                one.postRotate(0+270+180);
+                two.postRotate(90+270+180);
+                three.postRotate(180+270+180);
+                four.postRotate(270+270+180);
+                dominoClipartId="domino"+rightPipCount+"_"+leftPipCount;
+
+
+            }
+
+
+//converts string id into an int id to link domino btmap image to corresponding resource file
+            int integerDominoID = DSurfaceView.this.getResources().getIdentifier(dominoClipartId , "drawable", "com.example.gameframework.Domino.views");
+            Bitmap dominoImage= BitmapFactory.decodeResource(getResources(),integerDominoID );
+            Bitmap rotatedDominoImage=null;
+            if(dominoOrientation==1) {
+                rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), one, true);
+            }
+            else if(dominoOrientation==2){
+                rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), two, true);
+
+
+            }
+            else if(dominoOrientation==3){
+                rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), three, true);
+
+
+            }
+
+            else if(dominoOrientation==4){
+                rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), four, true);
+
+
+            }
+            g.drawBitmap(rotatedDominoImage,xLoc, yLoc,null);
+
+
+
+
+
+
 
     }
 
