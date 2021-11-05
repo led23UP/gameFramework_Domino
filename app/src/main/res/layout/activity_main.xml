@@ -57,7 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:contentDescription="double3"
-                    app:srcCompat="@drawable/doubledomino_3" />
+                    app:srcCompat="@drawable/domino3_3" />
 
                 <ImageButton
                     android:id="@+id/domino3_5"
@@ -67,7 +67,7 @@
                     android:contentDescription="domino3_5"
                     android:minWidth="163sp"
                     android:rotation="-90"
-                    app:srcCompat="@drawable/domino5_3" />
+                    app:srcCompat="@drawable/domino3_5" />
 
                 <ImageButton
                     android:id="@+id/dominodouble5"
@@ -78,7 +78,7 @@
                     android:contentDescription="5 Double"
                     android:minWidth="163sp"
                     android:rotation="90"
-                    app:srcCompat="@drawable/doubledomnio5" />
+                    app:srcCompat="@drawable/domino5_5" />
 
             </TableRow>
 
@@ -127,7 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|left"
             android:orientation="vertical"
-            android:paddingStart="10sp"
+            android:paddingLeft="10sp"
             android:paddingBottom="10sp">
 
             <TextView
@@ -190,7 +190,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:contentDescription="double2"
-                    app:srcCompat="@drawable/doubledomino_2" />
+                    app:srcCompat="@drawable/domino2_2" />
 
                 <ImageButton
                     android:id="@+id/domino1_6"

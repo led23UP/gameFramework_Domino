@@ -26,7 +26,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
     View.OnTouchListener{
     private static final String TAG = "DominoHumanPlayer1";
 
-    private ArrayList<ImageButton> dominosInHand;
+    private ImageButton[] dominosInHand;
     private TextView player0ScoreView;
     private TextView player1ScoreView;
     private TextView player2ScoreView;
@@ -59,16 +59,29 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
 
         if (info instanceof IllegalMoveInfo || info instanceof NotYourTurnInfo){
             surfaceView.flash(Color.RED, 50);
-        }
-        else if (!(info instanceof DominoGameState)){
             return;
         }
-        else{
 
-            surfaceView.setState((DominoGameState)info);
-            surfaceView.invalidate();
-            Logger.log(TAG, "recieving");
+        if (!(info instanceof DominoGameState)){
+            return;
         }
+        // Cast info as a DominoGameState to get information from it.
+        DominoGameState gameInfo = (DominoGameState) info;
+        // Update player score TextViews.
+        player0ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[0].getScore()));
+        player1ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[1].getScore()));
+        player2ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[2].getScore()));
+        player3ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[3].getScore()));
+
+
+        surfaceView.setState((DominoGameState)info);
+        // Only show them imageButtons for dominoes that are in their hand.
+        for (int i = 0; i < gameInfo.getPlayerInfo()[playerNum].getHand().size(); i++){
+            dominosInHand[i].setVisibility(View.VISIBLE);
+        }
+        surfaceView.invalidate();
+        Logger.log(TAG, "recieving");
+
     }
 
     @Override
@@ -83,6 +96,18 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         this.newGameButton = (Button)activity.findViewById(R.id.newGameButton);
         this.quitGameButton = (Button)activity.findViewById(R.id.quitGameButton);
         this.helpButton = (Button)activity.findViewById(R.id.helpButton);
+
+        this.dominosInHand = new ImageButton[23];
+        // Don't want to write 23 lines of findViewById, so the ImageButtons are being declared this way.
+        int[] bIdArray = {R.id.hand0,R.id.hand1,R.id.hand2,R.id.hand3,R.id.hand4,R.id.hand5,R.id.hand6,
+                R.id.hand7,R.id.hand8,R.id.hand9,R.id.hand10,R.id.hand11,R.id.hand12,R.id.hand13,
+                R.id.hand14,R.id.hand15,R.id.hand16,R.id.hand17,R.id.hand18,R.id.hand19,R.id.hand20,
+                R.id.hand21,R.id.hand22};
+        for (int i = 0; i < bIdArray.length; i++){
+            dominosInHand[i] = activity.findViewById(bIdArray[i]);
+        }
+
+        // If the domino isn't in their hand, set the remaining buttons alpha to zero.
 
         this.surfaceView = (DSurfaceView) myActivity.findViewById(R.id.surfaceView);
         Logger.log("set listener", "OnTouch");
@@ -116,6 +141,19 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
     public void onClick(View view) {
         if (view instanceof ImageButton){
             //TODO Update selectedDomino to which button they pressed.
+            // selectedDomino = the buttons position in the imageButton array.
+            int clickedId= view.getId();
+            int i=0;
+            for(ImageButton imageBT : dominosInHand){
+                if(imageBT.getId()==clickedId){
+
+                    selectedDomino=i;
+                }
+
+                i++;
+
+            }
+
 
         }
         else if (view instanceof Button){
@@ -124,6 +162,9 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
             }
             else if (view.getId() == R.id.quitGame){
                 //TODO Perform quitGame action.
+            }
+            else if (view.getId() == R.id.helpButton){
+                //TODO Perform help action. (Bring up manual.)
             }
 
         }
