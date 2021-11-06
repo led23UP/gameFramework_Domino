@@ -65,28 +65,34 @@ public class DominoLocalGame extends LocalGame {
     //TODO Finish this method and fix it.
     @Override
     protected boolean makeMove(GameAction action) {
-        DominoMoveAction dm = (DominoMoveAction) action;
+
         DominoGameState state = (DominoGameState) super.state;
 
-        int row = dm.getRow();
-        int col = dm.getCol();
-        int idx = dm.getDominoIndex();
-
-        int playerID = getPlayerIdx(dm.getPlayer());
+        int playerID = getPlayerIdx(action.getPlayer());
         if (canMove(playerID)){
             //skips the forfeited player's turn
 
             if( action instanceof DominoMoveAction)
             {
-                row = dm.getRow();
-                col = dm.getCol();
-                idx = dm.getDominoIndex();
-                state.placePiece(row,col,playerID,idx);
-                //state.getPlayerInfo()[playerID].getHand().remove(idx); // remove that domino from hand
-                state.setMessage(playerNames[playerID]+" scored "+
-                        Integer.toString(state.getPlayerInfo()[playerID].getScore()));
-                state.setTurnID();
-                return true;
+                DominoMoveAction dm = (DominoMoveAction) action;
+                int row = dm.getRow();
+                int col = dm.getCol();
+                int idx = dm.getDominoIndex();
+
+                for (MoveInfo m : state.getPlayerInfo()[playerID].getLegalMoves()) {
+                    if (m.getRow() == row && m.getCol() == col && m.getDominoIndex() == idx) {
+                        state.placePiece(row, col, playerID, idx);
+                        //state.getPlayerInfo()[playerID].getHand().remove(idx); // remove that domino from hand
+                        state.setMessage(playerNames[playerID] + " scored " +
+                                Integer.toString(state.getPlayerInfo()[playerID].getScore()));
+                        state.setTurnID();
+                        //state.getPlayerInfo()[playerID].getLegalMoves().remove(m);
+                        state.getPlayerInfo()[playerID].getLegalMoves().clear();
+                        state.findLegalMoves(playerID);
+                        return true;
+                    }
+                }
+                return false;
             }
             if( action instanceof DominoSkipAction)
             {

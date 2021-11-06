@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.gameframework.Domino.DominoActionMessage.DominoMoveAction;
+import com.example.gameframework.Domino.DominoActionMessage.DominoSkipAction;
 import com.example.gameframework.Domino.infoMessage.Domino;
 import com.example.gameframework.Domino.infoMessage.DominoGameState;
 import com.example.gameframework.Domino.views.DSurfaceView;
@@ -50,7 +51,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
     public DominoHumanPlayers1(String name, int layoutId) {
         super(name);
         this.layoutId = layoutId;
-        this.selectedDomino = -1;
+        this.selectedDomino = 0;
     }
 
     @Override
@@ -92,6 +93,21 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
             dominosInHand[i].setVisibility(View.VISIBLE);
             dominosInHand[i].setImageResource(determineDominoPic(gameInfo.getPlayerInfo()[playerNum].getHand().get(i)));
             dominosInHand[i].setClickable(true);
+        }
+
+        for (int i = gameInfo.getPlayerInfo()[playerNum].getHand().size(); i < 23; i++){
+            dominosInHand[i].setVisibility(View.INVISIBLE);
+            dominosInHand[i].setClickable(false);
+        }
+
+        while(gameInfo.getPlayerInfo()[playerNum].getLegalMoves().size() == 0)
+        {
+            if(gameInfo.getBoneyard().size() == 0)
+            {
+                game.sendAction(new DominoSkipAction(this));
+                return;
+            }
+            gameInfo.drawPiece(playerNum);
         }
 
     }

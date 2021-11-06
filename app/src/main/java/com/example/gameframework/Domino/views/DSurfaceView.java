@@ -62,23 +62,12 @@ public class DSurfaceView extends FlashSurfaceView {
         return Color.WHITE;
     }
 
-    public int pipColor(){
-        return Color.BLACK;
-    }
-
-    public int highlightColor(){
-        return Color.GREEN;
-    }
-
     public void onDraw(Canvas g){
 
         if (dState == null) {
             return;
         }
         updateDimensions(g);
-
-        Paint p = new Paint();
-        p.setColor(dominoColor());
 
         for (int i = 0; i < dState.getBOARDHEIGHT(); i++){
             for (int j = 0; j < dState.getBOARDWIDTH(); j++){
@@ -90,11 +79,7 @@ public class DSurfaceView extends FlashSurfaceView {
             }
         }
 
-            drawHighlights(g);
-
-
-//Domino d= new Domino(3,4,1,2);
-       // drawDomino(g,d,0,0);
+        drawHighlights(g);
 
         mapPixelToSquare(100,100);
     }
@@ -136,20 +121,8 @@ public class DSurfaceView extends FlashSurfaceView {
             }
             else if(orientation==2 || orientation==4){
                 g.drawBitmap(verticalHighlight,col*163, row*163,p );
-
-
             }
-
-
-
         }
-
-
-
-
-
-
-
     }
 
     /**
@@ -185,8 +158,8 @@ public class DSurfaceView extends FlashSurfaceView {
     }
 
     public void drawDomino(Canvas g, Domino d, int row, int col){
-        float xLoc = BORDER_PERCENT + row *SQUARE_DELTA_PERCENT;
-        float yLoc = BORDER_PERCENT + col*SQUARE_DELTA_PERCENT;
+        float xLoc = col*163;
+        float yLoc = row*163;
         // If domino is invalid, DO NOT DRAW.
         if (d.getLeftPipCount() == -1 ||d.getRightPipCount() == -1 ){
             return;
@@ -232,7 +205,7 @@ public class DSurfaceView extends FlashSurfaceView {
             rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), one, true);
         }
         else if(dominoOrientation==2){
-            rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), two, true);
+            rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), four, true);
 
 
         }
@@ -243,7 +216,7 @@ public class DSurfaceView extends FlashSurfaceView {
         }
 
         else if(dominoOrientation==4){
-            rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), four, true);
+            rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), two, true);
 
 
         }
@@ -251,8 +224,6 @@ public class DSurfaceView extends FlashSurfaceView {
 
 
     }
-
-
 
     /**
      * maps a point from the canvas' pixel coordinates to "square" coordinates
@@ -268,7 +239,6 @@ public class DSurfaceView extends FlashSurfaceView {
      */
     public Point mapPixelToSquare(int x, int y) {
 
-
         Drawable d = getResources().getDrawable(R.drawable.domino0_0);
         int squareDim = 163;
         int c =  x/squareDim;
@@ -276,49 +246,5 @@ public class DSurfaceView extends FlashSurfaceView {
         Logger.log("i", "Row "+r+" Col"+c);
         return new Point(r,c) ;
 
-
-
-        // loop through each square and see if we get a "hit"; if so, return
-        // the corresponding Point in "square" coordinates
-        /*for (int i = 0; i < dState.getBOARDHEIGHT(); i++) {
-            for (int j = 0; j < dState.getBOARDWIDTH() ; j++) {
-                float left = h(BORDER_PERCENT + (i * SQUARE_DELTA_PERCENT));
-                float right = h(BORDER_PERCENT + SQUARE_SIZE_PERCENT
-                        + (i * SQUARE_DELTA_PERCENT));
-                float top = v(BORDER_PERCENT + (j * SQUARE_DELTA_PERCENT));
-                float bottom = v(BORDER_PERCENT + SQUARE_SIZE_PERCENT
-                        + (j * SQUARE_DELTA_PERCENT));
-                System.out.println(left + " " + right + " " + top + " " + bottom);
-                if ((x > left) != (x > right) && (y > top) != (y > bottom)) {
-                    return new Point(i, j);
-                }
-            }
-        }*/
-
-        // no match: return null
-        //return null;
-    }
-    /**
-     * helper-method to convert from a percentage to a horizontal pixel location
-     *
-     * @param percent
-     * 		the percentage across the drawing square
-     * @return
-     * 		the pixel location that corresponds to that percentage
-     */
-    private float h(float percent) {
-        return hBase + percent * fullSquare / 100;
-    }
-
-    /**
-     * helper-method to convert from a percentage to a vertical pixel location
-     *
-     * @param percent
-     * 		the percentage down the drawing square
-     * @return
-     * 		the pixel location that corresponds to that percentage
-     */
-    private float v(float percent) {
-        return vBase + percent * fullSquare / 100;
     }
 }
