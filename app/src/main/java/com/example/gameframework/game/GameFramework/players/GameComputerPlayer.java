@@ -120,18 +120,6 @@ public abstract class GameComputerPlayer implements GamePlayer, Tickable {
     }
 
     /**
-     * Method used to send updated state to this player.
-     *
-     * @param info
-     * 			the information message to send
-     */
-    public final void sendInfo(GameInfo info) {
-        // post the state to the player's thread, waiting (if needed) until handler is there
-        while (myHandler == null) Thread.yield();
-        myHandler.post(new MyRunnable(info));
-    }
-
-    /**
      * Starts the player.
      */
     public final void start() {
@@ -151,6 +139,18 @@ public abstract class GameComputerPlayer implements GamePlayer, Tickable {
             thread.setName("Computer PlayerInfo");
             thread.start();
         }
+    }
+
+    /**
+     * Method used to send updated state to this player.
+     *
+     * @param info
+     * 			the information message to send
+     */
+    public final void sendInfo(GameInfo info) {
+        // post the state to the player's thread, waiting (if needed) until handler is there
+        while (myHandler == null) Thread.yield();
+        myHandler.post(new MyRunnable(info));
     }
 
     /**
