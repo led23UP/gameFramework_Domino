@@ -15,9 +15,12 @@ import android.util.AttributeSet;
 import com.example.gameframework.Domino.infoMessage.Domino;
 import com.example.gameframework.Domino.infoMessage.DominoGameState;
 import com.example.gameframework.Domino.infoMessage.MoveInfo;
+import com.example.gameframework.Domino.infoMessage.PlayerInfo;
 import com.example.gameframework.R;
 import com.example.gameframework.game.GameFramework.utilities.FlashSurfaceView;
 import com.example.gameframework.game.GameFramework.utilities.Logger;
+
+import java.util.ArrayList;
 
 public class DSurfaceView extends FlashSurfaceView {
     private static final String TAG = "DSurfaceView";
@@ -87,14 +90,66 @@ public class DSurfaceView extends FlashSurfaceView {
             }
         }
 
-        for (MoveInfo m : dState.getPlayerInfo()[0].getLegalMoves()){
-            drawHighlights(g,m.getRow(), m.getCol(),0);
-        }
+            drawHighlights(g);
+
 
 //Domino d= new Domino(3,4,1,2);
        // drawDomino(g,d,0,0);
 
         mapPixelToSquare(100,100);
+    }
+
+    public void drawHighlights(Canvas g){
+
+
+        Paint p = new Paint();
+        p.setColor(dominoColor());
+        int whoseTurn;
+        PlayerInfo playerInfo;
+
+        ArrayList<MoveInfo> playerLegalMoves= new ArrayList<MoveInfo>();
+
+        whoseTurn=dState.getTurnID();
+        playerInfo=dState.getPlayerInfo()[whoseTurn];
+
+        playerLegalMoves=playerInfo.getLegalMoves();
+        MoveInfo currentLegalMove;
+        int numLegalMoves=playerLegalMoves.size();
+        int row;
+        int col;
+        int orientation;
+        Bitmap highlight = BitmapFactory.decodeResource(getResources(),R.drawable.domino_highlight);
+        Matrix vertical=new Matrix();
+        Matrix horizontal= new Matrix();
+        vertical.postRotate(0);
+        horizontal.postRotate(90);
+        Bitmap verticalHighlight=Bitmap.createBitmap(highlight, 0, 0, highlight.getWidth(), highlight.getHeight(), vertical, true);
+        Bitmap horizontalHighlight=Bitmap.createBitmap(highlight, 0, 0, highlight.getWidth(), highlight.getHeight(), horizontal, true);
+        for(int i=0;i<numLegalMoves;i++){
+            currentLegalMove= playerLegalMoves.get(i);
+            row=currentLegalMove.getRow();
+            col=currentLegalMove.getCol();
+            orientation= currentLegalMove.getOrientation();
+            if(orientation==1 || orientation==3){
+                g.drawBitmap(horizontalHighlight,col*163, row*163,p );
+
+            }
+            else if(orientation==2 || orientation==4){
+                g.drawBitmap(verticalHighlight,col*163, row*163,p );
+
+
+            }
+
+
+
+        }
+
+
+
+
+
+
+
     }
 
     /**
@@ -197,17 +252,7 @@ public class DSurfaceView extends FlashSurfaceView {
 
     }
 
-    public void drawHighlights(Canvas g, int row, int col, int playerID){
-        float xLoc = (float) getWidth()*col/11;
-        float yLoc = (float) getHeight()*row/5;
 
-        Paint p = new Paint();
-        p.setColor(dominoColor());
-
-        Bitmap highlight = BitmapFactory.decodeResource(getResources(),R.drawable.domino_highlight);
-
-        g.drawBitmap(highlight,xLoc, yLoc, p);
-    }
 
     /**
      * maps a point from the canvas' pixel coordinates to "square" coordinates

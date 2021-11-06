@@ -37,7 +37,10 @@ public class DominoLocalGame extends LocalGame {
     }
 
     @Override
+
     protected String checkIfGameOver() {
+        /*
+
         DominoGameState dState = (DominoGameState) super.state;
         if (dState.getPlayerInfo()[0].getScore() >=150){
 
@@ -52,8 +55,13 @@ public class DominoLocalGame extends LocalGame {
         else if (dState.getPlayerInfo()[3].getScore() >=150){
             return playerNames[3]+" wins with " + dState.getPlayerInfo()[3].getScore() + " points!";
         }
+
+
+        */
         return null;
     }
+
+
     //TODO Finish this method and fix it.
     @Override
     protected boolean makeMove(GameAction action) {
