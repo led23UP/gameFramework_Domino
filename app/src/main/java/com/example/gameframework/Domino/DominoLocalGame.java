@@ -4,6 +4,7 @@ import com.example.gameframework.Domino.DominoActionMessage.DominoMoveAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoNewGameAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoQuitGameAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoSkipAction;
+import com.example.gameframework.Domino.infoMessage.Domino;
 import com.example.gameframework.Domino.infoMessage.DominoGameState;
 import com.example.gameframework.Domino.infoMessage.MoveInfo;
 import com.example.gameframework.game.GameFramework.LocalGame;
@@ -17,6 +18,11 @@ public class DominoLocalGame extends LocalGame {
         super();
         super.state = new DominoGameState();
     }
+
+    public void setNumPlayers(int playerC){
+        DominoGameState a = (DominoGameState) super.state;
+        a.setNumPlayersStart(playerC);
+    }
     public DominoLocalGame(DominoGameState dState){
         super.state = new DominoGameState(dState);
     }
@@ -28,12 +34,8 @@ public class DominoLocalGame extends LocalGame {
     }
     @Override
     protected boolean canMove(int playerIdx) {
-        if (((DominoGameState)state).getPlayerInfo()[playerIdx].getPlayerActive() ==true
-                && playerIdx == ((DominoGameState)state).getTurnID()) {
-            return true;
-        }
-
-        return false;
+        return ((DominoGameState) state).getPlayerInfo()[playerIdx].getPlayerActive()
+                && playerIdx == ((DominoGameState) state).getTurnID();
     }
 
     @Override
@@ -82,11 +84,11 @@ public class DominoLocalGame extends LocalGame {
                 for (MoveInfo m : state.getPlayerInfo()[playerID].getLegalMoves()) {
                     if (m.getRow() == row && m.getCol() == col && m.getDominoIndex() == idx) {
                         state.placePiece(row, col, playerID, idx);
-                        //state.getPlayerInfo()[playerID].getHand().remove(idx); // remove that domino from hand
+
                         state.setMessage(playerNames[playerID] + " scored " +
-                                Integer.toString(state.getPlayerInfo()[playerID].getScore()));
+                                state.getPlayerInfo()[playerID].getScore());
                         state.setTurnID();
-                        //state.getPlayerInfo()[playerID].getLegalMoves().remove(m);
+
                         state.getPlayerInfo()[playerID].getLegalMoves().clear();
                         state.findLegalMoves(playerID);
                         return true;

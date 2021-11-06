@@ -7,14 +7,12 @@ import com.example.gameframework.Domino.infoMessage.DominoGameState;
 import com.example.gameframework.Domino.infoMessage.MoveInfo;
 import com.example.gameframework.Domino.infoMessage.PlayerInfo;
 import com.example.gameframework.game.GameFramework.infoMessage.GameInfo;
+import com.example.gameframework.game.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.gameframework.game.GameFramework.players.GameComputerPlayer;
 
 import java.util.ArrayList;
 
 public class DominoComputerPlayers1 extends GameComputerPlayer {
-    private int score;
-    private ArrayList<Domino> playerHand;
-    private ArrayList<MoveInfo> legalMoves;
     /**
      * constructor
      *
@@ -22,14 +20,16 @@ public class DominoComputerPlayers1 extends GameComputerPlayer {
      */
     public DominoComputerPlayers1(String name) {
         super(name);
-        score = 0;
-        playerHand = new ArrayList<>();
-        legalMoves = new ArrayList<>();
     }
 
     @Override
     protected void receiveInfo(GameInfo info) {
+        if (info instanceof NotYourTurnInfo){
+            return;
+        }
+
         DominoGameState gameStateObj = new DominoGameState((DominoGameState) info);
+        gameStateObj.findLegalMoves(playerNum);
 
 
         //if player doesn't have legal move, draw until there is a legal move. If boneyard is empty
@@ -45,7 +45,7 @@ public class DominoComputerPlayers1 extends GameComputerPlayer {
             gameStateObj.drawPiece(playerNum);
         }
         //grabs the first legal move available and store it for use later
-        int row = 0, col = 0, idx = 0;
+        int row, col, idx;
         row = gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().get(0).getRow();
         col = gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().get(0).getCol();
         idx = gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().get(0).getDominoIndex();

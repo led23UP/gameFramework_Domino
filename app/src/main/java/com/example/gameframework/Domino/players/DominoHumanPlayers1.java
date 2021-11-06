@@ -72,20 +72,15 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         DominoGameState gameInfo = (DominoGameState) info;
         // Update player score TextViews.
         switch(playerNum){
-            case 1:
-                player0ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[0].getScore()));
-            case 2:
-                player1ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[1].getScore()));
-            case 3:
-                player2ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[2].getScore()));
             case 4:
                 player3ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[3].getScore()));
+            case 3:
+                player2ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[2].getScore()));
+            case 2:
+                player1ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[1].getScore()));
+            case 1:
+                player0ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[0].getScore()));
         }
-
-        /*player1ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[1].getScore()));
-        player2ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[2].getScore()));
-        player3ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[3].getScore()));*/
-
 
         surfaceView.setState((DominoGameState)info);
         // Only show them imageButtons for dominoes that are in their hand.
@@ -234,8 +229,6 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
     @Override
     public void onClick(View view) {
         if (view instanceof ImageButton) {
-            //TODO Update selectedDomino to which button they pressed.
-            // selectedDomino = the buttons position in the imageButton array.
             int clickedId = view.getId();
             int i = 0;
             for (ImageButton imageBT : dominosInHand) {

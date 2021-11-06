@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public class DominoGameState extends GameState {
 
-    private int playerCount = 1;
+    private int playerCount = 4;
     private int BOARDHEIGHT = 5;
     private int BOARDWIDTH = 11;
     private DominoSet dominoSet;
@@ -36,16 +36,9 @@ public class DominoGameState extends GameState {
         Arrays.fill(chainEnds, -1);
         doesBoardHaveSpinner = false;
 
-        //create player objects equal to the amount of players playing.
-        players = new PlayerInfo[playerCount];
-        for(int i=0; i <playerCount;i++) {
-            players[i] = new PlayerInfo(i,true);
-        }
-
         board = new Domino[BOARDHEIGHT][BOARDWIDTH];
-        // Each player is dealt 5 dominoes. 28-playerCount*5 is the highest num of dominoes that
-        // will ever be in the boneyard.
-        boneyard = new ArrayList<>(28-playerCount*5);
+
+        boneyard = new ArrayList<>();
         // Start the first round.
         startRound();
     }
@@ -82,6 +75,11 @@ public class DominoGameState extends GameState {
 
         this.message = other.message;
         this.boardEmpty = other.boardEmpty;
+    }
+
+    public void setNumPlayersStart(int players){
+        playerCount = players;
+        startRound();
     }
     // This function deals a pre-determined hand to each player for testing purposes.
     /*public void dealDominoesTest(){
@@ -627,6 +625,12 @@ public class DominoGameState extends GameState {
             }
         }
 
+        //create player objects equal to the amount of players playing.
+        players = new PlayerInfo[playerCount];
+        for(int i=0; i <playerCount;i++) {
+            players[i] = new PlayerInfo(i,true);
+        }
+
         doesBoardHaveSpinner = false;
 
         // Create a new DominoSet and shuffle it.
@@ -652,6 +656,9 @@ public class DominoGameState extends GameState {
         int[] firstMoveInfo = firstMove();
         turnID = firstMoveInfo[0];
         placeFirstPiece(firstMoveInfo[0],firstMoveInfo[1]);
+        for (int i = 0; i < playerCount; i++){
+            findLegalMoves(i);
+        }
         setTurnID();
 
     }
