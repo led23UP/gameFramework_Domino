@@ -501,14 +501,32 @@ public class DominoGameState extends GameState {
     }
 
     public void calculateScoredPoints(int playerID) {
-        // If to right of center of board, check placed domino's rightPips vs end of chain's
+        // If to right of center of board, check placed domino's rightPips vs end of
+        // chain's
         // leftPips. If they are divisible by three, award player sum of pips.
+        int leftPips;
+        int rightPips;
+        if(chainEnds[0]==-1){
+            leftPips=0;
 
-        int leftPips = board[chainEnds[0]][chainEnds[1]].getLeftPipCount();
-        int rightPips = board[chainEnds[2]][chainEnds[3]].getRightPipCount();
+        }
+        else{
+            leftPips = board[chainEnds[0]][chainEnds[1]].getLeftPipCount();
+
+
+        }
+        if(chainEnds[2]==-1){
+            rightPips =0;
+
+
+        }
+        else{
+            rightPips=board[chainEnds[2]][chainEnds[3]].getRightPipCount();
+        }
         int topPips = 0;
         int bottomPips = 0;
         // If left or right end are center of board, they are not counted.
+
         if (chainEnds[0] == BOARDHEIGHT/2 && chainEnds[1] == BOARDWIDTH/2){
             leftPips = 0;
         }
@@ -521,6 +539,7 @@ public class DominoGameState extends GameState {
         if (chainEnds[4] != -1) {
               topPips = board[chainEnds[4]][chainEnds[5]].getLeftPipCount();
         }
+
 
 
         // If the the sum of pips is a multiple of 3, award user that amount of points.

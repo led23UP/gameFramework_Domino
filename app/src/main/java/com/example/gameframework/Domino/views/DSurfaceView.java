@@ -9,6 +9,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
 import com.example.gameframework.Domino.infoMessage.Domino;
@@ -92,6 +93,8 @@ public class DSurfaceView extends FlashSurfaceView {
 
 //Domino d= new Domino(3,4,1,2);
        // drawDomino(g,d,0,0);
+
+        mapPixelToSquare(100,100);
     }
 
     /**
@@ -220,10 +223,14 @@ public class DSurfaceView extends FlashSurfaceView {
      */
     public Point mapPixelToSquare(int x, int y) {
 
-        int c =  getWidth()/x;
-        int r =  getHeight()/y;
-        Logger.log("info","Row: " + r + " Col: " + c);
-        return new Point(r,c);
+
+        Drawable d = getResources().getDrawable(R.drawable.domino0_0);
+        int squareDim = 163;
+        int c =  x/squareDim;
+        int r = y/squareDim -1;
+        Logger.log("i", "Row "+r+" Col"+c);
+        return new Point(r,c) ;
+
 
 
         // loop through each square and see if we get a "hit"; if so, return
