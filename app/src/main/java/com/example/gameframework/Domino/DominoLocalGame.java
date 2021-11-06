@@ -39,19 +39,24 @@ public class DominoLocalGame extends LocalGame {
     @Override
     protected String checkIfGameOver() {
         DominoGameState dState = (DominoGameState) super.state;
+
+
         if (dState.getPlayerInfo()[0].getScore() >=150){
 
             return playerNames[0]+ " wins with " + dState.getPlayerInfo()[0].getScore() + " points!";
         }
-        else if (dState.getPlayerInfo()[1].getScore() >=150){
+
+        if (players.length ==2 && dState.getPlayerInfo()[1].getScore() >=150  ){
             return playerNames[1]+" wins with " + dState.getPlayerInfo()[1].getScore() + " points!";
         }
-        else if (dState.getPlayerInfo()[2].getScore() >=150){
+        if (players.length ==3 && dState.getPlayerInfo()[2].getScore() >=150){
             return playerNames[2]+" wins with " + dState.getPlayerInfo()[2].getScore() + " points!";
         }
-        else if (dState.getPlayerInfo()[3].getScore() >=150){
+        if (players.length ==4 && dState.getPlayerInfo()[3].getScore() >=150 ){
             return playerNames[3]+" wins with " + dState.getPlayerInfo()[3].getScore() + " points!";
         }
+
+
         return null;
     }
     //TODO Finish this method and fix it.
