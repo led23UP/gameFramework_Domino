@@ -75,23 +75,4 @@ public class Domino {
     public void setChain(char c){
         this.chain = c;
     }
-
-    @Override
-    public String toString(){
-        String s = "";
-        s += "[" + leftPipsCount + "|" + rightPipsCount + "]";
-
-        s += " Orientation: " + orientation;
-        s += " Weight:" + weight;
-        return s;
-    }
-    // We're using a seperate method here to not print Orientation or Weight. When the domino is
-    // placed, these values no longer matter.
-    public String pipsToString(){
-        if (orientation == 3 || orientation == 1 || orientation == -1 ) {
-            return "[" + leftPipsCount + "|" + rightPipsCount + "]";
-        }
-        return "[T:" + leftPipsCount + "| B:" + rightPipsCount + "]";
-    }
-
 }

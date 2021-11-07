@@ -1,7 +1,5 @@
 package com.example.gameframework.Domino.infoMessage;
 
-import androidx.annotation.NonNull;
-
 import java.util.ArrayList;
 /**
  * Players class that creates a player object to keep track of score and hand.
@@ -70,13 +68,4 @@ public class PlayerInfo {
         this.score = score;
     }
 
-    @NonNull
-    public String toString(){
-        StringBuilder s = new StringBuilder();
-        s.append("PlayerInfo ").append(id + 1).append(" Score: ").append(score).append("\nHand: ");
-        for (Domino d:playerHand) {
-            s.append(d.toString()).append(", ");
-        }
-        return s.toString();
-    }
 }

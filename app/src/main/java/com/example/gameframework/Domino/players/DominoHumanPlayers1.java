@@ -151,12 +151,6 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
 
         if(gameInfo.getPlayerInfo()[playerNum].getLegalMoves().size() == 0)
         {
-            if(gameInfo.getBoneyard().size() == 0)
-            {
-                game.sendAction(new DominoSkipAction(this));
-                return;
-            }
-            gameInfo.drawPiece(playerNum);
             game.sendAction(new DominoDrawAction(this));
         }
 
@@ -315,17 +309,21 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
+        // If the event is not an up event, return.
         if (event.getAction() != MotionEvent.ACTION_UP){
             return true;
         }
 
         float x =  event.getX();
         float y =  event.getY();
+        // If the user clicked inside a highlight, they will get MoveInfo.
+        // If the user did not, they will get null.
         MoveInfo a = surfaceView.clickedInsideHighlight(x,y);
-
+        // If the MoveInfo is null, flash screen.
         if (a == null){
             surfaceView.flash(Color.RED, 50);
         }
+        // If move info is valid, send a new MoveAction.
         else{
             DominoMoveAction action = new DominoMoveAction(this,a.getRow(),a.getCol(),selectedDomino);
             Logger.log("onTouch", "Human player sending move action");
