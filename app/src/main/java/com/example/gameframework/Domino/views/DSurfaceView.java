@@ -141,11 +141,14 @@ public class DSurfaceView extends FlashSurfaceView {
         two.postRotate(0);
         three.postRotate(90);
         four.postRotate(180);
+
         if(leftPipCount<=rightPipCount) {
             dominoClipartId = "domino" + leftPipCount + "_" + rightPipCount;
         }
-        else{
+        if (leftPipCount > rightPipCount){
             dominoClipartId="domino"+rightPipCount+"_"+leftPipCount;
+            two.postRotate(180);
+            four.postRotate(0);
         }
 
         //converts string id into an int id to link domino btmap image to corresponding resource file
@@ -156,14 +159,14 @@ public class DSurfaceView extends FlashSurfaceView {
             rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), one, true);
         }
         else if(dominoOrientation==2){
-            rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), four, true);
+            rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), two, true);
         }
         else if(dominoOrientation==3){
             rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), three, true);
         }
 
         else if(dominoOrientation==4){
-            rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), two, true);
+            rotatedDominoImage = Bitmap.createBitmap(dominoImage, 0, 0, dominoImage.getWidth(), dominoImage.getHeight(), four, true);
         }
 
         g.drawBitmap(rotatedDominoImage,xLoc, yLoc,null);

@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.gameframework.Domino.DominoActionMessage.DominoDrawAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoMoveAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoSkipAction;
 import com.example.gameframework.Domino.infoMessage.Domino;
@@ -148,7 +149,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
             dominosInHand[i].setClickable(false);
         }
 
-        while(gameInfo.getPlayerInfo()[playerNum].getLegalMoves().size() == 0)
+        if(gameInfo.getPlayerInfo()[playerNum].getLegalMoves().size() == 0)
         {
             if(gameInfo.getBoneyard().size() == 0)
             {
@@ -156,6 +157,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
                 return;
             }
             gameInfo.drawPiece(playerNum);
+            game.sendAction(new DominoDrawAction(this));
         }
 
     }

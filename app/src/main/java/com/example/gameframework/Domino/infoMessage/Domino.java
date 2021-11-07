@@ -64,7 +64,7 @@ public class Domino {
     public void setOrientation(int o){
         this.orientation = o;
         // Orientation 3 is 180 degree rotation, swap pips.
-        if (o == 3 || o == 2){
+        if (o == 3 || o == 4){
             int tmp = this.leftPipsCount;
             this.leftPipsCount = rightPipsCount;
             rightPipsCount = tmp;

@@ -79,8 +79,9 @@ public class DominoLocalGame extends LocalGame {
             state.startRound();
         }
 
-        int playerID = getPlayerIdx(action.getPlayer());
+        int playerID;
         playerID=state.getTurnID();
+
         if (canMove(playerID)){
             //skips the forfeited player's turn
             state.setBoneyardMsg(Integer.toString(state.getBoneyard().size()));

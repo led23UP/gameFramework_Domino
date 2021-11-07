@@ -36,7 +36,8 @@ public class DominoComputerPlayers1 extends GameComputerPlayer {
 
         //if player doesn't have legal move, draw until there is a legal move. If boneyard is empty
         //skip turn
-        if(gameStateObj.getBoneyard().size() == 0)
+        if(gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().size() == 0 &&
+                    gameStateObj.getBoneyard().size() == 0)
         {
             sleep(1);
             game.sendAction(new DominoSkipAction(this));
@@ -45,6 +46,7 @@ public class DominoComputerPlayers1 extends GameComputerPlayer {
         if(gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().size() == 0)
         {
             game.sendAction(new DominoDrawAction(this));
+            return;
         }
         /*
 
