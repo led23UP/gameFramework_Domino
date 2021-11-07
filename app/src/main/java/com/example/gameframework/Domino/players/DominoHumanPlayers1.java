@@ -1,7 +1,5 @@
 package com.example.gameframework.Domino.players;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.view.MotionEvent;
@@ -10,9 +8,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.gameframework.Domino.DominoActionMessage.DominoDrawAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoMoveAction;
+import com.example.gameframework.Domino.DominoActionMessage.DominoSkipAction;
 import com.example.gameframework.Domino.infoMessage.Domino;
 import com.example.gameframework.Domino.infoMessage.DominoGameState;
+import com.example.gameframework.Domino.infoMessage.MoveInfo;
 import com.example.gameframework.Domino.views.DSurfaceView;
 import com.example.gameframework.R;
 import com.example.gameframework.game.GameFramework.GameMainActivity;
@@ -33,6 +34,11 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
     private TextView player1ScoreView;
     private TextView player2ScoreView;
     private TextView player3ScoreView;
+
+    private TextView messageText;
+
+    private TextView boneyardText;
+
     private DSurfaceView surfaceView;
     private Button helpButton;
     private Button newGameButton;
@@ -50,7 +56,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
     public DominoHumanPlayers1(String name, int layoutId) {
         super(name);
         this.layoutId = layoutId;
-        this.selectedDomino = -1;
+        this.selectedDomino = 0;
     }
 
     @Override
@@ -67,14 +73,69 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         if (!(info instanceof DominoGameState)){
             return;
         }
+        surfaceView.invalidate();
         // Cast info as a DominoGameState to get information from it.
         DominoGameState gameInfo = (DominoGameState) info;
-        // Update player score TextViews.
-        player0ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[0].getScore()));
-        /*player1ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[1].getScore()));
-        player2ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[2].getScore()));
-        player3ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[3].getScore()));*/
+        // Get legal moves, clear them, then update them.
+        ArrayList<MoveInfo> myLegalMoves = gameInfo.getPlayerInfo()[playerNum].getLegalMoves();
+        myLegalMoves.clear();
+        gameInfo.findLegalMoves(playerNum);
 
+        // Update player score TextViews.
+        player0ScoreView.setText("");
+        player1ScoreView.setText("");
+        player2ScoreView.setText("");
+        player3ScoreView.setText("");
+        messageText.setText(gameInfo.getMessage());
+        messageText.setTextColor(Color.YELLOW);
+        boneyardText.setText(gameInfo.getBoneyardMsg());
+        boneyardText.setTextColor(Color.YELLOW);
+
+        if(gameInfo.getTurnID() == 0)
+        {
+            player0ScoreView.setTextColor(Color.YELLOW);
+            player1ScoreView.setTextColor(Color.WHITE);
+            player2ScoreView.setTextColor(Color.WHITE);
+            player3ScoreView.setTextColor(Color.WHITE);
+        }
+        if(gameInfo.getTurnID() == 1)
+        {
+            player1ScoreView.setTextColor(Color.YELLOW);
+            player0ScoreView.setTextColor(Color.WHITE);
+            player2ScoreView.setTextColor(Color.WHITE);
+            player3ScoreView.setTextColor(Color.WHITE);
+        }
+        if(gameInfo.getTurnID() == 2)
+        {
+            player2ScoreView.setTextColor(Color.YELLOW);
+            player1ScoreView.setTextColor(Color.WHITE);
+            player0ScoreView.setTextColor(Color.WHITE);
+            player3ScoreView.setTextColor(Color.WHITE);
+        }
+        if(gameInfo.getTurnID() == 3)
+        {
+            player3ScoreView.setTextColor(Color.YELLOW);
+            player1ScoreView.setTextColor(Color.WHITE);
+            player2ScoreView.setTextColor(Color.WHITE);
+            player0ScoreView.setTextColor(Color.WHITE);
+        }
+        switch(gameInfo.getPlayerInfo().length){
+            case 4:
+                player3ScoreView.setText(allPlayerNames[3]+" "+
+                        String.valueOf(gameInfo.getPlayerInfo()[3].getScore()));
+
+            case 3:
+                player2ScoreView.setText(allPlayerNames[2]+" "+
+                        String.valueOf(gameInfo.getPlayerInfo()[2].getScore()));
+            case 2:
+                player1ScoreView.setText(allPlayerNames[1]+" "+
+                        String.valueOf(gameInfo.getPlayerInfo()[1].getScore()));
+            case 1:
+
+                player0ScoreView.setText(allPlayerNames[0]+
+                        " "+String.valueOf(gameInfo.getPlayerInfo()[0].getScore()));
+
+        }
 
         surfaceView.setState((DominoGameState)info);
         // Only show them imageButtons for dominoes that are in their hand.
@@ -82,6 +143,16 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
             dominosInHand[i].setVisibility(View.VISIBLE);
             dominosInHand[i].setImageResource(determineDominoPic(gameInfo.getPlayerInfo()[playerNum].getHand().get(i)));
             dominosInHand[i].setClickable(true);
+        }
+
+        for (int i = gameInfo.getPlayerInfo()[playerNum].getHand().size(); i < 23; i++){
+            dominosInHand[i].setVisibility(View.INVISIBLE);
+            dominosInHand[i].setClickable(false);
+        }
+
+        if(gameInfo.getPlayerInfo()[playerNum].getLegalMoves().size() == 0)
+        {
+            game.sendAction(new DominoDrawAction(this));
         }
 
     }
@@ -158,6 +229,9 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         this.player1ScoreView = (TextView)activity.findViewById(R.id.player1Score);
         this.player2ScoreView = (TextView)activity.findViewById(R.id.player2Score);
         this.player3ScoreView = (TextView)activity.findViewById(R.id.player3Score);
+
+        this.messageText = (TextView)activity.findViewById(R.id.messageTextView);
+        this.boneyardText = (TextView)activity.findViewById(R.id.boneyardTextView);
         this.newGameButton = (Button)activity.findViewById(R.id.newGameButton);
         this.quitGameButton = (Button)activity.findViewById(R.id.quitGameButton);
         this.helpButton = (Button)activity.findViewById(R.id.helpButton);
@@ -208,19 +282,17 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
     @Override
     public void onClick(View view) {
         if (view instanceof ImageButton) {
-            //TODO Update selectedDomino to which button they pressed.
-            // selectedDomino = the buttons position in the imageButton array.
             int clickedId = view.getId();
             int i = 0;
             for (ImageButton imageBT : dominosInHand) {
                 if (imageBT.getId() == clickedId) {
-
                     selectedDomino = i;
                 }
-
                 i++;
             }
             Logger.log("onClick",String.valueOf(selectedDomino));
+            surfaceView.setSelectedDomino(selectedDomino);
+            surfaceView.invalidate();
         }
         else if (view instanceof Button){
             if (view.getId() == R.id.newGameButton){
@@ -238,19 +310,23 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
+        // If the event is not an up event, return.
         if (event.getAction() != MotionEvent.ACTION_UP){
             return true;
         }
 
-        int x = (int) event.getX();
-        int y = (int) event.getY();
-        Point p = surfaceView.mapPixelToSquare(x,y);
-
-        if (p == null){
-            surfaceView.flash(Color.GREEN, 50);
+        float x =  event.getX();
+        float y =  event.getY();
+        // If the user clicked inside a highlight, they will get MoveInfo.
+        // If the user did not, they will get null.
+        MoveInfo a = surfaceView.clickedInsideHighlight(x,y);
+        // If the MoveInfo is null, flash screen.
+        if (a == null){
+            surfaceView.flash(Color.RED, 50);
         }
+        // If move info is valid, send a new MoveAction.
         else{
-            DominoMoveAction action = new DominoMoveAction(this,p.x,p.y,selectedDomino);
+            DominoMoveAction action = new DominoMoveAction(this,a.getRow(),a.getCol(),selectedDomino);
             Logger.log("onTouch", "Human player sending move action");
             game.sendAction(action);
             surfaceView.invalidate();
@@ -258,3 +334,4 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         return true;
     }
 }
+

@@ -26,6 +26,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TabHost.TabSpec;
+
+import com.example.gameframework.Domino.DominoLocalGame;
 import com.example.gameframework.game.GameFramework.gameConfiguration.GameConfig;
 import com.example.gameframework.game.GameFramework.gameConfiguration.GamePlayerType;
 import com.example.gameframework.game.GameFramework.infoMessage.GameState;
@@ -360,6 +362,9 @@ public abstract class GameMainActivity extends Activity implements
 
         // mark the configuration as being completed
         doingConfiguration = false;
+
+        DominoLocalGame g = (DominoLocalGame) game;
+        g.setNumPlayers(players.length);
 
         // start the game; then return null to indicate that the launch was
         // successful

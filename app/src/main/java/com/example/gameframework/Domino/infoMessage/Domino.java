@@ -64,7 +64,7 @@ public class Domino {
     public void setOrientation(int o){
         this.orientation = o;
         // Orientation 3 is 180 degree rotation, swap pips.
-        if (o == 3 || o == 2){
+        if (o == 3 || o == 4){
             int tmp = this.leftPipsCount;
             this.leftPipsCount = rightPipsCount;
             rightPipsCount = tmp;
@@ -75,23 +75,4 @@ public class Domino {
     public void setChain(char c){
         this.chain = c;
     }
-
-    @Override
-    public String toString(){
-        String s = "";
-        s += "[" + leftPipsCount + "|" + rightPipsCount + "]";
-
-        s += " Orientation: " + orientation;
-        s += " Weight:" + weight;
-        return s;
-    }
-    // We're using a seperate method here to not print Orientation or Weight. When the domino is
-    // placed, these values no longer matter.
-    public String pipsToString(){
-        if (orientation == 3 || orientation == 1 || orientation == -1 ) {
-            return "[" + leftPipsCount + "|" + rightPipsCount + "]";
-        }
-        return "[T:" + leftPipsCount + "| B:" + rightPipsCount + "]";
-    }
-
 }
