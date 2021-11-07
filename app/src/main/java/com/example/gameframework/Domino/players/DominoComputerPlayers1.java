@@ -29,8 +29,9 @@ public class DominoComputerPlayers1 extends GameComputerPlayer {
         }
 
         DominoGameState gameStateObj = new DominoGameState((DominoGameState) info);
+        // Get the player's legal moves, clear, then update them.
+        gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().clear();
         gameStateObj.findLegalMoves(playerNum);
-
 
         //if player doesn't have legal move, draw until there is a legal move. If boneyard is empty
         //skip turn
@@ -49,9 +50,6 @@ public class DominoComputerPlayers1 extends GameComputerPlayer {
         row = gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().get(0).getRow();
         col = gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().get(0).getCol();
         idx = gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().get(0).getDominoIndex();
-
-        //removes the legalMove from array since we will play that move.
-        gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().remove(0);
 
         sleep(1);
         game.sendAction(new DominoMoveAction(this, row,col,idx));

@@ -49,16 +49,5 @@ public class DominoSet {
         Collections.shuffle(this.dominos);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder s = new StringBuilder();
-        s.append("DominoSet{");
-        for (Domino d : dominos){
-            s.append(" ");
-            s.append(d.toString());
-        }
-        s.append("}");
-        return s.toString();
-    }
 }
 

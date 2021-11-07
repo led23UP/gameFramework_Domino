@@ -67,8 +67,11 @@ public class DominoLocalGame extends LocalGame {
     //TODO Finish this method and fix it.
     @Override
     protected boolean makeMove(GameAction action) {
-
         DominoGameState state = (DominoGameState) super.state;
+        if (state.isGameBlocked()){
+            state.endRound();
+            state.startRound();
+        }
 
         int playerID = getPlayerIdx(action.getPlayer());
         if (canMove(playerID)){

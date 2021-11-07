@@ -1,10 +1,10 @@
 package com.example.gameframework.Domino.players;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -14,6 +14,7 @@ import com.example.gameframework.Domino.DominoActionMessage.DominoMoveAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoSkipAction;
 import com.example.gameframework.Domino.infoMessage.Domino;
 import com.example.gameframework.Domino.infoMessage.DominoGameState;
+import com.example.gameframework.Domino.infoMessage.MoveInfo;
 import com.example.gameframework.Domino.views.DSurfaceView;
 import com.example.gameframework.R;
 import com.example.gameframework.game.GameFramework.GameMainActivity;
@@ -68,10 +69,16 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         if (!(info instanceof DominoGameState)){
             return;
         }
+        surfaceView.invalidate();
         // Cast info as a DominoGameState to get information from it.
         DominoGameState gameInfo = (DominoGameState) info;
+        // Get legal moves, clear them, then update them.
+        ArrayList<MoveInfo> myLegalMoves = gameInfo.getPlayerInfo()[playerNum].getLegalMoves();
+        myLegalMoves.clear();
+        gameInfo.findLegalMoves(playerNum);
+
         // Update player score TextViews.
-        switch(playerNum){
+        switch(allPlayerNames.length){
             case 4:
                 player3ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[3].getScore()));
             case 3:
@@ -233,13 +240,13 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
             int i = 0;
             for (ImageButton imageBT : dominosInHand) {
                 if (imageBT.getId() == clickedId) {
-
                     selectedDomino = i;
                 }
-
                 i++;
             }
             Logger.log("onClick",String.valueOf(selectedDomino));
+            surfaceView.setSelectedDomino(selectedDomino);
+            surfaceView.invalidate();
         }
         else if (view instanceof Button){
             if (view.getId() == R.id.newGameButton){
@@ -261,15 +268,15 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
             return true;
         }
 
-        int x = (int) event.getX();
-        int y = (int) event.getY();
-        Point p = surfaceView.mapPixelToSquare(x,y);
+        float x =  event.getX();
+        float y =  event.getY();
+        MoveInfo a = surfaceView.clickedInsideHighlight(x,y);
 
-        if (p == null){
-            surfaceView.flash(Color.GREEN, 50);
+        if (a == null){
+            surfaceView.flash(Color.RED, 50);
         }
         else{
-            DominoMoveAction action = new DominoMoveAction(this,p.x,p.y,selectedDomino);
+            DominoMoveAction action = new DominoMoveAction(this,a.getRow(),a.getCol(),selectedDomino);
             Logger.log("onTouch", "Human player sending move action");
             game.sendAction(action);
             surfaceView.invalidate();
@@ -277,3 +284,4 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         return true;
     }
 }
+
