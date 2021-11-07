@@ -25,13 +25,14 @@ public class DominoGameState extends GameState {
     private PlayerInfo[] players;
     private int turnID;
     private String message;
+    private String boneyardMsg;
     public boolean boardEmpty;
 
 
     public DominoGameState() {
 
         message = "";
-
+        boneyardMsg="";
         chainEnds = new int[8];
         Arrays.fill(chainEnds, -1);
         doesBoardHaveSpinner = false;
@@ -46,6 +47,7 @@ public class DominoGameState extends GameState {
     public DominoGameState(DominoGameState other) {
 
         message = other.message;
+        boneyardMsg = other.boneyardMsg;
         this.playerCount = other.playerCount;
 
         this.BOARDWIDTH = other.BOARDWIDTH;
@@ -548,6 +550,9 @@ public class DominoGameState extends GameState {
 
     public void setMessage(String msg) { this.message = msg;}
 
+    public String getBoneyardMsg(){return this.boneyardMsg;}
+
+    public void setBoneyardMsg(String msg){this.boneyardMsg=msg;}
     public boolean isGameBlocked(){
         int i = 0;
         for (PlayerInfo p : players){

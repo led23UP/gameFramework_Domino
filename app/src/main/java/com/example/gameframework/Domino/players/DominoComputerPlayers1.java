@@ -1,5 +1,6 @@
 package com.example.gameframework.Domino.players;
 
+import com.example.gameframework.Domino.DominoActionMessage.DominoDrawAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoMoveAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoSkipAction;
 import com.example.gameframework.Domino.infoMessage.Domino;
@@ -35,21 +36,28 @@ public class DominoComputerPlayers1 extends GameComputerPlayer {
 
         //if player doesn't have legal move, draw until there is a legal move. If boneyard is empty
         //skip turn
-        while(gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().size() == 0)
+        if(gameStateObj.getBoneyard().size() == 0)
         {
-            if(gameStateObj.getBoneyard().size() == 0)
-            {
-                sleep(1);
-                game.sendAction(new DominoSkipAction(this));
-                return;
-            }
-            gameStateObj.drawPiece(playerNum);
+            sleep(1);
+            game.sendAction(new DominoSkipAction(this));
+            return;
         }
+        if(gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().size() == 0)
+        {
+            game.sendAction(new DominoDrawAction(this));
+        }
+        /*
+
+        */
+
         //grabs the first legal move available and store it for use later
         int row, col, idx;
         row = gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().get(0).getRow();
         col = gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().get(0).getCol();
         idx = gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().get(0).getDominoIndex();
+
+        //removes the legalMove from array since we will play that move.
+        //gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().remove(0);
 
         sleep(1);
         game.sendAction(new DominoMoveAction(this, row,col,idx));

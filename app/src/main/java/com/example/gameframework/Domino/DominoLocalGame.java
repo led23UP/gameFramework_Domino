@@ -1,5 +1,6 @@
 package com.example.gameframework.Domino;
 
+import com.example.gameframework.Domino.DominoActionMessage.DominoDrawAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoMoveAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoNewGameAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoQuitGameAction;
@@ -41,25 +42,30 @@ public class DominoLocalGame extends LocalGame {
     @Override
 
     protected String checkIfGameOver() {
-        /*
+
 
         DominoGameState dState = (DominoGameState) super.state;
-        if (dState.getPlayerInfo()[0].getScore() >=150){
+        if (dState.getPlayerInfo()[0].getPlayerActive()== true &&
+                dState.getPlayerInfo()[0].getScore() >=150){
 
             return playerNames[0]+ " wins with " + dState.getPlayerInfo()[0].getScore() + " points!";
         }
-        else if (dState.getPlayerInfo()[1].getScore() >=150){
+
+
+        if (playerNames.length >=2 && dState.getPlayerInfo()[1].getPlayerActive()== true &&
+                dState.getPlayerInfo()[1].getScore() >=150){
             return playerNames[1]+" wins with " + dState.getPlayerInfo()[1].getScore() + " points!";
         }
-        else if (dState.getPlayerInfo()[2].getScore() >=150){
+        if (playerNames.length >=3 && dState.getPlayerInfo()[2].getPlayerActive()== true &&
+                dState.getPlayerInfo()[2].getScore() >=150){
             return playerNames[2]+" wins with " + dState.getPlayerInfo()[2].getScore() + " points!";
         }
-        else if (dState.getPlayerInfo()[3].getScore() >=150){
+        if (playerNames.length >=4 && dState.getPlayerInfo()[0].getPlayerActive()== true &&dState.getPlayerInfo()[3].getScore() >=150){
             return playerNames[3]+" wins with " + dState.getPlayerInfo()[3].getScore() + " points!";
         }
 
 
-        */
+
         return null;
     }
 
@@ -74,9 +80,10 @@ public class DominoLocalGame extends LocalGame {
         }
 
         int playerID = getPlayerIdx(action.getPlayer());
+        playerID=state.getTurnID();
         if (canMove(playerID)){
             //skips the forfeited player's turn
-
+            state.setBoneyardMsg(Integer.toString(state.getBoneyard().size()));
             if( action instanceof DominoMoveAction)
             {
                 DominoMoveAction dm = (DominoMoveAction) action;
@@ -99,9 +106,22 @@ public class DominoLocalGame extends LocalGame {
                 }
                 return false;
             }
+            if (action instanceof DominoDrawAction)
+            {
+                while(state.getPlayerInfo()[playerID].getLegalMoves().size() == 0)
+                {
+                    if(state.getBoneyard().size() == 0)
+                    {
+                        return true;
+                    }
+                    state.drawPiece(playerID);
+                }
+                return true;
+            }
             if( action instanceof DominoSkipAction)
             {
-                state.setMessage("Player x cannot make a legal move. Their turn has been skipped");
+
+                state.setMessage(playerNames[playerID]+" cannot make a legal move. Their turn has been skipped");
                 state.setTurnID();
                 return true;
             }
