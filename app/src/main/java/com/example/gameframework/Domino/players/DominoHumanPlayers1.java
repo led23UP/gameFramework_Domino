@@ -34,6 +34,11 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
     private TextView player1ScoreView;
     private TextView player2ScoreView;
     private TextView player3ScoreView;
+
+    private TextView messageText;
+
+    private TextView boneyardText;
+
     private DSurfaceView surfaceView;
     private Button helpButton;
     private Button newGameButton;
@@ -71,15 +76,58 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         // Cast info as a DominoGameState to get information from it.
         DominoGameState gameInfo = (DominoGameState) info;
         // Update player score TextViews.
-        switch(playerNum){
+        player0ScoreView.setText("");
+        player1ScoreView.setText("");
+        player2ScoreView.setText("");
+        player3ScoreView.setText("");
+        messageText.setText(gameInfo.getMessage());
+        boneyardText.setText(gameInfo.getBoneyardMsg());
+
+
+        if(gameInfo.getTurnID() == 0)
+        {
+            player0ScoreView.setTextColor(Color.YELLOW);
+            player1ScoreView.setTextColor(Color.WHITE);
+            player2ScoreView.setTextColor(Color.WHITE);
+            player3ScoreView.setTextColor(Color.WHITE);
+        }
+        if(gameInfo.getTurnID() == 1)
+        {
+            player1ScoreView.setTextColor(Color.YELLOW);
+            player0ScoreView.setTextColor(Color.WHITE);
+            player2ScoreView.setTextColor(Color.WHITE);
+            player3ScoreView.setTextColor(Color.WHITE);
+        }
+        if(gameInfo.getTurnID() == 2)
+        {
+            player2ScoreView.setTextColor(Color.YELLOW);
+            player1ScoreView.setTextColor(Color.WHITE);
+            player0ScoreView.setTextColor(Color.WHITE);
+            player3ScoreView.setTextColor(Color.WHITE);
+        }
+        if(gameInfo.getTurnID() == 3)
+        {
+            player3ScoreView.setTextColor(Color.YELLOW);
+            player1ScoreView.setTextColor(Color.WHITE);
+            player2ScoreView.setTextColor(Color.WHITE);
+            player0ScoreView.setTextColor(Color.WHITE);
+        }
+        switch(gameInfo.getPlayerInfo().length){
             case 4:
-                player3ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[3].getScore()));
+                player3ScoreView.setText(allPlayerNames[3]+" "+
+                        String.valueOf(gameInfo.getPlayerInfo()[3].getScore()));
+
             case 3:
-                player2ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[2].getScore()));
+                player2ScoreView.setText(allPlayerNames[2]+" "+
+                        String.valueOf(gameInfo.getPlayerInfo()[2].getScore()));
             case 2:
-                player1ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[1].getScore()));
+                player1ScoreView.setText(allPlayerNames[1]+" "+
+                        String.valueOf(gameInfo.getPlayerInfo()[1].getScore()));
             case 1:
-                player0ScoreView.setText(String.valueOf(gameInfo.getPlayerInfo()[0].getScore()));
+
+                player0ScoreView.setText(allPlayerNames[0]+
+                        " "+String.valueOf(gameInfo.getPlayerInfo()[0].getScore()));
+
         }
 
         surfaceView.setState((DominoGameState)info);
@@ -179,6 +227,9 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         this.player1ScoreView = (TextView)activity.findViewById(R.id.player1Score);
         this.player2ScoreView = (TextView)activity.findViewById(R.id.player2Score);
         this.player3ScoreView = (TextView)activity.findViewById(R.id.player3Score);
+
+        this.messageText = (TextView)activity.findViewById(R.id.messageTextView);
+        this.boneyardText = (TextView)activity.findViewById(R.id.boneyardTextView);
         this.newGameButton = (Button)activity.findViewById(R.id.newGameButton);
         this.quitGameButton = (Button)activity.findViewById(R.id.quitGameButton);
         this.helpButton = (Button)activity.findViewById(R.id.helpButton);
