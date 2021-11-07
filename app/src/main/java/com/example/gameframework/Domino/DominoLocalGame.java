@@ -84,7 +84,7 @@ public class DominoLocalGame extends LocalGame {
 
         if (canMove(playerID)){
             //skips the forfeited player's turn
-            state.setBoneyardMsg(Integer.toString(state.getBoneyard().size()));
+
             if( action instanceof DominoMoveAction)
             {
                 DominoMoveAction dm = (DominoMoveAction) action;
@@ -97,11 +97,12 @@ public class DominoLocalGame extends LocalGame {
                         state.placePiece(row, col, playerID, idx);
 
                         state.setMessage(playerNames[playerID] + " scored " +
-                                state.getPlayerInfo()[playerID].getScore());
+                                state.getPlayerInfo()[playerID].getScore() +" points");
                         state.setTurnID();
 
                         state.getPlayerInfo()[playerID].getLegalMoves().clear();
                         state.findLegalMoves(playerID);
+                        state.setBoneyardMsg(Integer.toString(state.getBoneyard().size()));
                         return true;
                     }
                 }
@@ -115,7 +116,10 @@ public class DominoLocalGame extends LocalGame {
                     {
                         return true;
                     }
+                    state.setBoneyardMsg(Integer.toString(state.getBoneyard().size()));
                     state.drawPiece(playerID);
+                    state.setMessage(playerNames[playerID]+" draws a domino");
+
                 }
                 return true;
             }
