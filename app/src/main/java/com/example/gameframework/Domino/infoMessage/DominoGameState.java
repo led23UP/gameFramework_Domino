@@ -22,6 +22,7 @@ public class DominoGameState extends GameState {
     private int[] chainEnds;
     private boolean doesBoardHaveSpinner;
     private ArrayList<Domino> boneyard;
+    //private ArrayList<ArrayList<Domino>> board;
     private PlayerInfo[] players;
     private int turnID;
     private String message;
@@ -41,7 +42,7 @@ public class DominoGameState extends GameState {
 
         boneyard = new ArrayList<>();
         // Start the first round.
-        startRound();
+        //startRound();
     }
 
     public DominoGameState(DominoGameState other) {
@@ -81,7 +82,7 @@ public class DominoGameState extends GameState {
 
     public void setNumPlayersStart(int players){
         playerCount = players;
-        startRound();
+        startRound(true);
     }
 
     /**
@@ -671,22 +672,28 @@ public class DominoGameState extends GameState {
         }
     }
 
-    public void startRound(){
+    public void startRound(boolean firstRound){
         // Set (or reset) board to empty.
+        //board = new ArrayList<ArrayList<Domino>>(BOARDHEIGHT);
+        board = new Domino[BOARDHEIGHT][BOARDWIDTH];
+        /*
         for (int i = 0; i < BOARDHEIGHT; i++){
-            for(int j = 0; j < BOARDWIDTH; j++){
-                board[i][j] = null;
+            //board.add(new ArrayList<Domino>(BOARDWIDTH));
+            for (int j = 0; j < BOARDWIDTH; j++) {
+                //board.get(i).add(new Domino(-1,-1,-1,-1));
             }
         }
 
-        //create player objects equal to the amount of players playing.
-        players = new PlayerInfo[playerCount];
-        for(int i=0; i <playerCount;i++) {
-            players[i] = new PlayerInfo(i,true);
+         */
+        if (firstRound) {
+            //create player objects equal to the amount of players playing.
+            players = new PlayerInfo[playerCount];
+            for (int i = 0; i < playerCount; i++) {
+                players[i] = new PlayerInfo(i, true);
+            }
         }
         // Board does not have spinner initially.
         doesBoardHaveSpinner = false;
-
         // Create a new DominoSet and shuffle it.
         dominoSet = new DominoSet();
         dominoSet.shuffleSet();
@@ -698,9 +705,9 @@ public class DominoGameState extends GameState {
             }
         }
         dominoSet.dominos.trimToSize();
-
         int size = dominoSet.dominos.size();
         // Fill the boneyard with the leftover dominoes in set. Empty dominoSet after.
+        boneyard = new ArrayList<>();
         for (int i = 0; i < size; i++){
             // Fill each piece of boneyard with remaining dominoes in set. Then remove from dominoSet.
             boneyard.add(dominoSet.dominos.get(0));
@@ -736,5 +743,30 @@ public class DominoGameState extends GameState {
         // Round's winner gets the sum of the pips of all other players rounded to the nearest 3
         // added to their score.
         players[lowestPipCount].addPoints((int)(3.0*Math.round(playerPipSum[lowestPipCount]/3.0)));
+    }
+
+    public void placedAllPieces(int playerID){
+        int[] playerPipSum = new int[playerCount];
+        // Sum up the pips in all player's hands.
+        for (int i = 0; i < playerCount; i++){
+            for (Domino d : players[i].getHand()){
+                playerPipSum[i] += d.getLeftPipCount() + d.getRightPipCount();
+            }
+        }
+        int total = 0;
+        for (int i = 0; i < playerPipSum.length; i++){
+            if (i == playerID){
+                continue;
+            }
+            total += playerPipSum[i];
+        }
+
+        // Round's winner gets the sum of the pips of all other players rounded to the nearest 3
+        // added to their score.
+        players[playerID].addPoints((int)(3.0*Math.round(total/3.0)));
+        for (int i = 0; i < playerCount; i++){
+            players[i].getLegalMoves().clear();
+        }
+
     }
 }

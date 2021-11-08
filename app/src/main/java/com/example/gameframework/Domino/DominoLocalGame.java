@@ -3,6 +3,7 @@ package com.example.gameframework.Domino;
 import com.example.gameframework.Domino.DominoActionMessage.DominoDrawAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoMoveAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoNewGameAction;
+import com.example.gameframework.Domino.DominoActionMessage.DominoNewRoundAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoQuitGameAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoSkipAction;
 import com.example.gameframework.Domino.infoMessage.Domino;
@@ -75,14 +76,24 @@ public class DominoLocalGame extends LocalGame {
         //if game is blocked, no player can make a turn, move on
         if (state.isGameBlocked()){
             state.endRound();
-            state.startRound();
+            state.startRound(false);
         }
 
 
         int playerID=state.getTurnID();
         //check if current player can move
         if (canMove(playerID)){
+            if (state.isGameBlocked()){
+                state.endRound();
+                state.startRound(false);
+                sendAction(new DominoNewRoundAction(players[playerID]));
+            }
 
+            if (state.getPlayerInfo()[playerID].getHand().size() == 0) {
+                state.placedAllPieces(playerID);
+                state.startRound(false);
+                sendAction(new DominoNewRoundAction(players[playerID]));
+            }
             if( action instanceof DominoMoveAction)
             {
                 DominoMoveAction dm = (DominoMoveAction) action;
