@@ -15,6 +15,14 @@ public class MoveInfo {
         this.dominoIndex = d;
     }
 
+    public MoveInfo(MoveInfo other){
+        this.row = other.row;
+        this.col = other.col;
+        this.orientation = other.orientation;
+        this.chain = other.chain;
+        this.dominoIndex = other.dominoIndex;
+    }
+
     public int getRow(){
         return row;
     }

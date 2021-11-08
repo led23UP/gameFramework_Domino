@@ -5,7 +5,9 @@ import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.gameframework.Domino.DominoActionMessage.DominoDrawAction;
@@ -44,6 +46,9 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
     private Button newGameButton;
     private Button quitGameButton;
 
+    private ScrollView myScrollViewV;
+    private HorizontalScrollView myScrollViewH;
+
     private int layoutId;
     private int selectedDomino;
 
@@ -74,12 +79,16 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
             return;
         }
         surfaceView.invalidate();
+
         // Cast info as a DominoGameState to get information from it.
         DominoGameState gameInfo = (DominoGameState) info;
         // Get legal moves, clear them, then update them.
         ArrayList<MoveInfo> myLegalMoves = gameInfo.getPlayerInfo()[playerNum].getLegalMoves();
-        myLegalMoves.clear();
-        gameInfo.findLegalMoves(playerNum);
+
+        if (myLegalMoves.size() == 0){
+            game.sendAction(new DominoSkipAction(this));
+            surfaceView.invalidate();
+        }
 
         // Update player score TextViews.
         player0ScoreView.setText("");
@@ -235,6 +244,26 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         this.newGameButton = (Button)activity.findViewById(R.id.newGameButton);
         this.quitGameButton = (Button)activity.findViewById(R.id.quitGameButton);
         this.helpButton = (Button)activity.findViewById(R.id.helpButton);
+
+        this.myScrollViewV = activity.findViewById(R.id.scrollV);
+
+        myScrollViewV.post(new Runnable() {
+            @Override
+            public void run() {
+                //setting position here :
+                myScrollViewV.scrollTo(0, 2500);
+            }
+        });
+
+        this.myScrollViewH = activity.findViewById(R.id.scrollH);
+
+        myScrollViewV.post(new Runnable() {
+            @Override
+            public void run() {
+                //setting position here :
+                myScrollViewH.scrollTo(2500, 0);
+            }
+        });
 
         this.dominosInHand = new ImageButton[23];
         // Don't want to write 23 lines of findViewById, so the ImageButtons are being declared this way.

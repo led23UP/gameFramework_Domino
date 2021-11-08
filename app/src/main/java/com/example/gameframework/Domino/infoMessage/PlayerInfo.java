@@ -39,7 +39,9 @@ public class PlayerInfo {
 
         this.legalMoves = new ArrayList<>(other.legalMoves.size());
 
-        this.legalMoves.addAll(other.legalMoves);
+        for (int i = 0; i < other.legalMoves.size(); i++){
+            this.legalMoves.add(new MoveInfo(other.legalMoves.get(i)));
+        }
     }
 
     public boolean getPlayerActive() {return this.playerActive; }
@@ -56,7 +58,7 @@ public class PlayerInfo {
 
     public ArrayList<Domino> getHand()
     {
-        return playerHand;
+        return this.playerHand;
     }
 
     public ArrayList<MoveInfo> getLegalMoves(){

@@ -68,7 +68,6 @@ public class Domino {
             int tmp = this.leftPipsCount;
             this.leftPipsCount = rightPipsCount;
             rightPipsCount = tmp;
-
         }
     }
 

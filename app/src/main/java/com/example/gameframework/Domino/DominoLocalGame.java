@@ -5,14 +5,13 @@ import com.example.gameframework.Domino.DominoActionMessage.DominoMoveAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoNewGameAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoQuitGameAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoSkipAction;
-import com.example.gameframework.Domino.infoMessage.Domino;
+import com.example.gameframework.Domino.DominoActionMessage.RoundEndAction;
 import com.example.gameframework.Domino.infoMessage.DominoGameState;
 import com.example.gameframework.Domino.infoMessage.MoveInfo;
 import com.example.gameframework.game.GameFramework.LocalGame;
 import com.example.gameframework.game.GameFramework.actionMessage.GameAction;
 import com.example.gameframework.game.GameFramework.players.GamePlayer;
 
-import java.util.ArrayList;
 
 public class DominoLocalGame extends LocalGame {
     public DominoLocalGame() {
@@ -45,22 +44,22 @@ public class DominoLocalGame extends LocalGame {
 
 
         DominoGameState dState = (DominoGameState) super.state;
-        if (dState.getPlayerInfo()[0].getPlayerActive()== true &&
+        if (dState.getPlayerInfo()[0].getPlayerActive() &&
                 dState.getPlayerInfo()[0].getScore() >=150){
 
             return playerNames[0]+ " wins with " + dState.getPlayerInfo()[0].getScore() + " points!";
         }
 
 
-        if (playerNames.length >=2 && dState.getPlayerInfo()[1].getPlayerActive()== true &&
+        if (playerNames.length >=2 && dState.getPlayerInfo()[1].getPlayerActive() &&
                 dState.getPlayerInfo()[1].getScore() >=150){
             return playerNames[1]+" wins with " + dState.getPlayerInfo()[1].getScore() + " points!";
         }
-        if (playerNames.length >=3 && dState.getPlayerInfo()[2].getPlayerActive()== true &&
+        if (playerNames.length >=3 && dState.getPlayerInfo()[2].getPlayerActive() &&
                 dState.getPlayerInfo()[2].getScore() >=150){
             return playerNames[2]+" wins with " + dState.getPlayerInfo()[2].getScore() + " points!";
         }
-        if (playerNames.length >=4 && dState.getPlayerInfo()[0].getPlayerActive()== true &&dState.getPlayerInfo()[3].getScore() >=150){
+        if (playerNames.length >=4 && dState.getPlayerInfo()[0].getPlayerActive() &&dState.getPlayerInfo()[3].getScore() >=150){
             return playerNames[3]+" wins with " + dState.getPlayerInfo()[3].getScore() + " points!";
         }
 
@@ -82,8 +81,25 @@ public class DominoLocalGame extends LocalGame {
         int playerID;
         playerID=state.getTurnID();
 
+        if (state.isGameBlocked()){
+            state.endRound();
+            state.startRoundP();
+            sendAction(new RoundEndAction(players[playerID]));
+        }
+
+        if (state.getPlayerInfo()[playerID].getHand().size() == 0){
+            state.placedAllPieces(playerID);
+            state.startRoundP();
+            sendAction(new RoundEndAction(players[playerID]));
+        }
+
         if (canMove(playerID)){
             //skips the forfeited player's turn
+            if (action instanceof RoundEndAction){
+                RoundEndAction r = (RoundEndAction) action;
+                state.setMessage(r.getPlayer() + " won the round!");
+                return true;
+            }
 
             if( action instanceof DominoMoveAction)
             {
