@@ -43,15 +43,13 @@ public class DominoLocalGame extends LocalGame {
 
     protected String checkIfGameOver() {
 
-
         DominoGameState dState = (DominoGameState) super.state;
+
+        //playersName.length is to prevent crashes out of bounds
         if (dState.getPlayerInfo()[0].getPlayerActive()== true &&
                 dState.getPlayerInfo()[0].getScore() >=150){
-
             return playerNames[0]+ " wins with " + dState.getPlayerInfo()[0].getScore() + " points!";
         }
-
-
         if (playerNames.length >=2 && dState.getPlayerInfo()[1].getPlayerActive()== true &&
                 dState.getPlayerInfo()[1].getScore() >=150){
             return playerNames[1]+" wins with " + dState.getPlayerInfo()[1].getScore() + " points!";
@@ -74,34 +72,39 @@ public class DominoLocalGame extends LocalGame {
     @Override
     protected boolean makeMove(GameAction action) {
         DominoGameState state = (DominoGameState) super.state;
+        //if game is blocked, no player can make a turn, move on
         if (state.isGameBlocked()){
             state.endRound();
             state.startRound();
         }
 
-        int playerID;
-        playerID=state.getTurnID();
 
+        int playerID=state.getTurnID();
+        //check if current player can move
         if (canMove(playerID)){
-            //skips the forfeited player's turn
 
             if( action instanceof DominoMoveAction)
             {
                 DominoMoveAction dm = (DominoMoveAction) action;
+                //gets row, col, and idx from either computer player or human player
                 int row = dm.getRow();
                 int col = dm.getCol();
                 int idx = dm.getDominoIndex();
-
+                //gets the players move
                 for (MoveInfo m : state.getPlayerInfo()[playerID].getLegalMoves()) {
                     if (m.getRow() == row && m.getCol() == col && m.getDominoIndex() == idx) {
                         state.placePiece(row, col, playerID, idx);
 
+                        //update player's score
                         state.setMessage(playerNames[playerID] + " scored " +
                                 state.getPlayerInfo()[playerID].getScore() +" points");
-                        state.setTurnID();
 
+                        state.setTurnID(); //next player's turn
+
+                        //clear legal moves and finds it again
                         state.getPlayerInfo()[playerID].getLegalMoves().clear();
                         state.findLegalMoves(playerID);
+                        //update current boneyard dominos remaining
                         state.setBoneyardMsg(Integer.toString(state.getBoneyard().size()));
                         return true;
                     }
@@ -110,14 +113,21 @@ public class DominoLocalGame extends LocalGame {
             }
             if (action instanceof DominoDrawAction)
             {
+                //this section does not change the player turn because we want this action to "loop"
+
+                //if there's no legal moves, draw a piece until there's a legal more
                 while(state.getPlayerInfo()[playerID].getLegalMoves().size() == 0)
                 {
+                    //if boneyard is empty, return back to computer player class which will
+                    //send a Domino Skip action
                     if(state.getBoneyard().size() == 0)
                     {
                         return true;
                     }
-                    state.setBoneyardMsg(Integer.toString(state.getBoneyard().size()));
                     state.drawPiece(playerID);
+
+                    //update log
+                    state.setBoneyardMsg(Integer.toString(state.getBoneyard().size()));
                     state.setMessage(playerNames[playerID]+" draws a domino");
 
                 }
@@ -125,7 +135,6 @@ public class DominoLocalGame extends LocalGame {
             }
             if( action instanceof DominoSkipAction)
             {
-
                 state.setMessage(playerNames[playerID]+" cannot make a legal move. Their turn has been skipped");
                 state.setTurnID();
                 return true;
@@ -141,7 +150,6 @@ public class DominoLocalGame extends LocalGame {
             }
         }
 
-        //ss
         return false;
     }
 

@@ -91,6 +91,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         boneyardText.setText(gameInfo.getBoneyardMsg());
         boneyardText.setTextColor(Color.YELLOW);
 
+        //makes current player names yellow when their turn
         if(gameInfo.getTurnID() == 0)
         {
             player0ScoreView.setTextColor(Color.YELLOW);
