@@ -83,6 +83,8 @@ public class DominoLocalGame extends LocalGame {
         int playerID=state.getTurnID();
         //check if current player can move
         if (canMove(playerID)){
+
+            //check if game is blocked
             if (state.isGameBlocked()){
                 state.endRound();
                 state.startRound(false);
