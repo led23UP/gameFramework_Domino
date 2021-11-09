@@ -3,11 +3,11 @@ package com.example.gameframework.Domino;
 import com.example.gameframework.Domino.DominoActionMessage.DominoDrawAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoMoveAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoNewGameAction;
+import com.example.gameframework.Domino.DominoActionMessage.DominoGameBlockedAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoQuitGameAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoSkipAction;
-import com.example.gameframework.Domino.DominoActionMessage.RoundEndAction;
+import com.example.gameframework.Domino.DominoActionMessage.DominoPlacedAllPiecesAction;
 import com.example.gameframework.Domino.infoMessage.DominoGameState;
-import com.example.gameframework.Domino.infoMessage.MoveInfo;
 import com.example.gameframework.game.GameFramework.LocalGame;
 import com.example.gameframework.game.GameFramework.actionMessage.GameAction;
 import com.example.gameframework.game.GameFramework.players.GamePlayer;
@@ -73,32 +73,33 @@ public class DominoLocalGame extends LocalGame {
     @Override
     protected boolean makeMove(GameAction action) {
         DominoGameState state = (DominoGameState) super.state;
-        if (state.isGameBlocked()){
-            state.endRound();
-            state.startRound();
-        }
 
         int playerID;
         playerID=state.getTurnID();
 
+        //TODO Give better indication that game is blocked.
         if (state.isGameBlocked()){
             state.endRound();
-            state.startRoundP();
-            sendAction(new RoundEndAction(players[playerID]));
+            state.startRound(false);
+            sendAction(new DominoPlacedAllPiecesAction(players[playerID], playerNames[playerID]));
         }
 
-        if (state.getPlayerInfo()[playerID].getHand().size() == 0){
-            state.placedAllPieces(playerID);
-            state.startRoundP();
-            sendAction(new RoundEndAction(players[playerID]));
-        }
 
         if (canMove(playerID)){
             //skips the forfeited player's turn
-            if (action instanceof RoundEndAction){
-                RoundEndAction r = (RoundEndAction) action;
-                state.setMessage(r.getPlayer() + " won the round!");
+            //TODO Give better indication that a round was won
+            if (action instanceof DominoPlacedAllPiecesAction){
+                DominoPlacedAllPiecesAction r = (DominoPlacedAllPiecesAction) action;
+                state.setMessage(r.getName() + " won the round!");
+                state.placedAllPieces(playerID);
+                state.startRound(false);
                 return true;
+            }
+
+            if (action instanceof DominoGameBlockedAction){
+                state.setMessage("Game is blocked.");
+                state.endRound();
+                state.startRound(false);
             }
 
             if( action instanceof DominoMoveAction)
@@ -108,9 +109,8 @@ public class DominoLocalGame extends LocalGame {
                 int col = dm.getCol();
                 int idx = dm.getDominoIndex();
 
-                for (MoveInfo m : state.getPlayerInfo()[playerID].getLegalMoves()) {
-                    if (m.getRow() == row && m.getCol() == col && m.getDominoIndex() == idx) {
-                        state.placePiece(row, col, playerID, idx);
+                //for (MoveInfo m : state.getPlayerInfo()[playerID].getLegalMoves()) {
+                    if (state.placePiece(row,col,playerID,idx)) {
 
                         state.setMessage(playerNames[playerID] + " scored " +
                                 state.getPlayerInfo()[playerID].getScore() +" points");
@@ -121,7 +121,7 @@ public class DominoLocalGame extends LocalGame {
                         state.setBoneyardMsg(Integer.toString(state.getBoneyard().size()));
                         return true;
                     }
-                }
+              //  }
                 return false;
             }
             if (action instanceof DominoDrawAction)

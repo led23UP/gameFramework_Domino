@@ -2,19 +2,13 @@ package com.example.gameframework.Domino.players;
 
 import com.example.gameframework.Domino.DominoActionMessage.DominoDrawAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoMoveAction;
+import com.example.gameframework.Domino.DominoActionMessage.DominoGameBlockedAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoSkipAction;
-import com.example.gameframework.Domino.DominoActionMessage.RoundEndAction;
-import com.example.gameframework.Domino.infoMessage.Domino;
+import com.example.gameframework.Domino.DominoActionMessage.DominoPlacedAllPiecesAction;
 import com.example.gameframework.Domino.infoMessage.DominoGameState;
-import com.example.gameframework.Domino.infoMessage.MoveInfo;
-import com.example.gameframework.Domino.infoMessage.PlayerInfo;
 import com.example.gameframework.game.GameFramework.infoMessage.GameInfo;
-import com.example.gameframework.game.GameFramework.infoMessage.GameOverInfo;
-import com.example.gameframework.game.GameFramework.infoMessage.IllegalMoveInfo;
 import com.example.gameframework.game.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.gameframework.game.GameFramework.players.GameComputerPlayer;
-
-import java.util.ArrayList;
 
 public class DominoComputerPlayers1 extends GameComputerPlayer {
     /**
@@ -31,12 +25,15 @@ public class DominoComputerPlayers1 extends GameComputerPlayer {
         if (info instanceof NotYourTurnInfo){
             return;
         }
+        DominoGameState gameStateObj = new DominoGameState((DominoGameState) info);
 
-        if (info instanceof IllegalMoveInfo){
-
+        if (gameStateObj.isGameBlocked()){
+            game.sendAction(new DominoGameBlockedAction(this));
         }
 
-        DominoGameState gameStateObj = new DominoGameState((DominoGameState) info);
+        if (gameStateObj.getPlayerInfo()[playerNum].getHand().size() == 0){
+            game.sendAction(new DominoPlacedAllPiecesAction(this,name));
+        }
 
         //if player doesn't have legal move, draw until there is a legal move. If boneyard is empty
         //skip turn

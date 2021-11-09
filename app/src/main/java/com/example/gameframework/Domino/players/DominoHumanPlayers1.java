@@ -1,7 +1,6 @@
 package com.example.gameframework.Domino.players;
 
 import android.graphics.Color;
-import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 import com.example.gameframework.Domino.DominoActionMessage.DominoDrawAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoMoveAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoSkipAction;
+import com.example.gameframework.Domino.DominoActionMessage.DominoPlacedAllPiecesAction;
 import com.example.gameframework.Domino.infoMessage.Domino;
 import com.example.gameframework.Domino.infoMessage.DominoGameState;
 import com.example.gameframework.Domino.infoMessage.MoveInfo;
@@ -74,20 +74,17 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
             surfaceView.flash(Color.RED, 50);
             return;
         }
-
-        if (!(info instanceof DominoGameState)){
+        else if (!(info instanceof DominoGameState)){
             return;
         }
+
         surfaceView.invalidate();
 
         // Cast info as a DominoGameState to get information from it.
         DominoGameState gameInfo = (DominoGameState) info;
-        // Get legal moves, clear them, then update them.
-        ArrayList<MoveInfo> myLegalMoves = gameInfo.getPlayerInfo()[playerNum].getLegalMoves();
 
-        if (myLegalMoves.size() == 0){
-            game.sendAction(new DominoSkipAction(this));
-            surfaceView.invalidate();
+        if (gameInfo.getPlayerInfo()[playerNum].getHand().size() == 0){
+            game.sendAction(new DominoPlacedAllPiecesAction(this,name));
         }
 
         // Update player score TextViews.
@@ -159,8 +156,13 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
             dominosInHand[i].setClickable(false);
         }
 
-        if(gameInfo.getPlayerInfo()[playerNum].getLegalMoves().size() == 0)
-        {
+        // Get legal moves.
+        ArrayList<MoveInfo> myLegalMoves = gameInfo.getPlayerInfo()[playerNum].getLegalMoves();
+        if(myLegalMoves.size() == 0) {
+            if (gameInfo.getBoneyard().size() == 0){
+                game.sendAction(new DominoSkipAction(this));
+                return;
+            }
             game.sendAction(new DominoDrawAction(this));
         }
 
@@ -351,7 +353,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         MoveInfo a = surfaceView.clickedInsideHighlight(x,y);
         // If the MoveInfo is null, flash screen.
         if (a == null){
-            surfaceView.flash(Color.RED, 50);
+            //surfaceView.flash(Color.RED, 50);
         }
         // If move info is valid, send a new MoveAction.
         else{

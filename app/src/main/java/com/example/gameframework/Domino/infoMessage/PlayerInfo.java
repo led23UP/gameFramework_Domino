@@ -30,17 +30,16 @@ public class PlayerInfo {
 
         this.id = other.id;
         this.playerHand= new ArrayList<>(other.playerHand.size());
-        for(int i=0; i< other.playerHand.size();i++)
-        {
-            this.playerHand.add(new Domino(other.playerHand.get(i)));
+        for(Domino d : other.playerHand) {
+            this.playerHand.add(new Domino(d));
         }
-        this.playerHand = other.playerHand;
+
         this.score= other.score;
 
         this.legalMoves = new ArrayList<>(other.legalMoves.size());
 
-        for (int i = 0; i < other.legalMoves.size(); i++){
-            this.legalMoves.add(new MoveInfo(other.legalMoves.get(i)));
+        for (MoveInfo m : other.legalMoves){
+            this.legalMoves.add(new MoveInfo(m));
         }
     }
 
