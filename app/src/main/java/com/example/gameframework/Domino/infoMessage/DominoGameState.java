@@ -73,7 +73,7 @@ public class DominoGameState extends GameState {
         for (int i = 0; i < other.board.size(); i++){
             this.board.add(new ArrayList<Domino>(other.board.get(i).size()));
             for (Domino d : other.board.get(i)){
-                this.board.get(i).add(d);
+                this.board.get(i).add(new Domino(d));
             }
         }
         int size = other.boneyard.size();
