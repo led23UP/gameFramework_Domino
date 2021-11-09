@@ -114,11 +114,13 @@ public class DominoLocalGame extends LocalGame {
 
                         state.setMessage(playerNames[playerID] + " scored " +
                                 state.getPlayerInfo()[playerID].getScore() +" points");
-                        state.setTurnID();
 
                         state.getPlayerInfo()[playerID].getLegalMoves().clear();
                         state.findLegalMoves(playerID);
                         state.setBoneyardMsg(Integer.toString(state.getBoneyard().size()));
+                        if (state.getPlayerInfo()[playerID].getHand().size() != 0) {
+                            state.setTurnID();
+                        }
                         return true;
                     }
               //  }

@@ -4,14 +4,12 @@ public class MoveInfo {
     private int row;
     private int col;
     private int orientation;
-    private char chain;
     private int dominoIndex;
 
     public MoveInfo(int r, int c, int o, int d){
-        this.row = r;
-        this.col = c;
+        this.row = Math.max(r, 0);
+        this.col = Math.max(c,0);
         this.orientation = o;
-        this.chain = ' ';
         this.dominoIndex = d;
     }
 
@@ -19,7 +17,6 @@ public class MoveInfo {
         this.row = other.row;
         this.col = other.col;
         this.orientation = other.orientation;
-        this.chain = other.chain;
         this.dominoIndex = other.dominoIndex;
     }
 
@@ -35,9 +32,6 @@ public class MoveInfo {
         return orientation;
     }
 
-    public char getChain() {
-        return chain;
-    }
 
     public int getDominoIndex(){
         return this.dominoIndex;
@@ -53,10 +47,6 @@ public class MoveInfo {
 
     public void setOrientation(int orientation) {
         this.orientation = orientation;
-    }
-
-    public void setChain(char chain) {
-        this.chain = chain;
     }
 
     public void setDominoIndex(int d){

@@ -61,7 +61,7 @@ public class DSurfaceView extends FlashSurfaceView {
 
         for (int i = 0; i < dState.getBoardXSize(); i++){
             for (int j = 0; j < dState.getBoardYSize(i); j++){
-                if (dState.getDomino(i,j) == null){
+                if (dState.getDomino(i,j).getLeftPipCount() == -1){
                     continue;
                 }
                 Domino d = dState.getDomino(i,j);
