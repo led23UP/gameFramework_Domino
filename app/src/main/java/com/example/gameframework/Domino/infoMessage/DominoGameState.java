@@ -27,9 +27,15 @@ public class DominoGameState extends GameState {
     private String message;
     private String boneyardMsg;
     public boolean boardEmpty;
+    private ArrayList<String> text;
 
 
     public DominoGameState() {
+        text = new ArrayList<String>();
+        text.add("");
+        text.add("");
+        text.add("");
+        text.add("");
 
         message = "";
         boneyardMsg="";
@@ -47,6 +53,11 @@ public class DominoGameState extends GameState {
     }
 
     public DominoGameState(DominoGameState other) {
+        text= new ArrayList<String>(other.text.size());
+        text.add(other.text.get(0));
+        text.add(other.text.get(1));
+        text.add(other.text.get(2));
+        text.add(other.text.get(3));
 
         this.message = other.message;
         this.boneyardMsg = other.boneyardMsg;
@@ -535,8 +546,12 @@ public class DominoGameState extends GameState {
 
         // If the the sum of pips is a multiple of 3, award user that amount of points.
         if ((leftPips + rightPips + bottomPips + topPips) % 3 == 0){
-            players[playerID].addPoints(leftPips + rightPips + bottomPips + topPips);
+            int value = leftPips+rightPips+bottomPips+topPips;
+            players[playerID].addPoints(value);
+            players[playerID].setCurrentPoints(value);
+            return;
         }
+        players[playerID].setCurrentPoints(0);
     }
 
     /**
@@ -654,6 +669,18 @@ public class DominoGameState extends GameState {
         return i == players.length;
     }
 
+    public void setText(String x)
+    {
+        int last = text.size();
+        String msg = x+"\n";
+        text.add(0,msg);
+        text.remove(last);
+    }
+    public ArrayList<String> getText()
+    {
+        return this.text;
+    }
+
     /**
      * Update the turnID.
      */
@@ -680,6 +707,9 @@ public class DominoGameState extends GameState {
             }
         }
         boardEmpty = true;
+
+        Arrays.fill(chainEnds, -99);
+
 
         if (firstRound) {
             //create player objects equal to the amount of players playing.

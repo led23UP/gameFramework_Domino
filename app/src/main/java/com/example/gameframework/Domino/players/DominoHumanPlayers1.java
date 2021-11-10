@@ -92,7 +92,13 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         player1ScoreView.setText("");
         player2ScoreView.setText("");
         player3ScoreView.setText("");
-        messageText.setText(gameInfo.getMessage());
+
+        //messageText.setText(gameInfo.getMessage());
+        messageText.setText(gameInfo.getText().get(0)+gameInfo.getText().get(1)
+                +gameInfo.getText().get(2)+gameInfo.getText().get(3));
+
+
+
         messageText.setTextColor(Color.YELLOW);
         boneyardText.setText(gameInfo.getBoneyardMsg());
         boneyardText.setTextColor(Color.YELLOW);
