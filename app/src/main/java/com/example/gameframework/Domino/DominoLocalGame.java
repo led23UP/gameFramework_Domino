@@ -52,14 +52,14 @@ public class DominoLocalGame extends LocalGame {
 
 
         if (playerNames.length >=2 && dState.getPlayerInfo()[1].getPlayerActive() &&
-                dState.getPlayerInfo()[1].getScore() >=50){
+                dState.getPlayerInfo()[1].getScore() >=150){
             return playerNames[1]+" wins with " + dState.getPlayerInfo()[1].getScore() + " points!";
         }
         if (playerNames.length >=3 && dState.getPlayerInfo()[2].getPlayerActive() &&
-                dState.getPlayerInfo()[2].getScore() >=50){
+                dState.getPlayerInfo()[2].getScore() >=150){
             return playerNames[2]+" wins with " + dState.getPlayerInfo()[2].getScore() + " points!";
         }
-        if (playerNames.length >=4 && dState.getPlayerInfo()[0].getPlayerActive() &&dState.getPlayerInfo()[3].getScore() >=50){
+        if (playerNames.length >=4 && dState.getPlayerInfo()[0].getPlayerActive() &&dState.getPlayerInfo()[3].getScore() >=150){
             return playerNames[3]+" wins with " + dState.getPlayerInfo()[3].getScore() + " points!";
         }
 
@@ -123,6 +123,10 @@ public class DominoLocalGame extends LocalGame {
                         state.findLegalMoves(playerID);
                         state.setBoneyardMsg("Boneyard(Dominoes remaining)\n"+
                                 Integer.toString(state.getBoneyard().size()));
+
+                        if (state.getPlayerInfo()[playerID].getHand().size() != 0) {
+                            state.setTurnID();
+                        }
                         return true;
                     }
               //  }

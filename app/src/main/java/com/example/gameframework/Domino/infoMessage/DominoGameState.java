@@ -68,7 +68,7 @@ public class DominoGameState extends GameState {
 
         this.doesBoardHaveSpinner = other.doesBoardHaveSpinner;
 
-        chainEnds = new int[8];
+        this.chainEnds = new int[8];
         System.arraycopy(other.chainEnds, 0, this.chainEnds, 0, 8);
 
         this.players = new PlayerInfo[other.players.length];
@@ -78,7 +78,6 @@ public class DominoGameState extends GameState {
         }
 
         this.board = new ArrayList<ArrayList<Domino>>(other.board.size());
-        this.boneyard = new ArrayList<>(other.boneyard.size());
         this.dominoSet = new DominoSet(other.dominoSet);
 
         for (int i = 0; i < other.board.size(); i++){
@@ -87,12 +86,14 @@ public class DominoGameState extends GameState {
                 this.board.get(i).add(new Domino(d));
             }
         }
+
         int size = other.boneyard.size();
+        this.boneyard = new ArrayList<>(size);
         for (int i = 0; i < size; i++){
             this.boneyard.add(new Domino(other.boneyard.get(i)));
         }
-        this.turnID = other.turnID;
 
+        this.turnID = other.turnID;
         this.message = other.message;
         this.boardEmpty = other.boardEmpty;
     }
@@ -145,7 +146,7 @@ public class DominoGameState extends GameState {
      * findLegalMovesLeft finds all of a player's legal moves on the left side of board.
      * @param playerID The player who is calling the function.
      */
-    public void findLegalMovesLeft(int playerID){
+    private void findLegalMovesLeft(int playerID){
         int leftEndX = chainEnds[0];
         int leftEndY = chainEnds[1];
         // Index represents the dominoIndex.
@@ -160,8 +161,6 @@ public class DominoGameState extends GameState {
                 x = leftEndX;
                 y = leftEndY - 1;
                 playerMoves.add(new MoveInfo(x,y,1,index));
-                setDominoChain(x, y, playerMoves.get(playerMoves.size() - 1),
-                        board.get(leftEndX).get(leftEndY));
             }
             // If the right pips on played domino match the left pips on board, add a new legal move
             // at x,y with orientation 3.
@@ -169,9 +168,6 @@ public class DominoGameState extends GameState {
                 x = leftEndX;
                 y = leftEndY - 1;
                 playerMoves.add(new MoveInfo(x,y,3,index));
-                // Set the legal move's chain.
-                setDominoChain(x, y, playerMoves.get(playerMoves.size() - 1),
-                        board.get(leftEndX).get(leftEndY));
             }
             // Increment index as we are moving to next domino in hand.
             index++;
@@ -182,7 +178,7 @@ public class DominoGameState extends GameState {
      * findLegalMovesRight finds all of a player's legal moves on the right side of board.
      * @param playerID The player who is calling the function.
      */
-    public void findLegalMovesRight(int playerID){
+    private void findLegalMovesRight(int playerID){
         int rightEndX = chainEnds[2];
         int rightEndY = chainEnds[3];
         // Index represents the dominoIndex.
@@ -197,8 +193,6 @@ public class DominoGameState extends GameState {
                 x = rightEndX;
                 y = rightEndY + 1;
                 playerMoves.add(new MoveInfo(x,y,1,index));
-                setDominoChain(x, y, playerMoves.get(playerMoves.size() - 1),
-                        board.get(rightEndX).get(rightEndY));
             }
             // If the right pips on played domino match the right pips on board, add a new legal move
             // at x,y with orientation 3.
@@ -207,8 +201,6 @@ public class DominoGameState extends GameState {
                 y = rightEndY + 1;
                 playerMoves.add(new MoveInfo(x,y,3,index));
                 // Set the legal move's chain.
-                setDominoChain(x, y, playerMoves.get(playerMoves.size() - 1),
-                        board.get(rightEndX).get(rightEndY));
             }
             // Increment index as we are moving to next domino in hand.
             index++;
@@ -219,7 +211,7 @@ public class DominoGameState extends GameState {
      * findLegalMovesTop finds all of a player's legal moves on the top of board.
      * @param playerID The player who is calling the function.
      */
-    public void findLegalMovesTop(int playerID){
+    private void findLegalMovesTop(int playerID){
         // If spinner has not been placed yet, return.
         if (chainEnds[4] == -99){
             return;
@@ -237,8 +229,6 @@ public class DominoGameState extends GameState {
                 x = topEndX - 1;
                 y = topEndY;
                 playerMoves.add(new MoveInfo(x,y,4,index));
-                setDominoChain(x, y, playerMoves.get(playerMoves.size() - 1),
-                        board.get(topEndX).get(topEndY));
             }
             // If the right pips on played domino match the left pips on board, add a new legal move
             // at x,y with orientation 2.
@@ -246,9 +236,6 @@ public class DominoGameState extends GameState {
                 x = topEndX - 1;
                 y = topEndY;
                 playerMoves.add(new MoveInfo(x,y,2,index));
-                // Set the legal move's chain.
-                setDominoChain(x, y, playerMoves.get(playerMoves.size() - 1),
-                        board.get(topEndX).get(topEndY));
             }
             // Increment index as we are moving to next domino in hand.
             index++;
@@ -259,7 +246,7 @@ public class DominoGameState extends GameState {
      * findLegalMovesBottom finds all of a player's legal moves on the bottom of board.
      * @param playerID The player who is calling the function.
      */
-    public void findLegalMovesBottom(int playerID){
+    private void findLegalMovesBottom(int playerID){
         // If spinner has not been placed yet, return.
         if (chainEnds[6] == -99){
             return;
@@ -277,8 +264,6 @@ public class DominoGameState extends GameState {
                 x = bottomEndX + 1;
                 y = bottomEndY;
                 playerMoves.add(new MoveInfo(x,y,2,index));
-                setDominoChain(x, y, playerMoves.get(playerMoves.size() - 1),
-                        board.get(bottomEndX).get(bottomEndY));
             }
             // If the right pips on played domino match the right pips on board, add a new legal move
             // at x,y with orientation 4.
@@ -286,9 +271,6 @@ public class DominoGameState extends GameState {
                 x = bottomEndX + 1;
                 y = bottomEndY;
                 playerMoves.add(new MoveInfo(x,y,4,index));
-                // Set the legal move's chain.
-                setDominoChain(x, y, playerMoves.get(playerMoves.size() - 1),
-                        board.get(bottomEndX).get(bottomEndY));
             }
             // Increment index as we are moving to next domino in hand.
             index++;
@@ -306,7 +288,7 @@ public class DominoGameState extends GameState {
     public boolean placePiece(int x, int y, int playerID, int dominoIndex){
         // Use this to keep track if the player is attempting to place from a legal move.
         int orientation = -1;
-        MoveInfo move = null;
+        MoveInfo move;
         // Loop through player's moves to check for a match.
         for (int i = 0; i < players[playerID].getLegalMoves().size(); i++){
             move = players[playerID].getLegalMoves().get(i);
@@ -365,46 +347,43 @@ public class DominoGameState extends GameState {
 
         // Set the played domino's orientation to match the legal move's orientation.
         playedDomino.setOrientation(orientation);
-        // Set the chain to match the move's chain.
-        playedDomino.setChain(move.getChain());
 
         // If we are below zero, add a new row to board.
-        if (x < 0){
+        if (x <= 0){
             // Add a new row to arraylist and fill each col with a placeholder.
             board.add(0,new ArrayList<Domino>(BOARDWIDTH));
             for (int i = 0; i < board.size(); i++){
                 board.get(0).add(new Domino(-1,-1,-1,-1));
             }
+            board.get(x+1).set(y,playedDomino);
             // Because we are adding a new row, increment every row chainEnd by one.
-            chainEnds[0]++;
+            //chainEnds[0]++;
             chainEnds[2]++;
             chainEnds[4]++;
             chainEnds[6]++;
         }
-        else if (x == board.size()){
+        // If x is bigger than board size, add a new row and then place domino.
+        else if (x >= board.size()){
             // Add a new row to arraylist and fill each col with a placeholder.
             board.add(new ArrayList<Domino>(BOARDWIDTH));
             for (int i = 0; i < 9; i++){
                 board.get(x).add(new Domino(-1,-1,-1,-1));
             }
-        }
-        // If we are not at beginning or end of  board and NOT at center, overwrite placeholder
-        // with played domino.
-        else if (x != board.size()/2){
             board.get(x).set(y,playedDomino);
         }
+        // If x is not less than zero or greater than board size, but x is above or below middle,
+        // simply set the domino in the spot x,y.
+        else if (x > board.size()/2 || x < board.size()/2){
+            board.get(x).set(y, playedDomino);
+        }
         // We only place to left or right if X is the center of the board.
-        if (x == board.size()/2) {
+        else if (x == board.size()/2) {
             // If we are below zero, add a new col to board.
-            if (y < 0) {
-                board.get(x).add(0, playedDomino);
+            if (y <= 0) {
                 for (int i = 0; i < board.size(); i++) {
-                    // Do not add a placeholder to spot we are placing domino in.
-                    if (i == x) {
-                        continue;
-                    }
                     board.get(i).add(0, new Domino(-1, -1, -1, -1));
                 }
+                board.get(x).set(1,playedDomino);
                 // Because we are adding a new col, increment every col chainEnd by one.
                 chainEnds[1]++;
                 chainEnds[3]++;
@@ -412,10 +391,9 @@ public class DominoGameState extends GameState {
                 chainEnds[7]++;
             }
             // If we are at the last col, add a new domino to end.
-            else if (y == board.get(x).size()) {
+            else if (y >= board.get(x).size()) {
                 board.get(x).add(playedDomino);
             }
-            // Otherwise, overwrite placeholder to be current domino.
             else {
                 board.get(x).set(y, playedDomino);
             }
@@ -437,51 +415,24 @@ public class DominoGameState extends GameState {
     }
 
     /**
-     * setDominoChain sets the chain of the MoveInfo inputted.
-     * @param x row of move
-     * @param y col of move
-     * @param move the legalMove having its chain set.
-     * @param prevD the previousDomino move is being compared to.
-     */
-    private void setDominoChain(int x, int y, MoveInfo move, Domino prevD){
-        // If the prevDomino is in center of board.
-        if (prevD.getChain() == ' ') {
-            // If we are placing to right of center, assign chain R.
-            if (y > board.get(BOARDHEIGHT/2).size()/2) {
-                move.setChain('R');
-            }
-            // If we are placing to left of center, assign chain L.
-            else if (y < board.get(BOARDHEIGHT/2).size()/2) {
-                move.setChain('L');
-            }
-        }
-        // Otherwise, use the prevDomino's chain.
-        else {
-            move.setChain(prevD.getChain());
-        }
-        // If we are below spinner, set chain to D.
-        if (x > board.size()/2 && prevD.isSpinner() || prevD.getChain() == 'D') {
-            move.setChain('D');
-        }
-        // If we are above spinner, set chain to U.
-        else if (x < board.size()/2 && prevD.isSpinner() || prevD.getChain() == 'U') {
-            move.setChain('U');
-        }
-    }
-
-    /**
      * setChainEnd updates the appropriate chainEnd to row x and col y depending on the char c inputted.
      * @param x row of chainEnd
      * @param y col of chainEnd
      */
     private void setChainEnd(int x, int y) {
         // If we are adding to 0 in arraylist, reset chainEnd to zero.
-        if (x < 0) {
-            x = 0;
+        if (x <= 0) {
+            x = 1;
+        }
+        else if (x >= board.size()){
+            x = board.size() - 1;
         }
         // If we are adding to 0 in arraylist, reset chainEnd to zero.
-        if (y < 0) {
-            y = 0;
+        if (y <= 0) {
+            y = 1;
+        }
+        else if (y >= board.get(x).size()){
+            y = board.size() - 1;
         }
 
         if (x < board.size() / 2) {
@@ -493,10 +444,10 @@ public class DominoGameState extends GameState {
             chainEnds[7] = y;
             return;
         }
-        if (y < board.get(board.size() / 2).size() / 2) {
+        if (y < board.get(x).size() / 2) {
             chainEnds[0] = x;
             chainEnds[1] = y;
-        } else if (y > board.get(board.size() / 2).size() / 2){
+        } else if (y > board.get(x).size() / 2){
             chainEnds[2] = x;
             chainEnds[3] = y;
         }
@@ -706,6 +657,7 @@ public class DominoGameState extends GameState {
                 board.get(i).add(new Domino(-1,-1,-1,-1));
             }
         }
+        Arrays.fill(chainEnds, -99);
         boardEmpty = true;
 
         Arrays.fill(chainEnds, -99);

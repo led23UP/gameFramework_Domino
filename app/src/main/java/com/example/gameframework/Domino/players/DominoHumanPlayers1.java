@@ -70,7 +70,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
             return;
         }
 
-        if (info instanceof IllegalMoveInfo || info instanceof NotYourTurnInfo){
+        if (info instanceof NotYourTurnInfo){
             surfaceView.flash(Color.RED, 50);
             return;
         }
@@ -359,13 +359,14 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         MoveInfo a = surfaceView.clickedInsideHighlight(x,y);
         // If the MoveInfo is null, flash screen.
         if (a == null){
-            //surfaceView.flash(Color.RED, 50);
+            surfaceView.flash(Color.RED, 50);
         }
         // If move info is valid, send a new MoveAction.
         else{
             DominoMoveAction action = new DominoMoveAction(this,a.getRow(),a.getCol(),selectedDomino);
             Logger.log("onTouch", "Human player sending move action");
             game.sendAction(action);
+            selectedDomino = -1;
             surfaceView.invalidate();
         }
         return true;

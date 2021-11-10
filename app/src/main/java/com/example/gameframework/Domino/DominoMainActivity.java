@@ -28,18 +28,11 @@ public class DominoMainActivity extends GameMainActivity {
         ArrayList<GamePlayerType> playerTypes = new ArrayList<GamePlayerType>();
 
         // yellow-on-blue GUI
-        playerTypes.add(new GamePlayerType("Local Human Player (blue-yellow)") {
+        playerTypes.add(new GamePlayerType("Local Human Player") {
             public GamePlayer createPlayer(String name) {
                 return new DominoHumanPlayers1(name, R.layout.domino_human_player1);
             }
         });
-
-        // red-on-yellow GUI
-        /*playerTypes.add(new GamePlayerType("Local Human Player (yellow-red)") {
-            public GamePlayer createPlayer(String name) {
-                return new DominoHumanPlayers1(name, R.layout.ttt_human_player1_flipped);
-            }
-        });*/
 
         // dumb computer player
         playerTypes.add(new GamePlayerType("Computer Player (dumb)") {
@@ -59,7 +52,7 @@ public class DominoMainActivity extends GameMainActivity {
         GameConfig defaultConfig = new GameConfig(playerTypes, 1, 4, "Dominos", PORT_NUMBER);
 
         // Add the default players
-        defaultConfig.addPlayer("Human", 0); // yellow-on-blue GUI
+        defaultConfig.addPlayer("Human", 0); // Local Human Player
         defaultConfig.addPlayer("Computer", 3); // dumb computer player
 
         // Set the initial information for the remote player

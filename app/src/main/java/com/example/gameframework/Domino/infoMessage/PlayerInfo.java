@@ -27,7 +27,6 @@ public class PlayerInfo {
     }
     public PlayerInfo(PlayerInfo other)
     {
-
         this.playerActive = other.playerActive;
 
         this.id = other.id;
