@@ -24,7 +24,7 @@ public class DominoGameState extends GameState {
     private ArrayList<Domino> boneyard;
     private PlayerInfo[] players;
     private int turnID;
-    private String message;
+
     private String boneyardMsg;
     public boolean boardEmpty;
     private ArrayList<String> text;
@@ -37,7 +37,7 @@ public class DominoGameState extends GameState {
         text.add("");
         text.add("");
 
-        message = "";
+
         boneyardMsg="";
         chainEnds = new int[8];
         Arrays.fill(chainEnds, -99);
@@ -59,7 +59,7 @@ public class DominoGameState extends GameState {
         text.add(other.text.get(2));
         text.add(other.text.get(3));
 
-        this.message = other.message;
+
         this.boneyardMsg = other.boneyardMsg;
         this.playerCount = other.playerCount;
 
@@ -94,7 +94,7 @@ public class DominoGameState extends GameState {
         }
 
         this.turnID = other.turnID;
-        this.message = other.message;
+
         this.boardEmpty = other.boardEmpty;
     }
 
@@ -580,17 +580,6 @@ public class DominoGameState extends GameState {
         return this.boneyard;
     }
 
-    /**
-     *
-     * @return The current message of DominoGameState.
-     */
-    public String getMessage(){return this.message;}
-
-    /**
-     *
-     * @param msg The message to set msg to.
-     */
-    public void setMessage(String msg) { this.message = msg;}
 
     /**
      *
@@ -619,7 +608,9 @@ public class DominoGameState extends GameState {
         // If all players have no moves and boneyard is empty, return true.
         return i == players.length;
     }
-
+    /**
+     * Update the strings in the array
+     */
     public void setText(String x)
     {
         int last = text.size();
@@ -627,6 +618,9 @@ public class DominoGameState extends GameState {
         text.add(0,msg);
         text.remove(last);
     }
+    /**
+     * returns text arraylist
+     */
     public ArrayList<String> getText()
     {
         return this.text;

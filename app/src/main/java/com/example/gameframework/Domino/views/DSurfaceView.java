@@ -53,6 +53,8 @@ public class DSurfaceView extends FlashSurfaceView {
         return Color.WHITE;
     }
 
+    //Citation for domino pics
+    //https://publicdomainvectors.org/en/tag/domino
     public void onDraw(Canvas g){
 
         if (dState == null) {

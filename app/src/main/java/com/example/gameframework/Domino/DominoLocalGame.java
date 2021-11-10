@@ -50,7 +50,6 @@ public class DominoLocalGame extends LocalGame {
             return playerNames[0]+ " wins with " + dState.getPlayerInfo()[0].getScore() + " points!";
         }
 
-
         if (playerNames.length >=2 && dState.getPlayerInfo()[1].getPlayerActive() &&
                 dState.getPlayerInfo()[1].getScore() >=150){
             return playerNames[1]+" wins with " + dState.getPlayerInfo()[1].getScore() + " points!";
@@ -159,7 +158,7 @@ public class DominoLocalGame extends LocalGame {
             }
             if (action instanceof DominoQuitGameAction)
             {
-                state.setMessage("Player x has forfeited their turn");
+                state.setText("Player x has forfeited their turn");
                 return true;
             }
             if (action instanceof DominoNewGameAction)
