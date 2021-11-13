@@ -7,10 +7,15 @@ import com.example.gameframework.Domino.DominoActionMessage.DominoSkipAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoPlacedAllPiecesAction;
 import com.example.gameframework.Domino.infoMessage.DominoGameState;
 import com.example.gameframework.game.GameFramework.infoMessage.GameInfo;
+import com.example.gameframework.game.GameFramework.infoMessage.IllegalMoveInfo;
 import com.example.gameframework.game.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.gameframework.game.GameFramework.players.GameComputerPlayer;
+import com.example.gameframework.game.GameFramework.utilities.Logger;
 
 public class DominoComputerPlayers1 extends GameComputerPlayer {
+    int r;
+    int c;
+    int idx;
     /**
      * constructor
      *
@@ -25,6 +30,12 @@ public class DominoComputerPlayers1 extends GameComputerPlayer {
         if (info instanceof NotYourTurnInfo){
             return;
         }
+        if (info instanceof IllegalMoveInfo){
+            game.sendAction(new DominoMoveAction(this, r,c,idx));
+            Logger.log("I", "Illegal move, resending prev. action");
+            return;
+        }
+
         DominoGameState gameStateObj = new DominoGameState((DominoGameState) info);
 
         if (gameStateObj.isGameBlocked()){
@@ -51,13 +62,14 @@ public class DominoComputerPlayers1 extends GameComputerPlayer {
         }
 
         //grabs the first legal move available and store it for use later
-        int row, col, idx;
-        row = gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().get(0).getRow();
-        col = gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().get(0).getCol();
+        r = gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().get(0).getRow();
+        c = gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().get(0).getCol();
         idx = gameStateObj.getPlayerInfo()[playerNum].getLegalMoves().get(0).getDominoIndex();
 
+        Logger.log("i", "Row: " + r + " Col: " + c + " Index: " + idx);
+
         sleep(1);
-        game.sendAction(new DominoMoveAction(this, row,col,idx));
+        game.sendAction(new DominoMoveAction(this, r,c,idx));
 
     }
 }

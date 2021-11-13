@@ -20,7 +20,6 @@ import com.example.gameframework.Domino.views.DSurfaceView;
 import com.example.gameframework.R;
 import com.example.gameframework.game.GameFramework.GameMainActivity;
 import com.example.gameframework.game.GameFramework.infoMessage.GameInfo;
-import com.example.gameframework.game.GameFramework.infoMessage.IllegalMoveInfo;
 import com.example.gameframework.game.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.gameframework.game.GameFramework.players.GameHumanPlayer;
 import com.example.gameframework.game.GameFramework.utilities.Logger;

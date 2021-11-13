@@ -13,7 +13,10 @@ import com.example.gameframework.game.GameFramework.actionMessage.GameAction;
 import com.example.gameframework.game.GameFramework.players.GamePlayer;
 
 
+
 public class DominoLocalGame extends LocalGame {
+
+
     public DominoLocalGame() {
         super();
         super.state = new DominoGameState();
@@ -42,23 +45,21 @@ public class DominoLocalGame extends LocalGame {
 
     protected String checkIfGameOver() {
 
-
         DominoGameState dState = (DominoGameState) super.state;
         if (dState.getPlayerInfo()[0].getPlayerActive() &&
-                dState.getPlayerInfo()[0].getScore() >=150){
-
+                dState.getPlayerInfo()[0].getScore() >=100){
             return playerNames[0]+ " wins with " + dState.getPlayerInfo()[0].getScore() + " points!";
         }
 
         if (playerNames.length >=2 && dState.getPlayerInfo()[1].getPlayerActive() &&
-                dState.getPlayerInfo()[1].getScore() >=150){
+                dState.getPlayerInfo()[1].getScore() >=100){
             return playerNames[1]+" wins with " + dState.getPlayerInfo()[1].getScore() + " points!";
         }
         if (playerNames.length >=3 && dState.getPlayerInfo()[2].getPlayerActive() &&
-                dState.getPlayerInfo()[2].getScore() >=150){
+                dState.getPlayerInfo()[2].getScore() >=100){
             return playerNames[2]+" wins with " + dState.getPlayerInfo()[2].getScore() + " points!";
         }
-        if (playerNames.length >=4 && dState.getPlayerInfo()[0].getPlayerActive() &&dState.getPlayerInfo()[3].getScore() >=150){
+        if (playerNames.length >=4 && dState.getPlayerInfo()[0].getPlayerActive() &&dState.getPlayerInfo()[3].getScore() >=100){
             return playerNames[3]+" wins with " + dState.getPlayerInfo()[3].getScore() + " points!";
         }
 
@@ -73,19 +74,9 @@ public class DominoLocalGame extends LocalGame {
     protected boolean makeMove(GameAction action) {
         DominoGameState state = (DominoGameState) super.state;
 
-        int playerID;
-        playerID=state.getTurnID();
-
-        //TODO Give better indication that game is blocked.
-        if (state.isGameBlocked()){
-            state.endRound();
-            state.startRound(false);
-            sendAction(new DominoPlacedAllPiecesAction(players[playerID], playerNames[playerID]));
-        }
-
+        int playerID = getPlayerIdx(action.getPlayer());
 
         if (canMove(playerID)){
-            //skips the forfeited player's turn
             //TODO Give better indication that a round was won
             if (action instanceof DominoPlacedAllPiecesAction){
                 DominoPlacedAllPiecesAction r = (DominoPlacedAllPiecesAction) action;
@@ -110,25 +101,24 @@ public class DominoLocalGame extends LocalGame {
                 int col = dm.getCol();
                 int idx = dm.getDominoIndex();
 
-                //for (MoveInfo m : state.getPlayerInfo()[playerID].getLegalMoves()) {
                     if (state.placePiece(row,col,playerID,idx)) {
 
                         state.setText(playerNames[playerID] + " scored " +
                                 state.getPlayerInfo()[playerID].getCurrentPoints() +" points");
                         state.getPlayerInfo()[playerID].setCurrentPoints(0);
-                        state.setTurnID();
 
                         state.getPlayerInfo()[playerID].getLegalMoves().clear();
                         state.findLegalMoves(playerID);
-                        state.setBoneyardMsg("Boneyard(Dominoes remaining)\n"+
-                                Integer.toString(state.getBoneyard().size()));
+                        state.setBoneyardMsg("Boneyard(Dominoes remaining)\n"
+                                + state.getBoneyard().size());
+
+                        state.setBoneyardMsg(Integer.toString(state.getBoneyard().size()));
 
                         if (state.getPlayerInfo()[playerID].getHand().size() != 0) {
                             state.setTurnID();
                         }
                         return true;
                     }
-              //  }
                 return false;
             }
             if (action instanceof DominoDrawAction)
@@ -140,13 +130,13 @@ public class DominoLocalGame extends LocalGame {
                     {
                         return true;
                     }
-                    state.setBoneyardMsg( "Boneyard(Dominoes remaining)\n" +
-                            Integer.toString(state.getBoneyard().size()));
+                    state.setBoneyardMsg( "Boneyard(Dominoes remaining)\n"
+                            + state.getBoneyard().size());
                     state.drawPiece(playerID);
                     count++;
 
                 }
-                state.setText(playerNames[playerID]+" draws x"+Integer.toString(count)+" domino");
+                state.setText(playerNames[playerID]+" draws x" + count +" domino");
                 return true;
             }
             if( action instanceof DominoSkipAction)
