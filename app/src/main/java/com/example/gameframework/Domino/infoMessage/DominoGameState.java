@@ -95,7 +95,7 @@ public class DominoGameState extends GameState {
         int dominoHighestWeight = -1;
 
         for (int i = 0; i < playerCount; i++) {
-            for (int j = 0; j < 5; j++) {
+            for (int j = 0; j < players[i].getHand().size(); j++) {
                 if (players[i].getHand().get(j).getWeight() > lowestMax) {
                     lowestMax = players[i].getHand().get(j).getWeight();
                     playerLowestMax = i;
