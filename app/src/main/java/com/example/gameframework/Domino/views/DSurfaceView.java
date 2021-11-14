@@ -25,6 +25,7 @@ public class DSurfaceView extends FlashSurfaceView {
     protected DominoGameState dState;
     private ArrayList<DominoHighlight> highlights;
     private int selectedDomino;
+    private int playerNum;
 
     public DSurfaceView(Context context) {
         super(context);
@@ -76,6 +77,11 @@ public class DSurfaceView extends FlashSurfaceView {
 
     public void drawHighlights(Canvas g, int selectedDomino){
         highlights.clear();
+
+        // If it is NOT the human player's turn, do not draw highlights.
+        if (this.playerNum != dState.getTurnID()){
+            return;
+        }
 
         Paint p = new Paint();
         p.setColor(dominoColor());
@@ -185,6 +191,12 @@ public class DSurfaceView extends FlashSurfaceView {
 
     public void setSelectedDomino(int sD){
         this.selectedDomino = sD;
+    }
+
+    // This is only called once to set the surfaceViews playerNum to the
+    // human player's playerID.
+    public void setSVPlayerID(int ID){
+        this.playerNum = ID;
     }
 
 }

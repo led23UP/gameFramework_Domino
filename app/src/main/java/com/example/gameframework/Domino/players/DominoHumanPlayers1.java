@@ -102,34 +102,31 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         boneyardText.setText(gameInfo.getBoneyardMsg());
         boneyardText.setTextColor(Color.YELLOW);
 
-        if(gameInfo.getTurnID() == 0)
-        {
+        if(gameInfo.getTurnID() == 0) {
             player0ScoreView.setTextColor(Color.YELLOW);
             player1ScoreView.setTextColor(Color.WHITE);
             player2ScoreView.setTextColor(Color.WHITE);
             player3ScoreView.setTextColor(Color.WHITE);
         }
-        if(gameInfo.getTurnID() == 1)
-        {
+        if(gameInfo.getTurnID() == 1) {
             player1ScoreView.setTextColor(Color.YELLOW);
             player0ScoreView.setTextColor(Color.WHITE);
             player2ScoreView.setTextColor(Color.WHITE);
             player3ScoreView.setTextColor(Color.WHITE);
         }
-        if(gameInfo.getTurnID() == 2)
-        {
+        if(gameInfo.getTurnID() == 2) {
             player2ScoreView.setTextColor(Color.YELLOW);
             player1ScoreView.setTextColor(Color.WHITE);
             player0ScoreView.setTextColor(Color.WHITE);
             player3ScoreView.setTextColor(Color.WHITE);
         }
-        if(gameInfo.getTurnID() == 3)
-        {
+        if(gameInfo.getTurnID() == 3) {
             player3ScoreView.setTextColor(Color.YELLOW);
             player1ScoreView.setTextColor(Color.WHITE);
             player2ScoreView.setTextColor(Color.WHITE);
             player0ScoreView.setTextColor(Color.WHITE);
         }
+
         switch(gameInfo.getPlayerInfo().length){
             case 4:
                 player3ScoreView.setText(allPlayerNames[3]+" "+
@@ -288,6 +285,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         // If the domino isn't in their hand, set the remaining buttons alpha to zero.
 
         this.surfaceView = (DSurfaceView) myActivity.findViewById(R.id.surfaceView);
+        this.surfaceView.setSVPlayerID(playerNum);
         Logger.log("set listener", "OnTouch");
         surfaceView.setOnTouchListener(this);
 
