@@ -9,11 +9,12 @@ import java.util.ArrayList;
 public class DominoGameStateTest {
 
     @Test
+    // Written by Pranav Rajan.
     public void testFirstMove() {
 
         DominoGameState game_state= new DominoGameState();
         //setting number of players to 4
-game_state.setNumPlayersStart(4);
+        game_state.setNumPlayersStart(4);
 
         game_state.startRound(true);
         //to randomize the cards dealt to each player
@@ -25,7 +26,7 @@ game_state.setNumPlayersStart(4);
 
         PlayerInfo [] players=game_state.getPlayerInfo();
         int numPlayers=players.length;
-//outer for-loop walks through playerinfo objects in players array
+        //outer for-loop walks through playerinfo objects in players array
         for(int i=0;i<numPlayers;i++){
             ArrayList<Domino> playerHand= players[i].getHand();
             //inner for-loop walks through the dominos in the hands of each player
@@ -38,11 +39,11 @@ game_state.setNumPlayersStart(4);
                 }
             }
         }
-// expected first move data calculated from the for loop above
+        // expected first move data calculated from the for loop above
         int [] expectedFirstMove= new int [2];
         expectedFirstMove[0]=playerWithMax;
         expectedFirstMove[1]=dominoIndexMax;
-//unexpected data
+        //unexpected data
         int [] notExpectedFirstMove= new int [2];
         notExpectedFirstMove[0]=playerWithMax-1;
         notExpectedFirstMove[1]=dominoIndexMax-1;
@@ -53,6 +54,8 @@ game_state.setNumPlayersStart(4);
 
     }
 
+    @Test
+    // Written by Paul Kenstler
     public void placePiece() {
         DominoGameState dgs = new DominoGameState();
         dgs.setNumPlayersStart(1);
@@ -67,6 +70,7 @@ game_state.setNumPlayersStart(4);
     }
 
     @Test
+    // Written by Paul Kenstler
     public void calculateScoredPoints() {
         DominoGameState dgs = new DominoGameState();
         dgs.setNumPlayersStart(1);
@@ -84,6 +88,7 @@ game_state.setNumPlayersStart(4);
         dgs.placePiece(4,4,0,0);
 
         assertEquals(12,dgs.getPlayerInfo()[0].getScore());
+
         //Player should get another 12 points.
         playerHand.add(new Domino(3,6,1,-1));
         playerMoves.add(new MoveInfo(4,5,1,0));
@@ -91,6 +96,7 @@ game_state.setNumPlayersStart(4);
         dgs.placePiece(4,5,0,0);
 
         assertEquals(24, dgs.getPlayerInfo()[0].getScore());
+
         // Should be awarded NO points here.
         playerHand.add(new Domino(6,1,1,-1));
         playerMoves.add(new MoveInfo(4,6,1,0));
@@ -112,10 +118,7 @@ game_state.setNumPlayersStart(4);
     }
 
     @Test
-    public void drawPiece() {
-    }
-
-    @Test
+    // Test written by Paul Kenstler
     public void isGameBlocked() {
         DominoGameState dgs = new DominoGameState();
         dgs.setNumPlayersStart(2);
@@ -136,7 +139,7 @@ game_state.setNumPlayersStart(4);
         assertFalse(dgs.isGameBlocked());
 
     }
-
+    // Helper function for PlacePiece test.
     private boolean dominoEquals(Domino d1, Domino d2){
         return d1.getLeftPipCount() == d2.getLeftPipCount()
                 && d2.getRightPipCount() == d1.getRightPipCount();
