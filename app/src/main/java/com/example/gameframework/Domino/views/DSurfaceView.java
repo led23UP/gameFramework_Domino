@@ -25,6 +25,7 @@ public class DSurfaceView extends FlashSurfaceView {
     protected DominoGameState dState;
     private ArrayList<DominoHighlight> highlights;
     private int selectedDomino;
+    private int playerNum;
 
     public DSurfaceView(Context context) {
         super(context);
@@ -53,6 +54,10 @@ public class DSurfaceView extends FlashSurfaceView {
         return Color.WHITE;
     }
 
+
+    //Citation for domino pics
+    //https://publicdomainvectors.org/en/tag/domino
+
     //draws the domino and green highlights
     public void onDraw(Canvas g){
 
@@ -60,9 +65,9 @@ public class DSurfaceView extends FlashSurfaceView {
             return;
         }
 
-        for (int i = 0; i < dState.getBOARDHEIGHT(); i++){
-            for (int j = 0; j < dState.getBOARDWIDTH(); j++){
-                if (dState.getDomino(i,j) == null){
+        for (int i = 0; i < dState.getBoardXSize(); i++){
+            for (int j = 0; j < dState.getBoardYSize(i); j++){
+                if (dState.getDomino(i,j).getLeftPipCount() == -1){
                     continue;
                 }
                 Domino d = dState.getDomino(i,j);
@@ -75,6 +80,11 @@ public class DSurfaceView extends FlashSurfaceView {
 
     public void drawHighlights(Canvas g, int selectedDomino){
         highlights.clear();
+
+        // If it is NOT the human player's turn, do not draw highlights.
+        if (this.playerNum != dState.getTurnID()){
+            return;
+        }
 
         Paint p = new Paint();
         p.setColor(dominoColor());
@@ -110,20 +120,20 @@ public class DSurfaceView extends FlashSurfaceView {
             col=currentLegalMove.getCol();
             orientation= currentLegalMove.getOrientation();
             if(orientation==1 || orientation==3){
-                highlights.add(new DominoHighlight(col*150,row*150,orientation,currentLegalMove));
-                g.drawBitmap(horizontalHighlight,col*150, row*150,p );
+                highlights.add(new DominoHighlight(col*150+2500,row*150+2500,orientation,currentLegalMove));
+                g.drawBitmap(horizontalHighlight,col*150+2500, row*150+2500,p );
 
             }
             else if(orientation==2 || orientation==4){
-                highlights.add(new DominoHighlight(col*150,row*150,orientation,currentLegalMove));
-                g.drawBitmap(verticalHighlight,col*150,row*150,p );
+                highlights.add(new DominoHighlight(col*150+2500,row*150+2500,orientation,currentLegalMove));
+                g.drawBitmap(verticalHighlight,col*150+2500,row*150+2500,p );
             }
         }
     }
 
     public void drawDomino(Canvas g, Domino d, int row, int col){
-        float xLoc = col*150;
-        float yLoc = row*150;
+        float xLoc = col*150+2500;
+        float yLoc = row*150+2500;
         // If domino is invalid, DO NOT DRAW.
         if (d.getLeftPipCount() == -1 ||d.getRightPipCount() == -1 ){
             return;
@@ -188,4 +198,11 @@ public class DSurfaceView extends FlashSurfaceView {
     public void setSelectedDomino(int sD){
         this.selectedDomino = sD;
     }
+
+    // This is only called once to set the surfaceViews playerNum to the
+    // human player's playerID.
+    public void setSVPlayerID(int ID){
+        this.playerNum = ID;
+    }
+
 }

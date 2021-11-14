@@ -13,7 +13,6 @@ public class Domino {
     private int orientation;
     private final int weight;
     private boolean spinner;
-    private char chain;
 
     public Domino(int pipsLeft, int pipsRight, int paramOrientation, int weightParam){
         leftPipsCount = pipsLeft;
@@ -21,7 +20,6 @@ public class Domino {
         orientation = paramOrientation;
         weight = weightParam;
         spinner = false;
-        chain = ' ';
     }
 
     public Domino(Domino other){
@@ -30,7 +28,6 @@ public class Domino {
         this.orientation = other.orientation;
         this.weight = other.weight;
         this.spinner = other.spinner;
-        this.chain = other.chain;
     }
 
     public int getLeftPipCount(){
@@ -49,14 +46,6 @@ public class Domino {
         return this.orientation;
     }
 
-    public char getChain(){
-        return this.chain;
-    }
-
-    public boolean isSpinner(){
-        return this.spinner;
-    }
-
     public void setSpinner(){
         this.spinner = true;
     }
@@ -68,11 +57,6 @@ public class Domino {
             int tmp = this.leftPipsCount;
             this.leftPipsCount = rightPipsCount;
             rightPipsCount = tmp;
-
         }
-    }
-
-    public void setChain(char c){
-        this.chain = c;
     }
 }

@@ -1,16 +1,18 @@
 package com.example.gameframework.Domino.players;
 
 import android.graphics.Color;
-import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.gameframework.Domino.DominoActionMessage.DominoDrawAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoMoveAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoSkipAction;
+import com.example.gameframework.Domino.DominoActionMessage.DominoPlacedAllPiecesAction;
 import com.example.gameframework.Domino.infoMessage.Domino;
 import com.example.gameframework.Domino.infoMessage.DominoGameState;
 import com.example.gameframework.Domino.infoMessage.MoveInfo;
@@ -18,7 +20,6 @@ import com.example.gameframework.Domino.views.DSurfaceView;
 import com.example.gameframework.R;
 import com.example.gameframework.game.GameFramework.GameMainActivity;
 import com.example.gameframework.game.GameFramework.infoMessage.GameInfo;
-import com.example.gameframework.game.GameFramework.infoMessage.IllegalMoveInfo;
 import com.example.gameframework.game.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.gameframework.game.GameFramework.players.GameHumanPlayer;
 import com.example.gameframework.game.GameFramework.utilities.Logger;
@@ -44,6 +45,9 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
     private Button newGameButton;
     private Button quitGameButton;
 
+    private ScrollView myScrollViewV;
+    private HorizontalScrollView myScrollViewH;
+
     private int layoutId;
     private int selectedDomino;
 
@@ -65,76 +69,75 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
             return;
         }
 
-        if (info instanceof IllegalMoveInfo || info instanceof NotYourTurnInfo){
+        if (info instanceof NotYourTurnInfo){
             surfaceView.flash(Color.RED, 50);
             return;
         }
-
-        if (!(info instanceof DominoGameState)){
+        else if (!(info instanceof DominoGameState)){
             return;
         }
+
         surfaceView.invalidate();
+
         // Cast info as a DominoGameState to get information from it.
         DominoGameState gameInfo = (DominoGameState) info;
-        // Get legal moves, clear them, then update them.
-        ArrayList<MoveInfo> myLegalMoves = gameInfo.getPlayerInfo()[playerNum].getLegalMoves();
-        myLegalMoves.clear();
-        gameInfo.findLegalMoves(playerNum);
+
+        if (gameInfo.getPlayerInfo()[playerNum].getHand().size() == 0){
+            game.sendAction(new DominoPlacedAllPiecesAction(this,name));
+        }
 
         // Update player score TextViews.
         player0ScoreView.setText("");
         player1ScoreView.setText("");
         player2ScoreView.setText("");
         player3ScoreView.setText("");
-        messageText.setText(gameInfo.getMessage());
+
+        //messageText.setText(gameInfo.getMessage());
+        messageText.setText(gameInfo.getText().get(0)+gameInfo.getText().get(1)
+                +gameInfo.getText().get(2)+gameInfo.getText().get(3));
+
+
+
         messageText.setTextColor(Color.YELLOW);
         boneyardText.setText(gameInfo.getBoneyardMsg());
         boneyardText.setTextColor(Color.YELLOW);
 
-        //makes current player names yellow when their turn
-        if(gameInfo.getTurnID() == 0)
-        {
+        if(gameInfo.getTurnID() == 0) {
             player0ScoreView.setTextColor(Color.YELLOW);
             player1ScoreView.setTextColor(Color.WHITE);
             player2ScoreView.setTextColor(Color.WHITE);
             player3ScoreView.setTextColor(Color.WHITE);
         }
-        if(gameInfo.getTurnID() == 1)
-        {
+        if(gameInfo.getTurnID() == 1) {
             player1ScoreView.setTextColor(Color.YELLOW);
             player0ScoreView.setTextColor(Color.WHITE);
             player2ScoreView.setTextColor(Color.WHITE);
             player3ScoreView.setTextColor(Color.WHITE);
         }
-        if(gameInfo.getTurnID() == 2)
-        {
+        if(gameInfo.getTurnID() == 2) {
             player2ScoreView.setTextColor(Color.YELLOW);
             player1ScoreView.setTextColor(Color.WHITE);
             player0ScoreView.setTextColor(Color.WHITE);
             player3ScoreView.setTextColor(Color.WHITE);
         }
-        if(gameInfo.getTurnID() == 3)
-        {
+        if(gameInfo.getTurnID() == 3) {
             player3ScoreView.setTextColor(Color.YELLOW);
             player1ScoreView.setTextColor(Color.WHITE);
             player2ScoreView.setTextColor(Color.WHITE);
             player0ScoreView.setTextColor(Color.WHITE);
         }
+
         switch(gameInfo.getPlayerInfo().length){
             case 4:
-                player3ScoreView.setText(allPlayerNames[3]+" "+
-                        String.valueOf(gameInfo.getPlayerInfo()[3].getScore()));
+                player3ScoreView.setText(allPlayerNames[3]+" "+ gameInfo.getPlayerInfo()[3].getScore());
 
             case 3:
-                player2ScoreView.setText(allPlayerNames[2]+" "+
-                        String.valueOf(gameInfo.getPlayerInfo()[2].getScore()));
+                player2ScoreView.setText(allPlayerNames[2]+" "+ gameInfo.getPlayerInfo()[2].getScore());
             case 2:
-                player1ScoreView.setText(allPlayerNames[1]+" "+
-                        String.valueOf(gameInfo.getPlayerInfo()[1].getScore()));
+                player1ScoreView.setText(allPlayerNames[1]+" "+ gameInfo.getPlayerInfo()[1].getScore());
             case 1:
 
-                player0ScoreView.setText(allPlayerNames[0]+
-                        " "+String.valueOf(gameInfo.getPlayerInfo()[0].getScore()));
+                player0ScoreView.setText(allPlayerNames[0]+ gameInfo.getPlayerInfo()[0].getScore());
 
         }
 
@@ -151,8 +154,13 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
             dominosInHand[i].setClickable(false);
         }
 
-        if(gameInfo.getPlayerInfo()[playerNum].getLegalMoves().size() == 0)
-        {
+        // Get legal moves.
+        ArrayList<MoveInfo> myLegalMoves = gameInfo.getPlayerInfo()[playerNum].getLegalMoves();
+        if(myLegalMoves.size() == 0) {
+            if (gameInfo.getBoneyard().size() == 0){
+                game.sendAction(new DominoSkipAction(this));
+                return;
+            }
             game.sendAction(new DominoDrawAction(this));
         }
 
@@ -237,6 +245,26 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         this.quitGameButton = (Button)activity.findViewById(R.id.quitGameButton);
         this.helpButton = (Button)activity.findViewById(R.id.helpButton);
 
+        this.myScrollViewV = activity.findViewById(R.id.scrollV);
+
+        myScrollViewV.post(new Runnable() {
+            @Override
+            public void run() {
+                //setting position here :
+                myScrollViewV.scrollTo(0, 2500);
+            }
+        });
+
+        this.myScrollViewH = activity.findViewById(R.id.scrollH);
+
+        myScrollViewV.post(new Runnable() {
+            @Override
+            public void run() {
+                //setting position here :
+                myScrollViewH.scrollTo(2500, 0);
+            }
+        });
+
         this.dominosInHand = new ImageButton[23];
         // Don't want to write 23 lines of findViewById, so the ImageButtons are being declared this way.
         int[] bIdArray = {R.id.hand0,R.id.hand1,R.id.hand2,R.id.hand3,R.id.hand4,R.id.hand5,R.id.hand6,
@@ -253,6 +281,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         // If the domino isn't in their hand, set the remaining buttons alpha to zero.
 
         this.surfaceView = (DSurfaceView) myActivity.findViewById(R.id.surfaceView);
+        this.surfaceView.setSVPlayerID(playerNum);
         Logger.log("set listener", "OnTouch");
         surfaceView.setOnTouchListener(this);
 
@@ -330,6 +359,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
             DominoMoveAction action = new DominoMoveAction(this,a.getRow(),a.getCol(),selectedDomino);
             Logger.log("onTouch", "Human player sending move action");
             game.sendAction(action);
+            selectedDomino = -1;
             surfaceView.invalidate();
         }
         return true;

@@ -9,9 +9,9 @@ public class DominoMoveAction extends GameAction {
     private static final long serialVersionUID = -2242980258970485343L;
 
     // instance variables: the selected row and column
-    private int row;
-    private int col;
-    private int dominoIndex;
+    private final int row;
+    private final int col;
+    private final int dominoIndex;
     /**
      * constructor for GameAction
      *

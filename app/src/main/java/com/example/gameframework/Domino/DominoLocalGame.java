@@ -3,18 +3,20 @@ package com.example.gameframework.Domino;
 import com.example.gameframework.Domino.DominoActionMessage.DominoDrawAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoMoveAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoNewGameAction;
+import com.example.gameframework.Domino.DominoActionMessage.DominoGameBlockedAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoQuitGameAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoSkipAction;
-import com.example.gameframework.Domino.infoMessage.Domino;
+import com.example.gameframework.Domino.DominoActionMessage.DominoPlacedAllPiecesAction;
 import com.example.gameframework.Domino.infoMessage.DominoGameState;
-import com.example.gameframework.Domino.infoMessage.MoveInfo;
 import com.example.gameframework.game.GameFramework.LocalGame;
 import com.example.gameframework.game.GameFramework.actionMessage.GameAction;
 import com.example.gameframework.game.GameFramework.players.GamePlayer;
 
-import java.util.ArrayList;
+
 
 public class DominoLocalGame extends LocalGame {
+
+
     public DominoLocalGame() {
         super();
         super.state = new DominoGameState();
@@ -44,21 +46,20 @@ public class DominoLocalGame extends LocalGame {
     protected String checkIfGameOver() {
 
         DominoGameState dState = (DominoGameState) super.state;
-
-        //playersName.length is to prevent crashes out of bounds
-        if (dState.getPlayerInfo()[0].getPlayerActive()== true &&
-                dState.getPlayerInfo()[0].getScore() >=150){
+        if (dState.getPlayerInfo()[0].getPlayerActive() &&
+                dState.getPlayerInfo()[0].getScore() >=100){
             return playerNames[0]+ " wins with " + dState.getPlayerInfo()[0].getScore() + " points!";
         }
-        if (playerNames.length >=2 && dState.getPlayerInfo()[1].getPlayerActive()== true &&
-                dState.getPlayerInfo()[1].getScore() >=150){
+
+        if (playerNames.length >=2 && dState.getPlayerInfo()[1].getPlayerActive() &&
+                dState.getPlayerInfo()[1].getScore() >=100){
             return playerNames[1]+" wins with " + dState.getPlayerInfo()[1].getScore() + " points!";
         }
-        if (playerNames.length >=3 && dState.getPlayerInfo()[2].getPlayerActive()== true &&
-                dState.getPlayerInfo()[2].getScore() >=150){
+        if (playerNames.length >=3 && dState.getPlayerInfo()[2].getPlayerActive() &&
+                dState.getPlayerInfo()[2].getScore() >=100){
             return playerNames[2]+" wins with " + dState.getPlayerInfo()[2].getScore() + " points!";
         }
-        if (playerNames.length >=4 && dState.getPlayerInfo()[0].getPlayerActive()== true &&dState.getPlayerInfo()[3].getScore() >=150){
+        if (playerNames.length >=4 && dState.getPlayerInfo()[0].getPlayerActive() &&dState.getPlayerInfo()[3].getScore() >=100){
             return playerNames[3]+" wins with " + dState.getPlayerInfo()[3].getScore() + " points!";
         }
 
@@ -72,76 +73,82 @@ public class DominoLocalGame extends LocalGame {
     @Override
     protected boolean makeMove(GameAction action) {
         DominoGameState state = (DominoGameState) super.state;
-        //if game is blocked, no player can make a turn, move on
-        if (state.isGameBlocked()){
-            state.endRound();
-            state.startRound();
-        }
 
+        int playerID = getPlayerIdx(action.getPlayer());
 
-        int playerID=state.getTurnID();
-        //check if current player can move
         if (canMove(playerID)){
+            //TODO Give better indication that a round was won
+            if (action instanceof DominoPlacedAllPiecesAction){
+                DominoPlacedAllPiecesAction r = (DominoPlacedAllPiecesAction) action;
+                state.setText(r.getName() + " won the round!");
+                state.setText("Awarding points to "+r.getName());
+                state.setText("Board has been reset");
+                state.placedAllPieces(playerID);
+                state.startRound(false);
+                return true;
+            }
+
+            if (action instanceof DominoGameBlockedAction){
+                state.setText("Game is blocked.");
+                state.endRound();
+                state.startRound(false);
+            }
 
             if( action instanceof DominoMoveAction)
             {
                 DominoMoveAction dm = (DominoMoveAction) action;
-                //gets row, col, and idx from either computer player or human player
                 int row = dm.getRow();
                 int col = dm.getCol();
                 int idx = dm.getDominoIndex();
-                //gets the players move
-                for (MoveInfo m : state.getPlayerInfo()[playerID].getLegalMoves()) {
-                    if (m.getRow() == row && m.getCol() == col && m.getDominoIndex() == idx) {
-                        state.placePiece(row, col, playerID, idx);
 
-                        //update player's score
-                        state.setMessage(playerNames[playerID] + " scored " +
-                                state.getPlayerInfo()[playerID].getScore() +" points");
+                    if (state.placePiece(row,col,playerID,idx)) {
 
-                        state.setTurnID(); //next player's turn
+                        state.setText(playerNames[playerID] + " scored " +
+                                state.getPlayerInfo()[playerID].getCurrentPoints() +" points");
+                        state.getPlayerInfo()[playerID].setCurrentPoints(0);
 
-                        //clear legal moves and finds it again
                         state.getPlayerInfo()[playerID].getLegalMoves().clear();
                         state.findLegalMoves(playerID);
-                        //update current boneyard dominos remaining
+                        state.setBoneyardMsg("Boneyard(Dominoes remaining)\n"
+                                + state.getBoneyard().size());
+
                         state.setBoneyardMsg(Integer.toString(state.getBoneyard().size()));
+
+                        if (state.getPlayerInfo()[playerID].getHand().size() != 0) {
+                            state.setTurnID();
+                        }
                         return true;
                     }
-                }
                 return false;
             }
             if (action instanceof DominoDrawAction)
             {
-                //this section does not change the player turn because we want this action to "loop"
-
-                //if there's no legal moves, draw a piece until there's a legal more
+                int count = 0;
                 while(state.getPlayerInfo()[playerID].getLegalMoves().size() == 0)
                 {
-                    //if boneyard is empty, return back to computer player class which will
-                    //send a Domino Skip action
                     if(state.getBoneyard().size() == 0)
                     {
                         return true;
                     }
+                    state.setBoneyardMsg( "Boneyard(Dominoes remaining)\n"
+                            + state.getBoneyard().size());
                     state.drawPiece(playerID);
-
-                    //update log
-                    state.setBoneyardMsg(Integer.toString(state.getBoneyard().size()));
-                    state.setMessage(playerNames[playerID]+" draws a domino");
+                    count++;
 
                 }
+                state.setText(playerNames[playerID]+" draws x" + count +" domino");
                 return true;
             }
             if( action instanceof DominoSkipAction)
             {
-                state.setMessage(playerNames[playerID]+" cannot make a legal move. Their turn has been skipped");
+
+                state.setText(playerNames[playerID]+" cannot make a legal move. Their turn has been skipped");
                 state.setTurnID();
                 return true;
             }
             if (action instanceof DominoQuitGameAction)
             {
-                state.setMessage("Player x has forfeited their turn");
+                state.setText("Player x has forfeited their turn");
                 return true;
             }
             if (action instanceof DominoNewGameAction)
@@ -150,6 +157,7 @@ public class DominoLocalGame extends LocalGame {
             }
         }
 
+        //ss
         return false;
     }
 

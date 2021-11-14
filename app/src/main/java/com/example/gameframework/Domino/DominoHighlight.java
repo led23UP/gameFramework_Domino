@@ -4,17 +4,17 @@ import com.example.gameframework.Domino.infoMessage.MoveInfo;
 
 public class DominoHighlight {
     // Fields leftX, rightX, topY, bottomY are used to see if player clicked inside highlight.
-    private float leftX,rightX;
-    private float topY, bottomY;
-    private int orientation;
+    private final float leftX;
+    private final float rightX;
+    private final float topY;
+    private final float bottomY;
     // We store the MoveInfo so surface can return the move that the player wants to place.
-    private MoveInfo m;
+    private final MoveInfo m;
 
     public DominoHighlight(float leftX, float topY, int o, MoveInfo m){
         this.leftX = leftX;
         this.topY = topY;
-        this.orientation = o;
-        if (this.orientation == 1 || this.orientation == 3){
+        if (o == 1 || o == 3){
             this.rightX = leftX + 82 + 75;
             this.bottomY = topY + 41 + 75;
         }
