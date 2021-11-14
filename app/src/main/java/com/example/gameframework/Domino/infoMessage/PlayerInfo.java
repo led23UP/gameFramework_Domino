@@ -10,6 +10,7 @@ import java.util.ArrayList;
  */
 public class PlayerInfo {
     private final int id;
+    private int currentPoints;
     private int score;
     private boolean playerActive;
     private ArrayList<Domino> playerHand;
@@ -21,25 +22,26 @@ public class PlayerInfo {
         this.playerActive = active;
         playerHand = new ArrayList<>();
         this.score= 0;
+        this.currentPoints=0;
         legalMoves = new ArrayList<>();
     }
     public PlayerInfo(PlayerInfo other)
     {
-
         this.playerActive = other.playerActive;
 
         this.id = other.id;
         this.playerHand= new ArrayList<>(other.playerHand.size());
-        for(int i=0; i< other.playerHand.size();i++)
-        {
-            this.playerHand.add(new Domino(other.playerHand.get(i)));
+        for(Domino d : other.playerHand) {
+            this.playerHand.add(new Domino(d));
         }
-        this.playerHand = other.playerHand;
-        this.score= other.score;
 
+        this.score= other.score;
+        this.currentPoints = other.currentPoints;
         this.legalMoves = new ArrayList<>(other.legalMoves.size());
 
-        this.legalMoves.addAll(other.legalMoves);
+        for (MoveInfo m : other.legalMoves){
+            this.legalMoves.add(new MoveInfo(m));
+        }
     }
 
     public boolean getPlayerActive() {return this.playerActive; }
@@ -50,13 +52,15 @@ public class PlayerInfo {
         this.score += points;
     }
 
+    public void setCurrentPoints(int points){this.currentPoints = points;}
+    public int getCurrentPoints(){return currentPoints;}
     public int getScore(){
         return this.score;
     }
 
     public ArrayList<Domino> getHand()
     {
-        return playerHand;
+        return this.playerHand;
     }
 
     public ArrayList<MoveInfo> getLegalMoves(){

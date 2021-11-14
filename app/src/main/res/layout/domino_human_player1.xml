@@ -6,12 +6,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.example.gameframework.Domino.views.DSurfaceView
-        android:id="@+id/surfaceView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" />
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/scrollV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollY="1500sp">
+
+            <HorizontalScrollView
+                android:id="@+id/scrollH"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollX="1500sp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <com.example.gameframework.Domino.views.DSurfaceView
+                        android:id="@+id/surfaceView"
+                        android:layout_width="5000sp"
+                        android:layout_height="5000sp" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
+        </ScrollView>
+    </FrameLayout>
 
     <TextView
         android:id="@+id/boneyardTextView"

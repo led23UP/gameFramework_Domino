@@ -53,16 +53,17 @@ public class DSurfaceView extends FlashSurfaceView {
         return Color.WHITE;
     }
 
-    //draws the domino and green highlights
+    //Citation for domino pics
+    //https://publicdomainvectors.org/en/tag/domino
     public void onDraw(Canvas g){
 
         if (dState == null) {
             return;
         }
 
-        for (int i = 0; i < dState.getBOARDHEIGHT(); i++){
-            for (int j = 0; j < dState.getBOARDWIDTH(); j++){
-                if (dState.getDomino(i,j) == null){
+        for (int i = 0; i < dState.getBoardXSize(); i++){
+            for (int j = 0; j < dState.getBoardYSize(i); j++){
+                if (dState.getDomino(i,j).getLeftPipCount() == -1){
                     continue;
                 }
                 Domino d = dState.getDomino(i,j);
@@ -99,8 +100,6 @@ public class DSurfaceView extends FlashSurfaceView {
         horizontal.postRotate(90);
         Bitmap verticalHighlight=Bitmap.createBitmap(highlight, 0, 0, highlight.getWidth(), highlight.getHeight(), vertical, true);
         Bitmap horizontalHighlight=Bitmap.createBitmap(highlight, 0, 0, highlight.getWidth(), highlight.getHeight(), horizontal, true);
-
-
         for(int i=0;i<numLegalMoves;i++){
             if (!(playerLegalMoves.get(i).getDominoIndex() == selectedDomino)){
                 continue;
@@ -110,20 +109,20 @@ public class DSurfaceView extends FlashSurfaceView {
             col=currentLegalMove.getCol();
             orientation= currentLegalMove.getOrientation();
             if(orientation==1 || orientation==3){
-                highlights.add(new DominoHighlight(col*150,row*150,orientation,currentLegalMove));
-                g.drawBitmap(horizontalHighlight,col*150, row*150,p );
+                highlights.add(new DominoHighlight(col*150+2500,row*150+2500,orientation,currentLegalMove));
+                g.drawBitmap(horizontalHighlight,col*150+2500, row*150+2500,p );
 
             }
             else if(orientation==2 || orientation==4){
-                highlights.add(new DominoHighlight(col*150,row*150,orientation,currentLegalMove));
-                g.drawBitmap(verticalHighlight,col*150,row*150,p );
+                highlights.add(new DominoHighlight(col*150+2500,row*150+2500,orientation,currentLegalMove));
+                g.drawBitmap(verticalHighlight,col*150+2500,row*150+2500,p );
             }
         }
     }
 
     public void drawDomino(Canvas g, Domino d, int row, int col){
-        float xLoc = col*150;
-        float yLoc = row*150;
+        float xLoc = col*150+2500;
+        float yLoc = row*150+2500;
         // If domino is invalid, DO NOT DRAW.
         if (d.getLeftPipCount() == -1 ||d.getRightPipCount() == -1 ){
             return;
@@ -145,7 +144,6 @@ public class DSurfaceView extends FlashSurfaceView {
         three.postRotate(90);
         four.postRotate(180);
 
-        //rotates the dominos to be in the correct orientation
         if(leftPipCount<=rightPipCount) {
             dominoClipartId = "domino" + leftPipCount + "_" + rightPipCount;
         }
@@ -188,4 +186,5 @@ public class DSurfaceView extends FlashSurfaceView {
     public void setSelectedDomino(int sD){
         this.selectedDomino = sD;
     }
+
 }
