@@ -109,8 +109,6 @@ public class DSurfaceView extends FlashSurfaceView {
         horizontal.postRotate(90);
         Bitmap verticalHighlight=Bitmap.createBitmap(highlight, 0, 0, highlight.getWidth(), highlight.getHeight(), vertical, true);
         Bitmap horizontalHighlight=Bitmap.createBitmap(highlight, 0, 0, highlight.getWidth(), highlight.getHeight(), horizontal, true);
-
-
         for(int i=0;i<numLegalMoves;i++){
             if (!(playerLegalMoves.get(i).getDominoIndex() == selectedDomino)){
                 continue;
@@ -155,7 +153,6 @@ public class DSurfaceView extends FlashSurfaceView {
         three.postRotate(90);
         four.postRotate(180);
 
-        //rotates the dominos to be in the correct orientation
         if(leftPipCount<=rightPipCount) {
             dominoClipartId = "domino" + leftPipCount + "_" + rightPipCount;
         }
