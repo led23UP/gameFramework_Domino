@@ -84,42 +84,6 @@ public class DominoGameStateTest {
 
     }
 
-    @Test
-    public void testSetTurnId() {
-        DominoGameState game_state = new DominoGameState();
-        game_state.setNumPlayersStart(4);
-        //4 players in this game
-        int initialTurnId = game_state.getTurnID();
-
-        game_state.setTurnID();
-        //comparing the turn ID after set turn ID to what it should be
-
-        assertEquals((initialTurnId + 1) % 4, game_state.getTurnID());
-        game_state.setTurnID();
-        game_state.setTurnID();
-        assertEquals((initialTurnId + 3) % 4, game_state.getTurnID());
-        game_state.setTurnID();
-        game_state.setTurnID();
-
-        assertNotEquals((initialTurnId + 5) % 9, game_state.getTurnID());
-
-
-    }
-
-    @Test
-    public void testStartRound() {
-        DominoGameState game_state = new DominoGameState();
-        game_state.setNumPlayersStart(3);
-        game_state.startRound(true);
-        //number of players is set to 3 and random dominos shuffled to each players hand
-
-        for (int i = 0; i < game_state.getPlayerInfo().length; i++) {
-            //checking to see if each player's hand consists of 5 dominos
-            assertEquals(5, game_state.getPlayerInfo()[i].getHand().size());
-
-        }
-
-    }
 
 
 }
