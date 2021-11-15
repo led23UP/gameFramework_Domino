@@ -102,50 +102,42 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         boneyardText.setText(gameInfo.getBoneyardMsg());
         boneyardText.setTextColor(Color.YELLOW);
 
-        //makes current player names yellow when their turn
-        if(gameInfo.getTurnID() == 0)
-        {
+        if(gameInfo.getTurnID() == 0) {
             player0ScoreView.setTextColor(Color.YELLOW);
             player1ScoreView.setTextColor(Color.WHITE);
             player2ScoreView.setTextColor(Color.WHITE);
             player3ScoreView.setTextColor(Color.WHITE);
         }
-        if(gameInfo.getTurnID() == 1)
-        {
+        if(gameInfo.getTurnID() == 1) {
             player1ScoreView.setTextColor(Color.YELLOW);
             player0ScoreView.setTextColor(Color.WHITE);
             player2ScoreView.setTextColor(Color.WHITE);
             player3ScoreView.setTextColor(Color.WHITE);
         }
-        if(gameInfo.getTurnID() == 2)
-        {
+        if(gameInfo.getTurnID() == 2) {
             player2ScoreView.setTextColor(Color.YELLOW);
             player1ScoreView.setTextColor(Color.WHITE);
             player0ScoreView.setTextColor(Color.WHITE);
             player3ScoreView.setTextColor(Color.WHITE);
         }
-        if(gameInfo.getTurnID() == 3)
-        {
+        if(gameInfo.getTurnID() == 3) {
             player3ScoreView.setTextColor(Color.YELLOW);
             player1ScoreView.setTextColor(Color.WHITE);
             player2ScoreView.setTextColor(Color.WHITE);
             player0ScoreView.setTextColor(Color.WHITE);
         }
+
         switch(gameInfo.getPlayerInfo().length){
             case 4:
-                player3ScoreView.setText(allPlayerNames[3]+" "+
-                        String.valueOf(gameInfo.getPlayerInfo()[3].getScore()));
+                player3ScoreView.setText(allPlayerNames[3]+" "+ gameInfo.getPlayerInfo()[3].getScore());
 
             case 3:
-                player2ScoreView.setText(allPlayerNames[2]+" "+
-                        String.valueOf(gameInfo.getPlayerInfo()[2].getScore()));
+                player2ScoreView.setText(allPlayerNames[2]+" "+ gameInfo.getPlayerInfo()[2].getScore());
             case 2:
-                player1ScoreView.setText(allPlayerNames[1]+" "+
-                        String.valueOf(gameInfo.getPlayerInfo()[1].getScore()));
+                player1ScoreView.setText(allPlayerNames[1]+" "+ gameInfo.getPlayerInfo()[1].getScore());
             case 1:
 
-                player0ScoreView.setText(allPlayerNames[0]+
-                        " "+String.valueOf(gameInfo.getPlayerInfo()[0].getScore()));
+                player0ScoreView.setText(allPlayerNames[0]+ gameInfo.getPlayerInfo()[0].getScore());
 
         }
 
@@ -289,6 +281,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         // If the domino isn't in their hand, set the remaining buttons alpha to zero.
 
         this.surfaceView = (DSurfaceView) myActivity.findViewById(R.id.surfaceView);
+        this.surfaceView.setSVPlayerID(playerNum);
         Logger.log("set listener", "OnTouch");
         surfaceView.setOnTouchListener(this);
 
