@@ -540,6 +540,7 @@ public class DominoGameState extends GameState {
     public boolean quitGame(int playerID){
         // Set the player who pressed "Quit" to -1 to indicate that they pressed Quit.
         players[playerID].setScore(-1);
+        players[playerID].setPlayerActive(false);
         return true;
     }
 
