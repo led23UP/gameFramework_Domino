@@ -206,6 +206,7 @@ public class DominoGameStateTest {
     }
 
     @Test
+    //Written by Connor Burk
     public void drawPiece() {
         DominoGameState dgs = new DominoGameState();
         dgs.setNumPlayersStart(1);
@@ -225,6 +226,7 @@ public class DominoGameStateTest {
     }
 
     @Test
+    //Written by Connor Burk
     public void quitGame() {
         int playerID = 0;
         DominoGameState dgs = new DominoGameState();
@@ -235,6 +237,7 @@ public class DominoGameStateTest {
     }
 
     @Test
+    //Written by Connor Burk
     public void newGame() {
         int playerID = 0;
         DominoGameState dgs = new DominoGameState();
