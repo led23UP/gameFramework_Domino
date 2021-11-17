@@ -8,7 +8,69 @@ import java.util.ArrayList;
 
 public class DominoGameStateTest {
 
+
     @Test
+    // Written by Pranav Rajan.
+    public void testFirstMove() {
+        DominoGameState game_state = new DominoGameState();
+        //setting number of players to 4
+        game_state.setNumPlayersStart(4);
+        game_state.startRound(true);
+        //to randomize the cards dealt to each player
+        int playerWithMax = -1;//index of player array with maximum weighted domino
+        int dominoIndexMax = -1;// index of player hand with maximum weighted domino
+        int maxDominoWeight = -1; //maximum weight of domino
+        PlayerInfo[] players = game_state.getPlayerInfo();
+        int numPlayers = players.length;
+        //outer for-loop walks through playerinfo objects in players array
+        for (int i = 0; i < numPlayers; i++) {
+            ArrayList<Domino> playerHand = players[i].getHand();
+            //inner for-loop walks through the dominos in the hands of each player
+            for (int j = 0; j < playerHand.size(); j++) {
+                //if the  maximum weight is smaller than the current domino's wieght,
+                if (playerHand.get(j).getWeight() > maxDominoWeight) {
+                    playerWithMax = i;//set with current player
+                    dominoIndexMax = j;//set with current playerHand index
+                    maxDominoWeight = playerHand.get(j).getWeight();//set with new maximum weight
+                }
+            }
+        }
+        // expected first move data calculated from the for loop above
+        int[] expectedFirstMove = new int[2];
+        expectedFirstMove[0] = playerWithMax;
+        expectedFirstMove[1] = dominoIndexMax;
+        int[] actualFirstMove = new int[2];
+        actualFirstMove = game_state.firstMove();
+        //expected first move compared to actual return value from firstMove() function
+        assertArrayEquals(expectedFirstMove, actualFirstMove);
+        //re-starting the round so that shuffled Dominos to each player are different
+        //therefore calculating the first move again based on different player hands
+        //and checking if they match the actual first move return value
+        game_state.startRound(true);
+        playerWithMax = -1;
+        dominoIndexMax = -1;
+        maxDominoWeight = -1;
+        players = game_state.getPlayerInfo();
+        numPlayers = players.length;
+        for (int i = 0; i < numPlayers; i++) {
+            ArrayList<Domino> playerHand = players[i].getHand();
+            for (int j = 0; j < playerHand.size(); j++) {
+                if (playerHand.get(j).getWeight() > maxDominoWeight) {
+                    playerWithMax = i;
+                    dominoIndexMax = j;
+                    maxDominoWeight = playerHand.get(j).getWeight();
+                }
+            }
+        }
+        expectedFirstMove[0] = playerWithMax;
+        expectedFirstMove[1] = dominoIndexMax;
+        actualFirstMove = game_state.firstMove();
+        assertArrayEquals(expectedFirstMove, actualFirstMove);
+
+    }
+
+    @Test
+    // Written by Paul Kenstler
     public void placePiece() {
         DominoGameState dgs = new DominoGameState();
         dgs.setNumPlayersStart(1);
@@ -23,6 +85,7 @@ public class DominoGameStateTest {
     }
 
     @Test
+    // Written by Paul Kenstler
     public void calculateScoredPoints() {
         DominoGameState dgs = new DominoGameState();
         dgs.setNumPlayersStart(1);
@@ -67,11 +130,9 @@ public class DominoGameStateTest {
         assertEquals(36, dgs.getPlayerInfo()[0].getScore());
     }
 
-    @Test
-    public void drawPiece() {
-    }
 
     @Test
+    // Written by Paul Kenstler
     public void isGameBlocked() {
         DominoGameState dgs = new DominoGameState();
         dgs.setNumPlayersStart(2);
@@ -92,10 +153,63 @@ public class DominoGameStateTest {
         assertFalse(dgs.isGameBlocked());
 
     }
+    @Test
+    // Written by David Le.
+    public void testGetTurnID() {
+        DominoGameState state = new DominoGameState();
+        state.setNumPlayersStart(2);
+        state.setTurnID();//0
+        state.setTurnID();//1
+        state.setTurnID();//0
+        state.setTurnID();//1
+        state.setTurnID();//0
+        // Test that turnID is in correct bounds.
+        assertTrue( state.getTurnID() >= 0 || state.getTurnID() < 2);
 
+    }
+    @Test
+    // Written by David Le.
+    public void testQuitGame() {
+        DominoGameState state = new DominoGameState();
+        state.setNumPlayersStart(1);
+        PlayerInfo p1 = state.getPlayerInfo()[0];
+        state.quitGame(p1.getID());
+        assertEquals(false, p1.getPlayerActive());
+    }
+    // Helper function for some test cases.
     private boolean dominoEquals(Domino d1, Domino d2){
         return d1.getLeftPipCount() == d2.getLeftPipCount()
                 && d2.getRightPipCount() == d1.getRightPipCount();
     }
 
+    @Test
+    //Written by Connor Burk
+    public void drawPiece() {
+        DominoGameState dgs = new DominoGameState();
+        dgs.setNumPlayersStart(1);
+        ArrayList<Domino> oldBoneyard = dgs.getBoneyard();
+        int oldBoneyardSize = oldBoneyard.size();
+        Domino temp = oldBoneyard.get(0);
+        PlayerInfo oldPlayer = dgs.getPlayerInfo()[0];
+        int oldHandSize = oldPlayer.getHand().size();
+
+        dgs.drawPiece(0);
+
+        int newHandSize = dgs.getPlayerInfo()[0].getHand().size();
+
+        assertTrue(dgs.getBoneyard().size() < oldBoneyardSize);
+        assertTrue(newHandSize > oldHandSize);
+        assertSame(temp, dgs.getPlayerInfo()[0].getHand().get(newHandSize - 1));
+    }
+
+    @Test
+    //Written by Connor Burk
+    public void quitGame() {
+        int playerID = 0;
+        DominoGameState dgs = new DominoGameState();
+        dgs.setNumPlayersStart(1);
+        dgs.quitGame(playerID);
+        PlayerInfo [] playerArray = dgs.getPlayerInfo();
+        assertEquals(playerArray[0].getScore(), -1);
+    }
 }

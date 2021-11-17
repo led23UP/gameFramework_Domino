@@ -13,9 +13,9 @@ import com.example.gameframework.game.GameFramework.players.GameComputerPlayer;
 import com.example.gameframework.game.GameFramework.utilities.Logger;
 
 public class DominoComputerPlayers1 extends GameComputerPlayer {
-    int r;
-    int c;
-    int idx;
+    private int r;
+    private int c;
+    private int idx;
     /**
      * constructor
      *
@@ -31,10 +31,13 @@ public class DominoComputerPlayers1 extends GameComputerPlayer {
             return;
         }
         if (info instanceof IllegalMoveInfo){
+
             game.sendAction(new DominoMoveAction(this, r,c,idx));
             Logger.log("I", "Illegal move, resending prev. action");
             return;
         }
+
+
 
         DominoGameState gameStateObj = new DominoGameState((DominoGameState) info);
 

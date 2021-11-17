@@ -11,12 +11,10 @@ import com.example.gameframework.Domino.infoMessage.DominoGameState;
 import com.example.gameframework.game.GameFramework.LocalGame;
 import com.example.gameframework.game.GameFramework.actionMessage.GameAction;
 import com.example.gameframework.game.GameFramework.players.GamePlayer;
-
+import com.example.gameframework.game.GameFramework.utilities.MessageBox;
 
 
 public class DominoLocalGame extends LocalGame {
-
-
     public DominoLocalGame() {
         super();
         super.state = new DominoGameState();
@@ -45,21 +43,23 @@ public class DominoLocalGame extends LocalGame {
 
     protected String checkIfGameOver() {
 
+
         DominoGameState dState = (DominoGameState) super.state;
         if (dState.getPlayerInfo()[0].getPlayerActive() &&
-                dState.getPlayerInfo()[0].getScore() >=100){
+                dState.getPlayerInfo()[0].getScore() >=75){
+
             return playerNames[0]+ " wins with " + dState.getPlayerInfo()[0].getScore() + " points!";
         }
 
         if (playerNames.length >=2 && dState.getPlayerInfo()[1].getPlayerActive() &&
-                dState.getPlayerInfo()[1].getScore() >=100){
+                dState.getPlayerInfo()[1].getScore() >=75){
             return playerNames[1]+" wins with " + dState.getPlayerInfo()[1].getScore() + " points!";
         }
         if (playerNames.length >=3 && dState.getPlayerInfo()[2].getPlayerActive() &&
-                dState.getPlayerInfo()[2].getScore() >=100){
+                dState.getPlayerInfo()[2].getScore() >=75){
             return playerNames[2]+" wins with " + dState.getPlayerInfo()[2].getScore() + " points!";
         }
-        if (playerNames.length >=4 && dState.getPlayerInfo()[0].getPlayerActive() &&dState.getPlayerInfo()[3].getScore() >=100){
+        if (playerNames.length >=4 && dState.getPlayerInfo()[0].getPlayerActive() &&dState.getPlayerInfo()[3].getScore() >=75){
             return playerNames[3]+" wins with " + dState.getPlayerInfo()[3].getScore() + " points!";
         }
 
@@ -74,10 +74,23 @@ public class DominoLocalGame extends LocalGame {
     protected boolean makeMove(GameAction action) {
         DominoGameState state = (DominoGameState) super.state;
 
+        //int playerID;
+        //playerID=state.getTurnID();
         int playerID = getPlayerIdx(action.getPlayer());
+
+        //TODO Give better indication that game is blocked.
+
+        if (state.isGameBlocked()){
+            state.endRound();
+            state.startRound(false);
+            sendAction(new DominoPlacedAllPiecesAction(players[playerID], playerNames[playerID]));
+        }
+
+
 
         if (canMove(playerID)){
             //TODO Give better indication that a round was won
+
             if (action instanceof DominoPlacedAllPiecesAction){
                 DominoPlacedAllPiecesAction r = (DominoPlacedAllPiecesAction) action;
                 state.setText(r.getName() + " won the round!");
@@ -107,6 +120,7 @@ public class DominoLocalGame extends LocalGame {
                                 state.getPlayerInfo()[playerID].getCurrentPoints() +" points");
                         state.getPlayerInfo()[playerID].setCurrentPoints(0);
 
+
                         state.getPlayerInfo()[playerID].getLegalMoves().clear();
                         state.findLegalMoves(playerID);
                         state.setBoneyardMsg("Boneyard(Dominoes remaining)\n"
@@ -114,9 +128,9 @@ public class DominoLocalGame extends LocalGame {
 
                         state.setBoneyardMsg(Integer.toString(state.getBoneyard().size()));
 
-                        if (state.getPlayerInfo()[playerID].getHand().size() != 0) {
+                       if (state.getPlayerInfo()[playerID].getHand().size() != 0) {
                             state.setTurnID();
-                        }
+                       }
                         return true;
                     }
                 return false;
@@ -149,11 +163,14 @@ public class DominoLocalGame extends LocalGame {
             if (action instanceof DominoQuitGameAction)
             {
                 state.setText("Player x has forfeited their turn");
+                state.setTurnID();
                 return true;
             }
             if (action instanceof DominoNewGameAction)
             {
 
+                state.setTurnID();
+                return true;
             }
         }
 

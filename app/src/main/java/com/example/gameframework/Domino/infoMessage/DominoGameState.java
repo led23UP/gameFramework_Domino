@@ -147,6 +147,9 @@ public class DominoGameState extends GameState {
      * @param playerID The player who is calling the function.
      */
     private void findLegalMovesLeft(int playerID){
+        if (chainEnds[0] == -99){
+            return;
+        }
         int leftEndX = chainEnds[0];
         int leftEndY = chainEnds[1];
         // Index represents the dominoIndex.
@@ -179,6 +182,9 @@ public class DominoGameState extends GameState {
      * @param playerID The player who is calling the function.
      */
     private void findLegalMovesRight(int playerID){
+        if (chainEnds[2] == -99){
+            return;
+        }
         int rightEndX = chainEnds[2];
         int rightEndY = chainEnds[3];
         // Index represents the dominoIndex.
@@ -540,19 +546,9 @@ public class DominoGameState extends GameState {
     public boolean quitGame(int playerID){
         // Set the player who pressed "Quit" to -1 to indicate that they pressed Quit.
         players[playerID].setScore(-1);
+        players[playerID].setPlayerActive(false);
         return true;
     }
-
-    /**
-     * @param playerID player who wants to start new game.
-     * @return Whether starting a new game was succesful.
-     */
-    public boolean newGame(int playerID){
-        // Set the player who pressed "New Game" to -2 to indicate that they have forfeited.
-        players[playerID].setScore(-2);
-        return true;
-    }
-
 
     /**
      * @param row row of board to get domino from.
@@ -666,6 +662,12 @@ public class DominoGameState extends GameState {
             players = new PlayerInfo[playerCount];
             for (int i = 0; i < playerCount; i++) {
                 players[i] = new PlayerInfo(i, true);
+            }
+        }
+        else{
+            for (PlayerInfo p : players){
+                p.getHand().clear();
+                p.getLegalMoves().clear();
             }
         }
         // Board does not have spinner initially.

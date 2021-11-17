@@ -11,5 +11,7 @@ public class DominoSkipAction extends GameAction{
      */
     public DominoSkipAction(GamePlayer player) {
         super(player);
+        
     }
+
 }
