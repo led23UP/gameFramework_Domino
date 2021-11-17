@@ -336,7 +336,8 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
 
         else if (view instanceof Button){
             if (view.getId() == R.id.newGameButton){
-                //TODO Perform newGame action.
+
+
             }
             else if (view.getId() == R.id.quitGameButton){
                 //TODO Perform quitGame action.
