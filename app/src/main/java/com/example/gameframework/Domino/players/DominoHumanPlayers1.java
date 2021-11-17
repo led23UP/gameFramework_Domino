@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.gameframework.Domino.DominoActionMessage.DominoDrawAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoMoveAction;
+import com.example.gameframework.Domino.DominoActionMessage.DominoNewRoundAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoSkipAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoPlacedAllPiecesAction;
 import com.example.gameframework.Domino.DominoMainActivity;
@@ -87,6 +88,25 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
 
         // Cast info as a DominoGameState to get information from it.
         DominoGameState gameInfo = (DominoGameState) info;
+
+        if (((DominoGameState) info).boardEmpty){
+            myScrollViewV.post(new Runnable() {
+                @Override
+                public void run() {
+                    //setting position here :
+                    myScrollViewV.scrollTo(0, 2500);
+                }
+            });
+
+            myScrollViewH.post(new Runnable() {
+                @Override
+                public void run() {
+                    //setting position here :
+                    myScrollViewH.scrollTo(2500, 0);
+                }
+            });
+        }
+
 
         if (gameInfo.getPlayerInfo()[playerNum].getHand().size() == 0){
             game.sendAction(new DominoPlacedAllPiecesAction(this,name));
@@ -263,7 +283,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
 
         this.myScrollViewH = activity.findViewById(R.id.scrollH);
 
-        myScrollViewV.post(new Runnable() {
+        myScrollViewH.post(new Runnable() {
             @Override
             public void run() {
                 //setting position here :
@@ -292,6 +312,8 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         surfaceView.setOnTouchListener(this);
 
         helpButton.setOnClickListener(this);
+        newGameButton.setOnClickListener(this);
+        quitGameButton.setOnClickListener(this);
 
     }
 
@@ -336,17 +358,14 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
 
         else if (view instanceof Button){
             if (view.getId() == R.id.newGameButton){
-                //TODO Perform newGame action.
+                myActivity.restartGame();
             }
             else if (view.getId() == R.id.quitGameButton){
-                //TODO Perform quitGame action.
+                myActivity.finishAffinity();
             }
             else if (view.getId() == R.id.helpButton){
 
-
                 //getActivity().startActivity(new Intent(getActivity(), Pop.class));
-
-
 
                 MessageBox.popUpMessage(
                         "HOW TO PLAY ALL 3'S DOMINOES: \n\n" +
