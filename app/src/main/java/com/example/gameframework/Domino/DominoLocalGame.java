@@ -46,20 +46,20 @@ public class DominoLocalGame extends LocalGame {
 
         DominoGameState dState = (DominoGameState) super.state;
         if (dState.getPlayerInfo()[0].getPlayerActive() &&
-                dState.getPlayerInfo()[0].getScore() >=150){
+                dState.getPlayerInfo()[0].getScore() >=75){
 
             return playerNames[0]+ " wins with " + dState.getPlayerInfo()[0].getScore() + " points!";
         }
 
         if (playerNames.length >=2 && dState.getPlayerInfo()[1].getPlayerActive() &&
-                dState.getPlayerInfo()[1].getScore() >=150){
+                dState.getPlayerInfo()[1].getScore() >=75){
             return playerNames[1]+" wins with " + dState.getPlayerInfo()[1].getScore() + " points!";
         }
         if (playerNames.length >=3 && dState.getPlayerInfo()[2].getPlayerActive() &&
-                dState.getPlayerInfo()[2].getScore() >=150){
+                dState.getPlayerInfo()[2].getScore() >=75){
             return playerNames[2]+" wins with " + dState.getPlayerInfo()[2].getScore() + " points!";
         }
-        if (playerNames.length >=4 && dState.getPlayerInfo()[0].getPlayerActive() &&dState.getPlayerInfo()[3].getScore() >=150){
+        if (playerNames.length >=4 && dState.getPlayerInfo()[0].getPlayerActive() &&dState.getPlayerInfo()[3].getScore() >=75){
             return playerNames[3]+" wins with " + dState.getPlayerInfo()[3].getScore() + " points!";
         }
 
