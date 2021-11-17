@@ -1,5 +1,7 @@
 package com.example.gameframework.Domino;
 
+import android.content.pm.ActivityInfo;
+
 import com.example.gameframework.Domino.infoMessage.DominoGameState;
 import com.example.gameframework.Domino.players.DominoComputerPlayers1;
 import com.example.gameframework.Domino.players.DominoComputerPlayers2;
@@ -23,6 +25,7 @@ public class DominoMainActivity extends GameMainActivity {
 
     @Override
     public GameConfig createDefaultConfig() {
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
 
         // Define the allowed player types
         ArrayList<GamePlayerType> playerTypes = new ArrayList<GamePlayerType>();
@@ -53,7 +56,7 @@ public class DominoMainActivity extends GameMainActivity {
 
         // Add the default players
         defaultConfig.addPlayer("Human", 0); // Local Human Player
-        defaultConfig.addPlayer("Computer", 3); // dumb computer player
+        defaultConfig.addPlayer("Computer", 1); // dumb computer player
 
         // Set the initial information for the remote player
         defaultConfig.setRemoteData("Remote Player", "", 1); // red-on-yellow GUI

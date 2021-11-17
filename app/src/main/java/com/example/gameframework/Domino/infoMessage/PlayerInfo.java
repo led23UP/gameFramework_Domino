@@ -53,6 +53,8 @@ public class PlayerInfo {
     }
 
     public void setCurrentPoints(int points){this.currentPoints = points;}
+
+    public int getID(){return this.id;}
     public int getCurrentPoints(){return currentPoints;}
     public int getScore(){
         return this.score;

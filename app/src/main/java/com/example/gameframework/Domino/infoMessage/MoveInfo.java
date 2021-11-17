@@ -32,24 +32,11 @@ public class MoveInfo {
         return orientation;
     }
 
-
     public int getDominoIndex(){
         return this.dominoIndex;
     }
 
-    public void setRow(int row){
-        this.row = row;
-    }
-
-    public void setCol(int col){
-        this.col = col;
-    }
-
     public void setOrientation(int orientation) {
         this.orientation = orientation;
-    }
-
-    public void setDominoIndex(int d){
-        this.dominoIndex = d;
     }
 }

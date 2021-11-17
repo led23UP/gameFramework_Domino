@@ -385,7 +385,7 @@ public class DominoGameState extends GameState {
                 }
                 board.get(x).set(1,playedDomino);
                 // Because we are adding a new col, increment every col chainEnd by one.
-                chainEnds[1]++;
+                //chainEnds[1]++;
                 chainEnds[3]++;
                 chainEnds[5]++;
                 chainEnds[7]++;
@@ -444,6 +444,13 @@ public class DominoGameState extends GameState {
             chainEnds[7] = y;
             return;
         }
+        if (y == board.get(x).size()/2 && x == board.get(x).size()/2){
+            chainEnds[0] = x;
+            chainEnds[1] = y;
+            chainEnds[2] = x;
+            chainEnds[3] = y;
+            return;
+        }
         if (y < board.get(x).size() / 2) {
             chainEnds[0] = x;
             chainEnds[1] = y;
@@ -484,14 +491,14 @@ public class DominoGameState extends GameState {
         if (chainEnds[6] != -99) {
              bottomPips = board.get(chainEnds[6]).get(chainEnds[7]).getRightPipCount();
         }
-        if (chainEnds[6] == BOARDHEIGHT/2 && chainEnds[7] == BOARDWIDTH/2){
+        if (chainEnds[6] == chainEnds[0] && chainEnds[7] == chainEnds[1]){
             bottomPips = 0;
         }
         // Only check topChain if it exists.
         if (chainEnds[4] != -99) {
               topPips = board.get(chainEnds[4]).get(chainEnds[5]).getLeftPipCount();
         }
-        if (chainEnds[4] == BOARDHEIGHT/2 && chainEnds[5] == BOARDWIDTH/2){
+        if (chainEnds[4] == chainEnds[0] && chainEnds[5] == chainEnds[1]){
             topPips = 0;
         }
 
@@ -533,6 +540,7 @@ public class DominoGameState extends GameState {
     public boolean quitGame(int playerID){
         // Set the player who pressed "Quit" to -1 to indicate that they pressed Quit.
         players[playerID].setScore(-1);
+        players[playerID].setPlayerActive(false);
         return true;
     }
 
@@ -653,9 +661,6 @@ public class DominoGameState extends GameState {
         }
         Arrays.fill(chainEnds, -99);
         boardEmpty = true;
-
-        Arrays.fill(chainEnds, -99);
-
 
         if (firstRound) {
             //create player objects equal to the amount of players playing.
