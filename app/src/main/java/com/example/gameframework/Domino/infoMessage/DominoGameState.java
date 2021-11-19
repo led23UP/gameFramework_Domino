@@ -440,16 +440,18 @@ public class DominoGameState extends GameState {
         else if (y >= board.get(x).size()){
             y = board.size() - 1;
         }
-
+        // If x is above the middle, update topEnd and return.
         if (x < board.size() / 2) {
             chainEnds[4] = x;
             chainEnds[5] = y;
             return;
+        // Else if x is below middle, update bottomEnd and return.
         } else if (x > board.size() / 2) {
             chainEnds[6] = x;
             chainEnds[7] = y;
             return;
         }
+        // If in center of board, update left and right ends, then return.
         if (y == board.get(x).size()/2 && x == board.get(x).size()/2){
             chainEnds[0] = x;
             chainEnds[1] = y;
@@ -457,9 +459,11 @@ public class DominoGameState extends GameState {
             chainEnds[3] = y;
             return;
         }
+        // If y to left of middle, update leftEnd.
         if (y < board.get(x).size() / 2) {
             chainEnds[0] = x;
             chainEnds[1] = y;
+        // Else if y to right of middle, update rightEnd.
         } else if (y > board.get(x).size() / 2){
             chainEnds[2] = x;
             chainEnds[3] = y;

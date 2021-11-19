@@ -89,7 +89,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
 
         // Cast info as a DominoGameState to get information from it.
         DominoGameState gameInfo = (DominoGameState) info;
-
+        // If borad is empty, scroll screen back to center automatically.
         if (((DominoGameState) info).boardEmpty){
             myScrollViewV.post(new Runnable() {
                 @Override
@@ -108,7 +108,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
             });
         }
 
-
+        // If the player's hand is of size zero, send placed all pieces action.
         if (gameInfo.getPlayerInfo()[playerNum].getHand().size() == 0){
             game.sendAction(new DominoPlacedAllPiecesAction(this,name));
         }
@@ -128,7 +128,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         messageText.setTextColor(Color.YELLOW);
         boneyardText.setText(gameInfo.getBoneyardMsg());
         boneyardText.setTextColor(Color.YELLOW);
-
+        // Set the player's name who is currently making a move to yellow.
         if(gameInfo.getTurnID() == 0) {
             player0ScoreView.setTextColor(Color.YELLOW);
             player1ScoreView.setTextColor(Color.WHITE);
@@ -164,7 +164,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
                 player1ScoreView.setText(allPlayerNames[1]+" "+ gameInfo.getPlayerInfo()[1].getScore());
             case 1:
 
-                player0ScoreView.setText(allPlayerNames[0]+ gameInfo.getPlayerInfo()[0].getScore());
+                player0ScoreView.setText(allPlayerNames[0]+" "+gameInfo.getPlayerInfo()[0].getScore());
 
         }
 
@@ -175,7 +175,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
             dominosInHand[i].setImageResource(determineDominoPic(gameInfo.getPlayerInfo()[playerNum].getHand().get(i)));
             dominosInHand[i].setClickable(true);
         }
-
+        // Make the unused image buttons invisible and not clickable.
         for (int i = gameInfo.getPlayerInfo()[playerNum].getHand().size(); i < 23; i++){
             dominosInHand[i].setVisibility(View.INVISIBLE);
             dominosInHand[i].setClickable(false);
@@ -183,7 +183,9 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
 
         // Get legal moves.
         ArrayList<MoveInfo> myLegalMoves = gameInfo.getPlayerInfo()[playerNum].getLegalMoves();
+        // If the player has no legal moves, draw until they do.
         if(myLegalMoves.size() == 0) {
+            // If they cannot draw a domino, skip the turn.
             if (gameInfo.getBoneyard().size() == 0){
                 game.sendAction(new DominoSkipAction(this));
                 return;
@@ -273,7 +275,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         this.helpButton = (Button)activity.findViewById(R.id.helpButton);
 
         this.myScrollViewV = activity.findViewById(R.id.scrollV);
-
+        // Scroll gui to center vertical.
         myScrollViewV.post(new Runnable() {
             @Override
             public void run() {
@@ -283,7 +285,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         });
 
         this.myScrollViewH = activity.findViewById(R.id.scrollH);
-
+        // Scroll gui to center horizontal.
         myScrollViewH.post(new Runnable() {
             @Override
             public void run() {
@@ -342,7 +344,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
 
     @Override
     public void onClick(View view) {
-
+        // Determine what domino the player clicked, and store in selectedDomino.
         if (view instanceof ImageButton) {
             int clickedId = view.getId();
             int i = 0;
@@ -358,12 +360,14 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         }
 
         else if (view instanceof Button){
+            // If newGame is pressed, restart game with same settings.
             if (view.getId() == R.id.newGameButton){
                 myActivity.restartGame();
             }
             else if (view.getId() == R.id.quitGameButton){
                 game.sendAction(new DominoQuitGameAction(this));
             }
+            // If help is pressed, bring up a message box explaining rules.
             else if (view.getId() == R.id.helpButton){
 
                 //getActivity().startActivity(new Intent(getActivity(), Pop.class));
