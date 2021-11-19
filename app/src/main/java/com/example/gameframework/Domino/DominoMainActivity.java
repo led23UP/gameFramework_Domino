@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import com.example.gameframework.Domino.infoMessage.DominoGameState;
 import com.example.gameframework.Domino.players.DominoComputerPlayers1;
 import com.example.gameframework.Domino.players.DominoHumanPlayers1;
+import com.example.gameframework.Domino.players.SmartComputerPlayer;
 import com.example.gameframework.R;
 import com.example.gameframework.game.GameFramework.GameMainActivity;
 import com.example.gameframework.game.GameFramework.LocalGame;
@@ -43,12 +44,12 @@ public class DominoMainActivity extends GameMainActivity {
             }
         });
 
-        /*// smarter computer player
+        // smarter computer player
         playerTypes.add(new GamePlayerType("Computer Player (smart)") {
             public GamePlayer createPlayer(String name) {
                 return new SmartComputerPlayer(name);
             }
-        });*/
+        });
 
         // Create a game configuration class for Tic-tac-toe
         GameConfig defaultConfig = new GameConfig(playerTypes, 1, 4, "Dominos", PORT_NUMBER);
