@@ -518,6 +518,58 @@ public class DominoGameState extends GameState {
         players[playerID].setCurrentPoints(0);
     }
 
+    public int reportScoredPoints(int playerID){
+        // If to right of center of board, check placed domino's rightPips vs end of
+        // chain's
+        // leftPips. If they are divisible by three, award player sum of pips.
+        int leftPips;
+        int rightPips;
+        int value=0;
+
+        // If there is no left chain end, assign to default value of 0.
+        if(chainEnds[0]==-99){
+            leftPips=0;
+        }
+        else{
+            leftPips = board.get(chainEnds[0]).get(chainEnds[1]).getLeftPipCount();
+        }
+        // If there is no right chain end, assign to default value of 0.
+        if(chainEnds[2]==-99){
+            rightPips =0;
+        }
+        else{
+            rightPips= board.get(chainEnds[2]).get(chainEnds[3]).getRightPipCount();
+        }
+        int topPips = 0;
+        int bottomPips = 0;
+        // Only check bottomChain if it exists.
+        if (chainEnds[6] != -99) {
+            bottomPips = board.get(chainEnds[6]).get(chainEnds[7]).getRightPipCount();
+        }
+        if (chainEnds[6] == chainEnds[0] && chainEnds[7] == chainEnds[1]){
+            bottomPips = 0;
+        }
+        // Only check topChain if it exists.
+        if (chainEnds[4] != -99) {
+            topPips = board.get(chainEnds[4]).get(chainEnds[5]).getLeftPipCount();
+        }
+        if (chainEnds[4] == chainEnds[0] && chainEnds[5] == chainEnds[1]){
+            topPips = 0;
+        }
+
+        // If the the sum of pips is a multiple of 3, award user that amount of points.
+        if ((leftPips + rightPips + bottomPips + topPips) % 3 == 0){
+             value = leftPips+rightPips+bottomPips+topPips;
+
+
+        }
+
+        return value;
+
+    }
+
+
+
     /**
      * drawPiece lets a player draw a domino from the boneyard.
      * @param playerID id of player who is drawing piece.
