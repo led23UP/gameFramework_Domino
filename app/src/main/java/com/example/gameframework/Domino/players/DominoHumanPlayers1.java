@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.example.gameframework.Domino.DominoActionMessage.DominoDrawAction;
+import com.example.gameframework.Domino.DominoActionMessage.DominoGameBlockedAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoMoveAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoNewRoundAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoQuitGameAction;
@@ -181,6 +182,10 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
             dominosInHand[i].setClickable(false);
         }
 
+        if (gameInfo.isGameBlocked()){
+            game.sendAction(new DominoGameBlockedAction(this));
+        }
+        
         // Get legal moves.
         ArrayList<MoveInfo> myLegalMoves = gameInfo.getPlayerInfo()[playerNum].getLegalMoves();
         if(myLegalMoves.size() == 0) {
