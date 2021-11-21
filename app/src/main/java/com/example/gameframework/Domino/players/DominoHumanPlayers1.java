@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import com.example.gameframework.Domino.DominoActionMessage.DominoDrawAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoMoveAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoNewRoundAction;
+import com.example.gameframework.Domino.DominoActionMessage.DominoQuitGameAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoSkipAction;
 import com.example.gameframework.Domino.DominoActionMessage.DominoPlacedAllPiecesAction;
 import com.example.gameframework.Domino.DominoMainActivity;
@@ -361,7 +362,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
                 myActivity.restartGame();
             }
             else if (view.getId() == R.id.quitGameButton){
-                myActivity.finishAffinity();
+                game.sendAction(new DominoQuitGameAction(this));
             }
             else if (view.getId() == R.id.helpButton){
 
