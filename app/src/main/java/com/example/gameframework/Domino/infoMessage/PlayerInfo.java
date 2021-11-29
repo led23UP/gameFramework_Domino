@@ -1,5 +1,6 @@
 package com.example.gameframework.Domino.infoMessage;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 /**
  * Players class that creates a player object to keep track of score and hand.
@@ -8,7 +9,8 @@ import java.util.ArrayList;
  * @author Paul Kenstler
  * @author Pranav Rajan
  */
-public class PlayerInfo {
+public class PlayerInfo implements Serializable {
+    private static final long serialVersionUID = -5109179064332136954L;
     private final int id;
     private int currentPoints;
     private int score;

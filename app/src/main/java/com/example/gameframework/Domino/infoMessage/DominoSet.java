@@ -2,6 +2,7 @@ package com.example.gameframework.Domino.infoMessage;
 
 import static java.lang.Integer.parseInt;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 /*
@@ -17,7 +18,10 @@ import java.util.Collections;
  * @author Paul Kenstler
  * @author Pranav Rajan
  */
-public class DominoSet {
+public class DominoSet implements Serializable {
+
+    private static final long serialVersionUID = -5109179064363136954L;
+
     public ArrayList<Domino> dominos;
 
     public DominoSet() {

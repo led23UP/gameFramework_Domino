@@ -2,6 +2,7 @@ package com.example.gameframework.Domino.infoMessage;
 
 import com.example.gameframework.game.GameFramework.infoMessage.GameState;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -12,8 +13,9 @@ import java.util.Arrays;
  * @author Paul Kenstler
  * @author Pranav Rajan
  */
-public class DominoGameState extends GameState {
+public class DominoGameState extends GameState implements Serializable {
 
+    private static final long serialVersionUID = -5108179064333136954L;
     private int playerCount;
     private int BOARDHEIGHT = 9;
     private int BOARDWIDTH = 9;

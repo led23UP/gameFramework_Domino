@@ -1,4 +1,7 @@
 package com.example.gameframework.Domino.infoMessage;
+
+import java.io.Serializable;
+
 /**
  * Domino class that creates dominoes for use in the game.
  * @author Connor Burk
@@ -6,7 +9,9 @@ package com.example.gameframework.Domino.infoMessage;
  * @author Paul Kenstler
  * @author Pranav Rajan
  */
-public class Domino {
+public class Domino implements Serializable {
+
+    private static final long serialVersionUID = -5109179264333136954L;
 
     private int leftPipsCount;
     private int rightPipsCount;

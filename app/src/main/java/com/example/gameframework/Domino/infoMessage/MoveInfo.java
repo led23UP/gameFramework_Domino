@@ -1,6 +1,11 @@
 package com.example.gameframework.Domino.infoMessage;
 
-public class MoveInfo {
+import java.io.Serializable;
+
+public class MoveInfo implements Serializable {
+
+    private static final long serialVersionUID = -5159179064333136954L;
+
     private int row;
     private int col;
     private int orientation;
