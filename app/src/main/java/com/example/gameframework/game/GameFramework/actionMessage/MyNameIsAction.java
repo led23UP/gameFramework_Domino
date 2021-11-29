@@ -27,7 +27,11 @@ public class MyNameIsAction extends GameAction {
      */
     public MyNameIsAction(GamePlayer p, String name) {
         super(p); // invoke superclass constructor
-        this.name = name; // set the name
+        if (name.length() > 10){
+            this.name = name.substring(0, 10); // set the name
+        } else {
+            this.name = name;
+        }
     }
 
     /**
