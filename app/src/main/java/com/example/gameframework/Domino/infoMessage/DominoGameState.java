@@ -684,6 +684,11 @@ public class DominoGameState extends GameState implements Serializable {
     }
 
     /**
+     * update playercount
+     */
+    public void reducePlayerCount(){playerCount--;}
+
+    /**
      * Update the turnID.
      */
     public void setTurnID(){
@@ -694,6 +699,7 @@ public class DominoGameState extends GameState implements Serializable {
             turnID = 0;
         }
     }
+
 
     /**
      *

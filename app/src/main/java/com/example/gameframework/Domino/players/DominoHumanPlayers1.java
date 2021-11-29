@@ -91,6 +91,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         // Cast info as a DominoGameState to get information from it.
         DominoGameState gameInfo = (DominoGameState) info;
 
+
         if (((DominoGameState) info).boardEmpty){
             myScrollViewV.post(new Runnable() {
                 @Override

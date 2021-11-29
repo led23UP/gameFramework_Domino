@@ -87,7 +87,6 @@ public class DominoLocalGame extends LocalGame {
         }
 
 
-
         if (canMove(playerID)){
             //TODO Give better indication that a round was won
 
@@ -162,8 +161,11 @@ public class DominoLocalGame extends LocalGame {
             }
             if (action instanceof DominoQuitGameAction)
             {
-                state.setText("Player x has forfeited their turn");
+                state.setText("Player " + playerNames[playerID] + " has forfeited their turn");
+
+                state.getPlayerInfo()[playerID].setPlayerActive(false);
                 state.setTurnID();
+
                 return true;
             }
             if (action instanceof DominoNewGameAction)
@@ -173,6 +175,7 @@ public class DominoLocalGame extends LocalGame {
                 return true;
             }
         }
+
 
         //ss
         return false;
