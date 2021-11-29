@@ -71,7 +71,7 @@ public class DominoGameState extends GameState implements Serializable {
         this.doesBoardHaveSpinner = other.doesBoardHaveSpinner;
 
         this.chainEnds = new int[8];
-        System.arraycopy(other.chainEnds, 0, this.chainEnds, 0, 8);
+        System.arraycopy(other.chainEnds, 0, this.chainEnds, 0, other.chainEnds.length);
 
         this.players = new PlayerInfo[other.players.length];
 
@@ -452,7 +452,7 @@ public class DominoGameState extends GameState implements Serializable {
             chainEnds[7] = y;
             return;
         }
-        if (y == board.get(x).size()/2 && x == board.get(x).size()/2){
+        if (y == board.get(x).size()/2 && x == board.get(x).size()/2 && boardEmpty){
             chainEnds[0] = x;
             chainEnds[1] = y;
             chainEnds[2] = x;
