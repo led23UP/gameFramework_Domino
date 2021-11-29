@@ -158,15 +158,15 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
 
         switch(gameInfo.getPlayerInfo().length){
             case 4:
-                player3ScoreView.setText(allPlayerNames[3]+" "+ gameInfo.getPlayerInfo()[3].getScore());
+                player3ScoreView.setText(allPlayerNames[3]+": "+ gameInfo.getPlayerInfo()[3].getScore());
 
             case 3:
-                player2ScoreView.setText(allPlayerNames[2]+" "+ gameInfo.getPlayerInfo()[2].getScore());
+                player2ScoreView.setText(allPlayerNames[2]+": "+ gameInfo.getPlayerInfo()[2].getScore());
             case 2:
-                player1ScoreView.setText(allPlayerNames[1]+" "+ gameInfo.getPlayerInfo()[1].getScore());
+                player1ScoreView.setText(allPlayerNames[1]+": "+ gameInfo.getPlayerInfo()[1].getScore());
             case 1:
 
-                player0ScoreView.setText(allPlayerNames[0]+ gameInfo.getPlayerInfo()[0].getScore());
+                player0ScoreView.setText(allPlayerNames[0]+": " + gameInfo.getPlayerInfo()[0].getScore());
 
         }
 
