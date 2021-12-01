@@ -363,9 +363,6 @@ public abstract class GameMainActivity extends Activity implements
         // mark the configuration as being completed
         doingConfiguration = false;
 
-        DominoLocalGame g = (DominoLocalGame) game;
-        g.setNumPlayers(players.length);
-
         // start the game; then return null to indicate that the launch was
         // successful
         game.start(players);

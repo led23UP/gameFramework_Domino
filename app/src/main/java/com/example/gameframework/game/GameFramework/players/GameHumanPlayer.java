@@ -70,6 +70,10 @@ public abstract class GameHumanPlayer implements GamePlayer, Tickable {
         this.saveMe = new Handler();
     }
 
+    public void setPlayerNum(int playerNum) {
+        this.playerNum = playerNum;
+    }
+
     /**
      * Returns this object's game timer
      *

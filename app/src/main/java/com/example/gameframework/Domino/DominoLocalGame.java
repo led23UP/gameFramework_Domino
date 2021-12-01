@@ -10,8 +10,12 @@ import com.example.gameframework.Domino.DominoActionMessage.DominoPlacedAllPiece
 import com.example.gameframework.Domino.infoMessage.DominoGameState;
 import com.example.gameframework.game.GameFramework.LocalGame;
 import com.example.gameframework.game.GameFramework.actionMessage.GameAction;
+import com.example.gameframework.game.GameFramework.players.GameHumanPlayer;
 import com.example.gameframework.game.GameFramework.players.GamePlayer;
+import com.example.gameframework.game.GameFramework.players.ProxyPlayer;
 import com.example.gameframework.game.GameFramework.utilities.MessageBox;
+
+import java.lang.reflect.Proxy;
 
 
 public class DominoLocalGame extends LocalGame {
@@ -20,11 +24,24 @@ public class DominoLocalGame extends LocalGame {
         super.state = new DominoGameState();
     }
 
-    public void setNumPlayers(int playerC){
+    @Override
+    public void start(GamePlayer[] players) {
+        super.start(players);
         DominoGameState a = (DominoGameState) super.state;
-        a.setNumPlayersStart(playerC);
+        a.setNumPlayersStart(players.length);
+        for (int i = 0; i < players.length; i++){
+           GamePlayer p =  players[i];
+            if (p instanceof GameHumanPlayer){
+                ((GameHumanPlayer) p).setPlayerNum(i);
+            }
+            if (p instanceof ProxyPlayer){
+                ((ProxyPlayer) p).setPlayerNum(i);
+            }
+        }
     }
+
     public DominoLocalGame(DominoGameState dState){
+        super();
         super.state = new DominoGameState(dState);
     }
 

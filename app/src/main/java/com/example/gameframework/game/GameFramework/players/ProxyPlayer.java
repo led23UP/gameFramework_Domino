@@ -24,6 +24,7 @@ public class ProxyPlayer implements GamePlayer {
 
     // the game object
     private Game game;
+    protected int playerNum;
 
     // the object that connects us to the network
     private NetworkObjectPasser networkPasser;
@@ -63,6 +64,10 @@ public class ProxyPlayer implements GamePlayer {
                         }
                     }
                 };
+    }
+
+    public void setPlayerNum(int playerNum){
+        this.playerNum = playerNum;
     }
 
     /**

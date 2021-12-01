@@ -37,7 +37,7 @@ public class PlayerInfo implements Serializable {
             this.playerHand.add(new Domino(d));
         }
 
-        this.score= other.score;
+        this.score = other.score;
         this.currentPoints = other.currentPoints;
         this.legalMoves = new ArrayList<>(other.legalMoves.size());
 

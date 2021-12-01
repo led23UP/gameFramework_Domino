@@ -314,7 +314,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
         // If the domino isn't in their hand, set the remaining buttons alpha to zero.
 
         this.surfaceView = (DSurfaceView) myActivity.findViewById(R.id.surfaceView);
-        this.surfaceView.setSVPlayerID(playerNum);
+        this.surfaceView.setSVPlayerID(this.playerNum);
         Logger.log("set listener", "OnTouch");
         surfaceView.setOnTouchListener(this);
 
@@ -343,6 +343,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
                         " vs. " + allPlayerNames[2] + " vs. " + allPlayerNames[3]);
                 break;
         }
+        this.surfaceView.setSVPlayerID(this.playerNum);
 
     }
 
@@ -368,7 +369,7 @@ public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClick
                 myActivity.restartGame();
             }
             else if (view.getId() == R.id.quitGameButton){
-                game.sendAction(new DominoQuitGameAction(this));
+                myActivity.finishAffinity();
             }
             else if (view.getId() == R.id.helpButton){
 
