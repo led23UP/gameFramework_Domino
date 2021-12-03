@@ -3,7 +3,7 @@ package com.example.gameframework.Domino.infoMessage;
 import java.io.Serializable;
 import java.util.ArrayList;
 /**
- * Players class that creates a player object to keep track of score and hand.
+ * PlayerInfo class that creates a player object to keep track of score and hand.
  * @author Connor Burk
  * @author David Le
  * @author Paul Kenstler

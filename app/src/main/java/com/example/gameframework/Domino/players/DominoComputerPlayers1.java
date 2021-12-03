@@ -12,6 +12,13 @@ import com.example.gameframework.game.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.gameframework.game.GameFramework.players.GameComputerPlayer;
 import com.example.gameframework.game.GameFramework.utilities.Logger;
 
+/**
+ * DominoComputerPlayers1 is the dumb computer player.
+ * @author Connor Burk
+ * @author David Le
+ * @author Paul Kenstler
+ * @author Pranav Rajan
+ */
 public class DominoComputerPlayers1 extends GameComputerPlayer {
     private int r;
     private int c;

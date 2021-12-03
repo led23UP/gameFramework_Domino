@@ -2,6 +2,13 @@ package com.example.gameframework.Domino.infoMessage;
 
 import java.io.Serializable;
 
+/**
+ * MoveInfo is a class that holes information about a legal move.
+ * @author Connor Burk
+ * @author David Le
+ * @author Paul Kenstler
+ * @author Pranav Rajan
+ */
 public class MoveInfo implements Serializable {
 
     private static final long serialVersionUID = -5159179064333136954L;

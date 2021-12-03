@@ -18,6 +18,13 @@ import com.example.gameframework.game.GameFramework.utilities.MessageBox;
 import java.lang.reflect.Proxy;
 
 
+/**
+ * DominoLocalGame is the game that is currently being played.
+ * @author Connor Burk
+ * @author David Le
+ * @author Paul Kenstler
+ * @author Pranav Rajan
+ */
 public class DominoLocalGame extends LocalGame {
     public DominoLocalGame() {
         super();

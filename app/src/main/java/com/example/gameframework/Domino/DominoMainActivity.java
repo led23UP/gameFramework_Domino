@@ -18,6 +18,13 @@ import com.example.gameframework.game.GameFramework.utilities.Saving;
 
 import java.util.ArrayList;
 
+/**
+ * DominoMainActivity is the main activity of the app.
+ * @author Connor Burk
+ * @author David Le
+ * @author Paul Kenstler
+ * @author Pranav Rajan
+ */
 public class DominoMainActivity extends GameMainActivity {
     //Tag for logging
     private static final String TAG = "DominoMainActivity";

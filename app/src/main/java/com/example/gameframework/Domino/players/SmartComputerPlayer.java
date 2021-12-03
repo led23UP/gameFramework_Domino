@@ -15,7 +15,13 @@ import com.example.gameframework.game.GameFramework.utilities.Logger;
 
 import java.util.ArrayList;
 
-
+/**
+ * SmartComputerPlayer is the smart computer player.
+ * @author Connor Burk
+ * @author David Le
+ * @author Paul Kenstler
+ * @author Pranav Rajan
+ */
 public class SmartComputerPlayer extends GameComputerPlayer {
     /**
      * constructor

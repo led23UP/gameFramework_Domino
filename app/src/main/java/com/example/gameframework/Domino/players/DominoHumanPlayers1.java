@@ -35,6 +35,13 @@ import com.example.gameframework.game.GameFramework.utilities.MessageBox;
 
 import java.util.ArrayList;
 
+/**
+ * DominoHumanPlayers1 is the human player, which is a gui.
+ * @author Connor Burk
+ * @author David Le
+ * @author Paul Kenstler
+ * @author Pranav Rajan
+ */
 public class DominoHumanPlayers1 extends GameHumanPlayer implements View.OnClickListener,
     View.OnTouchListener{
     private static final String TAG = "DominoHumanPlayer1";

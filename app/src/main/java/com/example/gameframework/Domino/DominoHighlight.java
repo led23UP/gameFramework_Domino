@@ -2,6 +2,14 @@ package com.example.gameframework.Domino;
 
 import com.example.gameframework.Domino.infoMessage.MoveInfo;
 
+/**
+ * DominoHighlight holds information of where a highlight is drawn and this information is used to
+ * see if a player taps inside of a highlight.
+ * @author Connor Burk
+ * @author David Le
+ * @author Paul Kenstler
+ * @author Pranav Rajan
+ */
 public class DominoHighlight {
     // Fields leftX, rightX, topY, bottomY are used to see if player clicked inside highlight.
     private final float leftX;

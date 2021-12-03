@@ -3,6 +3,13 @@ package com.example.gameframework.Domino.DominoActionMessage;
 import com.example.gameframework.game.GameFramework.actionMessage.GameAction;
 import com.example.gameframework.game.GameFramework.players.GamePlayer;
 
+/**
+ * DominoMoveAction is a class that represents a move action.
+ * @author Connor Burk
+ * @author David Le
+ * @author Paul Kenstler
+ * @author Pranav Rajan
+ */
 public class DominoMoveAction extends GameAction {
     //Tag for logging
     private static final String TAG = "DominoMoveAction";

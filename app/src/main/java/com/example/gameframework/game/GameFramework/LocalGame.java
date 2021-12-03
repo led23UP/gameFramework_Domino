@@ -194,7 +194,7 @@ public abstract class LocalGame implements Game, Tickable {
                     }
                 }
 
-                // If all players have told us their name, then move onto the next
+                // If all players have told us their name, then move onto the nextgit
                 // game stage, and send a message to each player that the game is
                 // about to start
                 if (playerNameCount >= playerNames.length) {

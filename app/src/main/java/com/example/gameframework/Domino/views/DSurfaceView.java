@@ -19,6 +19,13 @@ import com.example.gameframework.game.GameFramework.utilities.FlashSurfaceView;
 
 import java.util.ArrayList;
 
+/**
+ * DSurfaceView is the surface view used by a human player.
+ * @author Connor Burk
+ * @author David Le
+ * @author Paul Kenstler
+ * @author Pranav Rajan
+ */
 public class DSurfaceView extends FlashSurfaceView {
     private static final String TAG = "DSurfaceView";
 

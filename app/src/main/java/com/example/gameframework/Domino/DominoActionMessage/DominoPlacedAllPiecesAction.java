@@ -3,6 +3,13 @@ package com.example.gameframework.Domino.DominoActionMessage;
 import com.example.gameframework.game.GameFramework.actionMessage.GameAction;
 import com.example.gameframework.game.GameFramework.players.GamePlayer;
 
+/**
+ * DominoPlacedAllPiecesAction is a class that represents when someone has placed all pieces.
+ * @author Connor Burk
+ * @author David Le
+ * @author Paul Kenstler
+ * @author Pranav Rajan
+ */
 public class DominoPlacedAllPiecesAction extends GameAction {
     private String name;
     /**
